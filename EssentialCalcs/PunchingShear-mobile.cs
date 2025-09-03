@@ -1899,8 +1899,14 @@ namespace EssentialCalcs
 
         public static double shearStressResistance(double charStrength)
         {
+            // 0.5 v fcd where v = shear reduction factor for cracks
+            // v = 0.6 ( 1 - fck / 250)
+            // fcd = 1.0 * fck / 1.5
+            // for C20 => 0.5 x 0.552 * (20/1.5) = 3.68
             List<Tuple<double, double>> charStrengthshearResistance = new List<Tuple<double, double>>
             {
+                new Tuple<double, double>(12,2.2848),
+                new Tuple<double, double>(16,2.9952),
                 new Tuple<double, double>(20,3.68),
                 new Tuple<double, double>(25,4.5),
                 new Tuple<double, double>(28,4.98),
