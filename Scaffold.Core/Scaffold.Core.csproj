@@ -29,13 +29,13 @@
   <ItemGroup>
     <PackageReference Include="MagmaWorks.Taxonomy.Cases" Version="0.1.10" />
     <PackageReference Include="MagmaWorks.Taxonomy.Loads" Version="0.1.10" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Materials" Version="0.1.10" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles" Version="0.1.10" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles.Perimeter" Version="0.1.10" />
+    <PackageReference Include="MagmaWorks.Taxonomy.Materials" Version="0.1.11" />
+    <PackageReference Include="MagmaWorks.Taxonomy.Profiles" Version="0.1.11" />
+    <PackageReference Include="MagmaWorks.Taxonomy.Profiles.Perimeter" Version="0.1.11" />
     <PackageReference Include="MagmaWorks.Taxonomy.Profiles.Catalogue" Version="0.1.10" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Sections" Version="0.1.10" />
+    <PackageReference Include="MagmaWorks.Taxonomy.Sections" Version="0.1.11" />
     <PackageReference Include="MagmaWorks.Taxonomy.Sections.SectionProperties" Version="0.1.1" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Serialization" Version="0.1.10" />
+    <PackageReference Include="MagmaWorks.Taxonomy.Serialization" Version="0.1.11" />
     <PackageReference Include="MinVer" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -62,7 +62,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="UnitsNet" Version="5.74.0" />
+    <PackageReference Include="UnitsNet" Version="5.75.0" />
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
   </ItemGroup>
