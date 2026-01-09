@@ -54,9 +54,9 @@ public sealed class CalcRoundedRectangularProfile : RoundedRectangle, ICalcProfi
         return s.FromJson<CalcRoundedRectangularProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcRoundedRectangularProfile result = null;
         if (TryParse(strValue, null, out result))

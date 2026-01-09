@@ -42,9 +42,9 @@ public sealed class CalcConcreteSectionProperties : ConcreteSectionProperties, I
         return s.FromJson<CalcConcreteSectionProperties>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcConcreteSectionProperties result = null;
         if (TryParse(strValue, null, out result))

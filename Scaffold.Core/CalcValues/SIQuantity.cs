@@ -58,10 +58,10 @@ public class SIQuantity<T> : ISIQuantity<T> where T : UnitsNet.IQuantity
         set => _quantity = (T)UnitsNet.Quantity.From(value, _quantity.Unit);
     }
 
-    public string GetValue()
+    public string GetValueAsString()
         => _quantity.Value.ToString(CultureInfo.InvariantCulture);
 
-    bool ICalcValue.SetValue(string strValue)
+    bool ICalcValue.TryParse(string strValue)
     {
         _quantity = (T)UnitsNet.Quantity.From(double.TryParse(strValue, out var convertedValue)
             ? convertedValue

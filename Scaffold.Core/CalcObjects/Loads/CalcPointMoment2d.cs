@@ -41,9 +41,9 @@ public sealed class CalcPointMoment2d : PointMoment2d, ICalcValue
         return s.FromJson<CalcPointMoment2d>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcPointMoment2d result = null;
         if (TryParse(strValue, null, out result))

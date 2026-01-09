@@ -8,7 +8,7 @@ using UnitsNet;
 
 namespace Scaffold.Core.CalcValues
 {
-    public interface ISteelProfile : IComplex
+    public interface ISteelProfile : ICalcValue
     {
         ISIQuantity<Area> Area { get; }
     }

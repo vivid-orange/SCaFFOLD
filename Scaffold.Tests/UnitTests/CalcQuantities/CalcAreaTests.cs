@@ -599,7 +599,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcArea = new CalcArea(4.5, AreaUnit.SquareFoot, "myQuantity", "Q");
 
             // Act
-            string value = calcArea.GetValue();
+            string value = calcArea.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 ft²", value);

@@ -14,7 +14,7 @@ using UnitsNet;
 
 namespace Scaffold.Calculations
 {
-    public class SteelProfileFixed : CalculationBase, ISteelProfile
+    public class SteelProfileFixed : CalculationBase, ICalculation
     {
         public new string ReferenceName { get; set; } = "Steel profile";
 
@@ -67,12 +67,12 @@ namespace Scaffold.Calculations
             CompressionResistance.Quantity = (Area.Quantity * SteelGradeMember.Gradestrength.Quantity).ToUnit(UnitsNet.Units.ForceUnit.Kilonewton);
         }
 
-        public bool SetValue(string strValue)
+        public bool TryParse(string strValue)
         {
             return false;
         }
 
-        public string GetValue()
+        public string GetValueAsString()
         {
             return "FB " + Height.Value + " x " + Breadth.Value;
         }

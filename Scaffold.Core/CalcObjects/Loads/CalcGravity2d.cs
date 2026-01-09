@@ -48,9 +48,9 @@ public sealed class CalcGravity2d : Gravity2d, ICalcValue
         return s.FromJson<CalcGravity2d>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcGravity2d result = null;
         if (TryParse(strValue, null, out result))

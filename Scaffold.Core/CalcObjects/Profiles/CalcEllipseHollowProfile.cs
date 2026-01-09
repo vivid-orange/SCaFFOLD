@@ -54,9 +54,9 @@ public sealed class CalcEllipseHollowProfile : EllipseHollow, ICalcProfile<CalcE
         return s.FromJson<CalcEllipseHollowProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcEllipseHollowProfile result = null;
         if (TryParse(strValue, null, out result))

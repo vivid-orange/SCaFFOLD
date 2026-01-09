@@ -83,9 +83,9 @@ public sealed class CalcPerimeterProfile : Perimeter, ICalcProfile<CalcPerimeter
         return s.FromJson<CalcPerimeterProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcPerimeterProfile result = null;
         if (TryParse(strValue, null, out result))

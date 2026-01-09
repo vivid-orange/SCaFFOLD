@@ -54,9 +54,9 @@ public sealed class CalcCircularHollowProfile : CircularHollow, ICalcProfile<Cal
         return s.FromJson<CalcCircularHollowProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcCircularHollowProfile result = null;
         if (TryParse(strValue, null, out result))

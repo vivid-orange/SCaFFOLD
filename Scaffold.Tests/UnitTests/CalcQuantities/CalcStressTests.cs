@@ -526,7 +526,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcStress = new CalcStress(4.5, PressureUnit.PoundForcePerSquareInch, "myQuantity", "Q");
 
             // Act
-            string value = calcStress.GetValue();
+            string value = calcStress.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 psi", value);

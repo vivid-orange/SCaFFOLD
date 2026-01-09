@@ -52,12 +52,12 @@ public class ListOfDoubleArrays : IListOfDoubleArrays
     //    Value = valueList;
     //}
 
-    public bool SetValue(string value)
+    public bool TryParse(string value)
     {
         return false;
     }
 
-    public string GetValue()
+    public string GetValueAsString()
     {
         var innerStr = new StringBuilder();
         foreach (var item in Value)

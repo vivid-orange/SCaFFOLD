@@ -49,9 +49,9 @@ public sealed class CalcRebar : Rebar, ICalcValue
         return s.FromJson<CalcRebar>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcRebar result = null;
         if (TryParse(strValue, null, out result))

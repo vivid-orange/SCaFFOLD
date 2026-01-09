@@ -12,7 +12,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Act
             // Assert
-            Assert.False(calcDouble.SetValue("invalid"));
+            Assert.False(calcDouble.TryParse("invalid"));
         }
 
         [Theory]
@@ -152,7 +152,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
             var calcDouble = new CalcDouble(4.5, "engineers", "E", "Eng");
 
             // Act
-            string value = calcDouble.GetValue();
+            string value = calcDouble.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 Eng", value);

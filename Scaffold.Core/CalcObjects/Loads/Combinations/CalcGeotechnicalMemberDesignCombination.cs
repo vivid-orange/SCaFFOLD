@@ -41,9 +41,9 @@ public sealed class CalcGeotechnicalMemberDesignCombination : GeotechnicalMember
         return s.FromJson<CalcGeotechnicalMemberDesignCombination>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcGeotechnicalMemberDesignCombination result = null;
         if (TryParse(strValue, null, out result))

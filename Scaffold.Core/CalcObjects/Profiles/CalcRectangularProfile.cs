@@ -54,9 +54,9 @@ public sealed class CalcRectangularProfile : Rectangle, ICalcProfile<CalcRectang
         return s.FromJson<CalcRectangularProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcRectangularProfile result = null;
         if (TryParse(strValue, null, out result))

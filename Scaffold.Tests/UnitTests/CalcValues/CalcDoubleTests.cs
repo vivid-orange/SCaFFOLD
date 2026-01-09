@@ -38,8 +38,8 @@ namespace Scaffold.Tests.UnitTests.CalcValues
             var calcDouble = new CalcDouble(4.5);
 
             // Act & Assert
-            Assert.False(calcDouble.SetValue("invalid"));
-            Assert.True(calcDouble.SetValue("5.5"));
+            Assert.False(calcDouble.TryParse("invalid"));
+            Assert.True(calcDouble.TryParse("5.5"));
             Assert.Equal(5.5, calcDouble.Value);
         }
 

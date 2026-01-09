@@ -6,7 +6,7 @@ using Scaffold.Core.Extensions;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
-public sealed class CalcIProfile : I, ICalcProfile<CalcIProfile>, ICalcValue
+public sealed class CalcIProfile : I, ICalcProfile<CalcIProfile>, ICalculation
 #if NET7_0_OR_GREATER
     , IParsable<CalcIProfile>
 #endif
@@ -54,9 +54,9 @@ public sealed class CalcIProfile : I, ICalcProfile<CalcIProfile>, ICalcValue
         return s.FromJson<CalcIProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcIProfile result = null;
         if (TryParse(strValue, null, out result))
@@ -66,5 +66,25 @@ public sealed class CalcIProfile : I, ICalcProfile<CalcIProfile>, ICalcValue
         }
 
         return false;
+    }
+
+    public List<IOutputItem> GetFormulae()
+    {
+        return null;
+    }
+
+    public List<ICalcValue> GetInputs()
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<ICalcValue> GetOutputs()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Calculate()
+    {
+        throw new NotImplementedException();
     }
 }

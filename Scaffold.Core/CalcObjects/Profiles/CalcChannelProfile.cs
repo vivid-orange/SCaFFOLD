@@ -54,9 +54,9 @@ public sealed class CalcChannelProfile : Channel, ICalcProfile<CalcChannelProfil
         return s.FromJson<CalcChannelProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcChannelProfile result = null;
         if (TryParse(strValue, null, out result))

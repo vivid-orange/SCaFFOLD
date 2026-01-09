@@ -41,9 +41,9 @@ public sealed class CalcFrequentCombination : FrequentCombination, ICalcValue
         return s.FromJson<CalcFrequentCombination>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcFrequentCombination result = null;
         if (TryParse(strValue, null, out result))

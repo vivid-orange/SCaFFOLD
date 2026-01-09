@@ -41,9 +41,9 @@ public sealed class CalcLinearElasticMaterial : LinearElasticMaterial, ICalcValu
         return s.FromJson<CalcLinearElasticMaterial>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcLinearElasticMaterial result = null;
         if (TryParse(strValue, null, out result))

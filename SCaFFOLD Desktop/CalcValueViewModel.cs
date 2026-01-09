@@ -1,5 +1,6 @@
 ﻿using Scaffold.Core;
 using Scaffold.Core.CalcValues;
+using Scaffold.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ namespace SCaFFOLD_Desktop
     {
         private readonly ICalcValue _model;
         private readonly Action _onValueChanged;
-        private readonly Action<IComplex> _onNavigateRequest;
+        private readonly Action<ICalculation> _onNavigateRequest;
         private readonly Action<ICalcValue, ICalcValue> _onReplaceRequest;
         private readonly Type _declaredType;
 
@@ -23,7 +24,7 @@ namespace SCaFFOLD_Desktop
         public CalcValueViewModel(
             ICalcValue model,
             Action onValueChanged,
-            Action<IComplex> onNavigateRequest = null,
+            Action<ICalculation> onNavigateRequest = null,
             Type declaredType = null,
             Action<ICalcValue, ICalcValue> onReplaceRequest = null)
         {
@@ -99,13 +100,13 @@ namespace SCaFFOLD_Desktop
             {
                 if (_model is IListOfDoubleArrays arrayModel)
                     return FormatArrayOutput(arrayModel.Value);
-                return _model.GetValue();
+                return _model.GetValueAsString();
             }
             set
             {
-                if (IsStandard && _model.GetValue() != value)
+                if (IsStandard && _model.GetValueAsString() != value)
                 {
-                    _model.SetValue(value);
+                    _model.TryParse(value);
                     Refresh();
                     _onValueChanged?.Invoke();
                 }
@@ -116,7 +117,7 @@ namespace SCaFFOLD_Desktop
         public bool HasUnit => !string.IsNullOrEmpty(Unit);
 
         public bool IsStandard => !IsSelectionList && !IsDoubleListArray;
-        public bool IsComplex => _model is IComplex && _onNavigateRequest != null;
+        public bool IsComplex => _model is ICalculation && _onNavigateRequest != null;
         public bool IsSelectionList => _model is ISelectionList;
         public bool IsDoubleListArray => _model is IListOfDoubleArrays;
 
@@ -179,7 +180,7 @@ namespace SCaFFOLD_Desktop
 
         public ICommand EditCommand => new RelayCommand(_ =>
         {
-            if (_model is IComplex complex) _onNavigateRequest?.Invoke(complex);
+            if (_model is ICalculation complex) _onNavigateRequest?.Invoke(complex);
         });
 
         public void Refresh()

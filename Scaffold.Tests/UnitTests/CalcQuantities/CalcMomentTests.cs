@@ -523,7 +523,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcMoment = new CalcMoment(4.5, MomentUnit.PoundalFoot, "myQuantity", "Q");
 
             // Act
-            string value = calcMoment.GetValue();
+            string value = calcMoment.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 pdl·ft", value);

@@ -54,9 +54,9 @@ public sealed class CalcDoubleChannelProfile : DoubleChannel, ICalcProfile<CalcD
         return s.FromJson<CalcDoubleChannelProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcDoubleChannelProfile result = null;
         if (TryParse(strValue, null, out result))

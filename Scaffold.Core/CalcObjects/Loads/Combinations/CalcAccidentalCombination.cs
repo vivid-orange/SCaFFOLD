@@ -41,9 +41,9 @@ public sealed class CalcAccidentalCombination : AccidentalCombination, ICalcValu
         return s.FromJson<CalcAccidentalCombination>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcAccidentalCombination result = null;
         if (TryParse(strValue, null, out result))

@@ -13,7 +13,7 @@ using UnitsNet;
 
 namespace Scaffold.Calculations
 {
-    public class SteelGrade : CalculationBase, IComplex
+    public class SteelGrade : CalculationBase, ICalcValue
     {
         public new string ReferenceName { get; set; } = "Beam grade";
 
@@ -51,12 +51,12 @@ namespace Scaffold.Calculations
             }
         }
 
-        public bool SetValue(string strValue)
+        public bool TryParse(string strValue)
         {
             return false;
         }
 
-        public string GetValue()
+        public string GetValueAsString()
         {
             return SteelGrades.Value.ToString();
         }

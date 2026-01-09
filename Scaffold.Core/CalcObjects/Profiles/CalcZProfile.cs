@@ -54,9 +54,9 @@ public sealed class CalcZProfile : Z, ICalcProfile<CalcZProfile>, ICalcValue
         return s.FromJson<CalcZProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcZProfile result = null;
         if (TryParse(strValue, null, out result))

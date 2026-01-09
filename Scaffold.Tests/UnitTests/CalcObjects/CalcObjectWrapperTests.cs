@@ -12,7 +12,7 @@ namespace Scaffold.Tests.UnitTests.CalcObjects
         {
             // Arrange
             var standard = new CalcObjectWrapper<En1992>(new En1992(En1992Part.Part1_1, NationalAnnex.UnitedKingdom), "BS EN 1992-1-1", "EC2");
-            string fromJson = standard.GetValue();
+            string fromJson = standard.GetValueAsString();
             string json =
                 "{\"$type\": \"Scaffold.Core.CalcObjects.CalcObjectWrapper`1[[" +
                 "MagmaWorks.Taxonomy.Standards.Eurocode.En1992, MagmaWorks.Taxonomy.Standards]], " +
@@ -21,8 +21,8 @@ namespace Scaffold.Tests.UnitTests.CalcObjects
                 "\"Body\": \"EN\", \"Part\": \"Part1_2\", \"NationalAnnex\": \"Denmark\"}}";
 
             // Act & Assert
-            Assert.False(standard.SetValue("invalid"));
-            Assert.True(standard.SetValue(json));
+            Assert.False(standard.TryParse("invalid"));
+            Assert.True(standard.TryParse(json));
             Assert.Equal("DS EN 1992-1-1", standard.DisplayName);
             Assert.Equal("EN2", standard.Symbol);
             Assert.Equal(CalcStatus.Fail, standard.Status);

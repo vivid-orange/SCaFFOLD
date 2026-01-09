@@ -48,9 +48,9 @@ public sealed class CalcPerimeterReinforcementLayer : PerimeterReinforcementLaye
         return s.FromJson<CalcPerimeterReinforcementLayer>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcPerimeterReinforcementLayer result = null;
         if (TryParse(strValue, null, out result))

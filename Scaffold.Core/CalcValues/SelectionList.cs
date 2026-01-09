@@ -37,12 +37,12 @@ public class SelectionList : ISelectionList
 
     public CalcStatus Status => CalcStatus.None;
 
-    public string GetValue()
+    public string GetValueAsString()
     {
         return Value;
     }
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         return false;
         // need to add logic here. should this use index or match string value???

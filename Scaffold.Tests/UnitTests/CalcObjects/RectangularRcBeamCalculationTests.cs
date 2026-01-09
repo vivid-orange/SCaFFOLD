@@ -54,7 +54,7 @@ public class RectangularRcBeamCalculationTests
         calc.Calculate();
         var test = new CalcRectangularProfile(new Length(800, LengthUnit.Millimeter),
             new Length(500, LengthUnit.Millimeter), "", "");
-        string x = test.GetValue();
+        string x = test.GetValueAsString();
 
         calc.Profile = CalcRectangularProfile.Parse(x, null);
 

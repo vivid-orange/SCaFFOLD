@@ -54,9 +54,9 @@ public sealed class CalcRectangularHollowProfile : RectangularHollow, ICalcProfi
         return s.FromJson<CalcRectangularHollowProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcRectangularHollowProfile result = null;
         if (TryParse(strValue, null, out result))

@@ -54,9 +54,9 @@ public sealed class CalcCruciformProfile : Cruciform, ICalcProfile<CalcCruciform
         return s.FromJson<CalcCruciformProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcCruciformProfile result = null;
         if (TryParse(strValue, null, out result))

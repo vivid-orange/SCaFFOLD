@@ -457,7 +457,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcAngle = new CalcAngle(4.5, AngleUnit.Degree, "myQuantity", "Q");
 
             // Act
-            string value = calcAngle.GetValue();
+            string value = calcAngle.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 °", value);

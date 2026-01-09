@@ -14,12 +14,12 @@ public sealed class CalcValueDouble(double value) : IQuantity
     public string Symbol { get; set; }
     public CalcStatus Status { get; set; }
 
-    public string GetValue()
+    public string GetValueAsString()
     {
         return Value.ToString();
     }
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         if (double.TryParse(strValue, out double result))
         {

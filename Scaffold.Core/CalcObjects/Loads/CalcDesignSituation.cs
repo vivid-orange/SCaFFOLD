@@ -41,9 +41,9 @@ public sealed class CalcDesignSituation : DesignSituation, ICalcValue
         return s.FromJson<CalcDesignSituation>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcDesignSituation result = null;
         if (TryParse(strValue, null, out result))

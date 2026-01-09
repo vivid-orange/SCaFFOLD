@@ -509,7 +509,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcVolume = new CalcVolume(4.5, VolumeUnit.CubicFoot, "myQuantity", "Q");
 
             // Act
-            string value = calcVolume.GetValue();
+            string value = calcVolume.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 ft³", value);

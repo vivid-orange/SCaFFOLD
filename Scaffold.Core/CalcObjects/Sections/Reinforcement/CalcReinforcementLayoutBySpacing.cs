@@ -41,9 +41,9 @@ public sealed class CalcReinforcementLayoutBySpacing : ReinforcementLayoutBySpac
         return s.FromJson<CalcReinforcementLayoutBySpacing>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcReinforcementLayoutBySpacing result = null;
         if (TryParse(strValue, null, out result))

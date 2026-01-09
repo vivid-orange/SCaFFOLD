@@ -474,7 +474,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcLinearMoment = new CalcLinearMoment(4.5, MomentPerLengthUnit.PoundForceFootPerFoot, "myQuantity", "Q");
 
             // Act
-            string value = calcLinearMoment.GetValue();
+            string value = calcLinearMoment.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 lbf·ft/ft", value);

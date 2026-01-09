@@ -10,7 +10,7 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
     public CalcStatus Status { get; set; }
     public T Value { get; set; }
     public string Unit { get; set; } = string.Empty;
-    public string GetValue() => ToString();
+    public string GetValueAsString() => ToString();
 
     protected CalcValue(T value, string name, string symbol, string unit = "")
     {
@@ -33,7 +33,7 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
         return !value.Equals((object)other);
     }
 
-    public virtual bool SetValue(string input)
+    public virtual bool TryParse(string input)
     {
         TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
         if (converter != null)

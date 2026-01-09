@@ -54,9 +54,9 @@ public sealed class CalcTrapezoidProfile : Trapezoid, ICalcProfile<CalcTrapezoid
         return s.FromJson<CalcTrapezoidProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcTrapezoidProfile result = null;
         if (TryParse(strValue, null, out result))

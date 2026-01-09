@@ -41,9 +41,9 @@ public sealed class CalcEquilibriumCombination : EquilibriumCombination, ICalcVa
         return s.FromJson<CalcEquilibriumCombination>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcEquilibriumCombination result = null;
         if (TryParse(strValue, null, out result))

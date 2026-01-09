@@ -39,7 +39,7 @@ internal sealed class InternalCalcValue : ICalcValue
         return converter.ConvertFromString(input);
     }
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         object newValue = Convert(strValue);
         PropertyInfo member = Calculation.GetType().GetProperty(MemberName);
@@ -51,5 +51,5 @@ internal sealed class InternalCalcValue : ICalcValue
         return member != null;
     }
 
-    public string GetValue() => Value.ToString();
+    public string GetValueAsString() => Value.ToString();
 }

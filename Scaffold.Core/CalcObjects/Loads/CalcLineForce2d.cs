@@ -48,9 +48,9 @@ public sealed class CalcLineForce2d : LineForce2d, ICalcValue
         return s.FromJson<CalcLineForce2d>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcLineForce2d result = null;
         if (TryParse(strValue, null, out result))

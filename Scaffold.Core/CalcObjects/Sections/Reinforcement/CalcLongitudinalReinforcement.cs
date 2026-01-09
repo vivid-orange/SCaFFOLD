@@ -50,9 +50,9 @@ public sealed class CalcLongitudinalReinforcement : LongitudinalReinforcement, I
         return s.FromJson<CalcLongitudinalReinforcement>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcLongitudinalReinforcement result = null;
         if (TryParse(strValue, null, out result))

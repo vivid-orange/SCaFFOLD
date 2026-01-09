@@ -16,7 +16,7 @@ namespace SCaFFOLD_Console
                 ICalcValue input = values[i];
                 Console.Write(i.ToString().PadRight(4));
                 Console.Write(input.Symbol.PadRight(15));
-                Console.WriteLine(input.GetValue());
+                Console.WriteLine(input.GetValueAsString());
             }
         }
         internal static void DisplayResults(ICalculation calc, string s)
@@ -30,7 +30,7 @@ namespace SCaFFOLD_Console
                 ICalcValue input = values[i];
                 Console.Write(i.ToString().PadRight(4));
                 Console.Write(input.Symbol.PadRight(15));
-                Console.WriteLine(input.GetValue());
+                Console.WriteLine(input.GetValueAsString());
             }
         }
 
@@ -42,7 +42,7 @@ namespace SCaFFOLD_Console
             int.TryParse(words[0], out idx);
             if (idx >= 0)
             {
-                values[idx].SetValue(words[1]);
+                values[idx].TryParse(words[1]);
                 calc.Calculate();
                 DisplayResults(calc, "");
             }

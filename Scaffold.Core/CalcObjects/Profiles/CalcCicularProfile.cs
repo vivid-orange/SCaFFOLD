@@ -54,9 +54,9 @@ public sealed class CalcCicularProfile : Circle, ICalcProfile<CalcCicularProfile
         return s.FromJson<CalcCicularProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcCicularProfile result = null;
         if (TryParse(strValue, null, out result))

@@ -621,7 +621,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcLength = new CalcLength(4.5, LengthUnit.Foot, "myQuantity", "Q");
 
             // Act
-            string value = calcLength.GetValue();
+            string value = calcLength.GetValueAsString();
 
             // Assert
             Assert.Equal("4.5 ft", value);

@@ -41,7 +41,7 @@ public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
         }
     }
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         try
         {
@@ -58,5 +58,5 @@ public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
         }
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 }

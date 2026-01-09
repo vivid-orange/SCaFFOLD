@@ -56,9 +56,9 @@ public sealed class CalcEnConcreteMaterial : EnConcreteMaterial, ICalcValue
         return s.FromJson<CalcEnConcreteMaterial>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcEnConcreteMaterial result = null;
         if (TryParse(strValue, null, out result))

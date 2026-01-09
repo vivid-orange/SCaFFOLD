@@ -41,9 +41,9 @@ public sealed class CalcPointDisplacement2d : PointDisplacement2d, ICalcValue
         return s.FromJson<CalcPointDisplacement2d>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcPointDisplacement2d result = null;
         if (TryParse(strValue, null, out result))

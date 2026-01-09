@@ -54,9 +54,9 @@ public sealed class CalcDoubleAngularProfile : DoubleAngle, ICalcProfile<CalcDou
         return s.FromJson<CalcDoubleAngularProfile>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcDoubleAngularProfile result = null;
         if (TryParse(strValue, null, out result))

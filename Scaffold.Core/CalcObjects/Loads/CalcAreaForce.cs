@@ -48,9 +48,9 @@ public sealed class CalcAreaForce : AreaForce, ICalcValue
         return s.FromJson<CalcAreaForce>();
     }
 
-    public string GetValue() => this.ToJson();
+    public string GetValueAsString() => this.ToJson();
 
-    public bool SetValue(string strValue)
+    public bool TryParse(string strValue)
     {
         CalcAreaForce result = null;
         if (TryParse(strValue, null, out result))
