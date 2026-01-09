@@ -245,7 +245,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="{Binding Title}" Command="{Binding DataContext.NavigateUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" Cursor="Hand"/>
+                        <Button Content="{Binding DisplayName}" Command="{Binding DataContext.NavigateUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" Cursor="Hand"/>
                         <TextBlock Text=" > " Margin="5,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>

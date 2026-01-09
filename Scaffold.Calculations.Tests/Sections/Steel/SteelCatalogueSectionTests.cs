@@ -81,11 +81,11 @@ public class SteelCatalogueSectionTests
 
         // Assert
         Assert.Equal(catalogue, calc.Profile.Profile.CatalogueType.Value);
-        Assert.True(calc.Profile.Profile.Output.SelectionList.Count > 10);
+        Assert.True(calc.Profile.Profile.Output.Selections.Count > 10);
         Assert.NotNull(calc.Profile);
 
         // select each profile in catalogue type
-        foreach (string prfl in calc.Profile.Profile.Output.SelectionList)
+        foreach (string prfl in calc.Profile.Profile.Output.Selections)
         {
             calc.Profile.Profile.Output.Value = prfl;
             Assert.NotNull(calc.Profile);

@@ -1,50 +1,41 @@
 ﻿using Scaffold.Core.Abstract;
-using Scaffold.Core.Enums;
-using Scaffold.Core.CalcValues;
-using System.Reflection.Metadata.Ecma335;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System;
 
 namespace Scaffold.Core.CalcValues;
 
-public class SelectionList : ISelectionList
+public class CalcSelectionList : CalcValue<string>, ISelectionList
 {
-    private readonly List<string> _selectionList;
-
-    public SelectionList(string name, int selectedItemIndex, IEnumerable<string> values)
-    {
-        _selectionList = values.ToList();
-        TypeName = name;
-        SelectedItemIndex = selectedItemIndex;
-    }
-
-    public string DisplayName { get; } = "";
+    public List<string> Selections { get; private set; }
 
     public int SelectedItemIndex { get; set; }
 
-
-    public IReadOnlyList<string> Selections => _selectionList;
-    public string Value
+    public override string Value
     {
-        get
-        {
-            return _selectionList[SelectedItemIndex];
-        }
+        get { return Selections[SelectedItemIndex]; }
+        set { TryParse(value); }
     }
 
-    public string TypeName { get; }
-
-    public string Symbol => "";
-
-    public CalcStatus Status => CalcStatus.None;
-
-    public string GetValueAsString()
+    public CalcSelectionList(string name, int selectedItemIndex, IEnumerable<string> values)
+        : base(name, string.Empty, string.Empty)
     {
-        return Value;
+        Selections = values.ToList();
+    }
+    public CalcSelectionList(string name, string selectedItem, IEnumerable<string> values)
+    : base(name, string.Empty, string.Empty)
+    {
+        Selections = values.ToList();
+        TryParse(selectedItem);
     }
 
-    public bool TryParse(string strValue)
+    public override bool TryParse(string strValue)
     {
-        return false;
-        // need to add logic here. should this use index or match string value???
+        int i = Selections.IndexOf(strValue);
+
+        if (i == -1) { return false; }
+        else { SelectedItemIndex = i; return true; }
+
     }
+
+    public override string ToString() => string.Join(", ", Selections);
 }

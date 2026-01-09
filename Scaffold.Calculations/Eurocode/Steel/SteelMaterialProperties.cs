@@ -4,6 +4,7 @@ using MagmaWorks.Taxonomy.Materials;
 using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
 using MagmaWorks.Taxonomy.Standards.Eurocode;
 using Scaffold.Calculations.CalculationUtility;
+using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
 using Scaffold.Core.CalcQuantities;
@@ -15,10 +16,10 @@ using UnitsNet.Units;
 
 namespace Scaffold.Calculations.Eurocode.Steel
 {
-    public class SteelMaterialProperties : ICalculation
+    public class SteelMaterialProperties : CalculationBase
     {
-        public string DisplayName { get; set; }
-        public string CalculationName { get; set; } = "Steel Material Properties";
+        public string DisplayName { get; set; } = "Steel material properties";
+        public override string TypeName { get;  } = "Steel Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue("Grd", "Grade")]
@@ -66,7 +67,8 @@ namespace Scaffold.Calculations.Eurocode.Steel
             "Material Parameter", "ε");
 
         private IBiLinearMaterial _analysisMaterial => EnSteelFactory.CreateBiLinear(Material, Thickness);
-        private static PressureUnit _unit = PressureUnit.NewtonPerSquareMillimeter;
+
+       private static PressureUnit _unit = PressureUnit.NewtonPerSquareMillimeter;
 
         public SteelMaterialProperties()
         {
@@ -79,14 +81,12 @@ namespace Scaffold.Calculations.Eurocode.Steel
             Calculate();
         }
 
-        public List<IOutputItem> GetFormulae()
+        public override List<IOutputItem> GetFormulae()
         {
             return new List<IOutputItem>();
         }
 
-        public void Calculate() { }
+        public override void Calculate() { }
 
-        public List<ICalcValue> GetInputs() => throw new NotImplementedException();
-        public List<ICalcValue> GetOutputs() => throw new NotImplementedException();
     }
 }

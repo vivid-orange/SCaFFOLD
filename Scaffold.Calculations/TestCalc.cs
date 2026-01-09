@@ -17,7 +17,7 @@ namespace Scaffold.Calculations
 {
     public class TestCalc : CalculationBase
     {
-        public new string Title { get; set; } = "This is my test calc";
+        public string DisplayName { get; set; } = "This is my test calc";
         public override string TypeName { get; } = "Test Calc";
 
         [InputCalcValue]

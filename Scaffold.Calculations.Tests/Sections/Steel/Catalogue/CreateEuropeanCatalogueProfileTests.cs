@@ -67,11 +67,11 @@ public class CreateEuropeanCatalogueProfileTests
 
         // Assert
         Assert.Equal(catalogue, calc.Profile.CatalogueType.Value);
-        Assert.True(calc.Profile.Output.SelectionList.Count > 10);
+        Assert.True(calc.Profile.Output.Selections.Count > 10);
         Assert.NotNull(calc.Profile);
 
         // select each profile in catalogue type
-        foreach (string prfl in calc.Profile.Output.SelectionList)
+        foreach (string prfl in calc.Profile.Output.Selections)
         {
             calc.Profile.Output.Value = prfl;
             Assert.NotNull(calc.Profile);

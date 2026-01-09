@@ -23,7 +23,7 @@ namespace Scaffold.Calculations
 
 
         [InputCalcValue]
-        public SelectionList SteelGrades { get; } = new("Steel grade", 1, ["S275", "S355", "S460"]);
+        public CalcSelectionList SteelGrades { get; } = new("Steel grade", 1, ["S275", "S355", "S460"]);
 
         [OutputCalcValue]
         public SIQuantity<Pressure> Gradestrength { get; } = new("Grade strength", "p", new Pressure(260, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter));

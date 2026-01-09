@@ -8,7 +8,7 @@ namespace Scaffold.Core.CalcValues
 {
     public interface ISelectionList : ICalcValue
     {
-        IReadOnlyList<string> Selections { get; }
+        List<string> Selections { get; }
 
         int SelectedItemIndex { get; set; }
 

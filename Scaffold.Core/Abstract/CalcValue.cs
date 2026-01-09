@@ -8,13 +8,20 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
     public string DisplayName { get; set; }
     public string Symbol { get; set; }
     public CalcStatus Status { get; set; }
-    public T Value { get; set; }
+    public virtual T Value { get; set; }
     public string Unit { get; set; } = string.Empty;
     public string GetValueAsString() => ToString();
 
     protected CalcValue(T value, string name, string symbol, string unit = "")
     {
         Value = value;
+        DisplayName = name;
+        Symbol = symbol?.Trim();
+        Unit = unit?.Trim();
+    }
+
+    protected CalcValue(string name, string symbol, string unit = "")
+    {
         DisplayName = name;
         Symbol = symbol?.Trim();
         Unit = unit?.Trim();

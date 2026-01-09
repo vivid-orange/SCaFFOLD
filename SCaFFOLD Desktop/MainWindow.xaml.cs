@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Scaffold.Calculations.Eurocode.Steel;
 
 namespace SCaFFOLD_Desktop
 {
@@ -22,7 +23,7 @@ namespace SCaFFOLD_Desktop
     {
         public MainWindow()
         {
-            ICalculation calc = new TestCalc();
+            ICalculation calc = new SteelMaterialProperties();
             calc.Calculate();
 
             var viewModel = new CalculationViewModel(calc);
