@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Calculations.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxonomyObjectCodeGenerator", "TaxonomyObjectCreator\TaxonomyObjectCodeGenerator.csproj", "{5197FD54-4CDB-4D1E-9E05-E209AB9BF902}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCaFFOLD Desktop", "SCaFFOLD Desktop\SCaFFOLD Desktop.csproj", "{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5197FD54-4CDB-4D1E-9E05-E209AB9BF902}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5197FD54-4CDB-4D1E-9E05-E209AB9BF902}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5197FD54-4CDB-4D1E-9E05-E209AB9BF902}.Release|Any CPU.Build.0 = Release|Any CPU
+		{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,339 @@
+﻿<Window x:Class="SCaFFOLD_Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SCaFFOLD_Desktop"
+        xmlns:math="clr-namespace:WpfMath.Controls;assembly=WpfMath"
+        mc:Ignorable="d"
+        Title="SCaFFOLD Desktop" Height="800" Width="1500">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+        <DataTemplate x:Key="ArrayCellTemplate">
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                     Width="60" Margin="2" Padding="2"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="InputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="20" 
+                                 VerticalAlignment="Top" Margin="0,5,10,0"/>
+
+                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" 
+                       VerticalAlignment="Top" Margin="0,5,10,0" TextWrapping="Wrap"/>
+
+                    <Grid Grid.Column="2">
+
+                        <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                         IsReadOnly="{Binding IsComplex}"
+                         VerticalContentAlignment="Center" Padding="5">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStandard}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsComplex}" Value="True">
+                                            <Setter Property="Background" Value="#F5F5F5"/>
+                                            <Setter Property="Foreground" Value="#555555"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+
+                        <ComboBox ItemsSource="{Binding AvailableTypes}" 
+          SelectedItem="{Binding SelectedType}"
+          DisplayMemberPath="Name"
+          Margin="0,0,0,5" Padding="5">
+                            <ComboBox.Style>
+                                <Style TargetType="ComboBox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsComplex}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding AvailableTypes.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding AvailableTypes.Count}" Value="1">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.Style>
+                        </ComboBox>
+
+                        <ComboBox ItemsSource="{Binding SelectionOptions}" 
+                          SelectedIndex="{Binding SelectedIndex}" 
+                          Padding="5">
+                            <ComboBox.Style>
+                                <Style TargetType="ComboBox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelectionList}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.Style>
+                        </ComboBox>
+
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDoubleListArray}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <ItemsControl ItemsSource="{Binding TableRows}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ItemsControl ItemsSource="{Binding Cells}" 
+                                              ItemTemplate="{StaticResource ArrayCellTemplate}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <Button Content="+ Add Row" Command="{Binding AddRowCommand}" 
+                            HorizontalAlignment="Left" Margin="0,5,0,0" Padding="5,2"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" 
+                       VerticalAlignment="Top" Margin="10,5,10,0" TextWrapping="Wrap"/>
+
+                    <Button Grid.Column="4" Content="Edit" Command="{Binding EditCommand}" 
+                    VerticalAlignment="Top" Padding="10,2">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsComplex}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="OutputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="10" Background="#FAFAFA">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="400" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="20" 
+                                         VerticalAlignment="Top" Margin="0,5,10,0"/>
+
+                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" 
+                               VerticalAlignment="Top" Margin="0,5,10,0" TextWrapping="Wrap" Foreground="#444"/>
+
+                    <TextBlock Grid.Column="2" Text="{Binding Value}" 
+                               FontWeight="Bold" VerticalAlignment="Top" Margin="0,5,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" 
+                               VerticalAlignment="Top" Margin="10,5,10,0" Foreground="Gray"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DetailItemTemplate" DataType="{x:Type local:OutputItemViewModel}">
+            <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="5,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="{Binding Ref}" 
+                               FontWeight="Bold" Foreground="Gray" VerticalAlignment="Top"/>
+
+                    <StackPanel Grid.Column="1" Margin="10,0">
+
+                        <ItemsControl ItemsSource="{Binding Rows}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <ItemsControl ItemsSource="{Binding Items}" Margin="0,0,0,5">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,0,5,2" VerticalAlignment="Center">
+
+                                                    <math:FormulaControl Formula="{Binding Content}" 
+                                                                         Scale="20" 
+                                                                         Visibility="{Binding IsLatex, Converter={StaticResource BoolToVis}}"/>
+
+                                                    <TextBlock Text="{Binding Content}" 
+                                                               Foreground="#333"
+                                                               Visibility="{Binding IsText, Converter={StaticResource BoolToVis}}"/>
+
+                                                    <Image Source="{Binding Image}" 
+                                                           MaxHeight="300" 
+                                                           Stretch="Uniform"
+                                                           Visibility="{Binding IsImage, Converter={StaticResource BoolToVis}}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="{Binding Conclusion}" 
+                               FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Breadcrumbs}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="{Binding Title}" Command="{Binding DataContext.NavigateUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" Cursor="Hand"/>
+                        <TextBlock Text=" > " Margin="5,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Separator Grid.Row="1" Margin="0,10"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" MinWidth="450" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="3*" MinWidth="200" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Inputs" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                    <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Inputs}" ItemTemplate="{StaticResource InputItemTemplate}"/>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+
+                <GridSplitter Grid.Row="1" 
+                      Height="5" 
+                      HorizontalAlignment="Stretch" 
+                      VerticalAlignment="Center" 
+                      ResizeDirection="Rows" 
+                      Background="#DDDDDD" 
+                      ShowsPreview="True"/>
+
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Outputs" FontSize="16" FontWeight="Bold" Margin="0,5,0,5"/>
+
+                    <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Outputs}" ItemTemplate="{StaticResource OutputItemTemplate}"/>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" 
+                  Width="5" 
+                  HorizontalAlignment="Center" 
+                  VerticalAlignment="Stretch" 
+                  ResizeDirection="Columns" 
+                  Background="#DDDDDD" 
+                  ShowsPreview="True"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Detailed Output" 
+                           FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding CalculationDetails}" 
+                                      ItemTemplate="{StaticResource DetailItemTemplate}"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</Window>
