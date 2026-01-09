@@ -6,7 +6,7 @@ using Scaffold.Core.CalcObjects.Profiles;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
-using Scaffold.Core.Models;
+using Scaffold.Core;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -166,34 +166,34 @@ public class RectangularRcBeamCalculation : ICalculation
 
         Expressions = new List<IOutputItem>
         {
-            new Formula()
+            new OutputItem()
             {
                 Narrative = "Beam calculations to BS EN 1992-1-1 2004. Currently in beta so check thoroughly!",
             }
         };
-        List<string> expression = new();
+        List<IExpression> expression = new();
 
         charCompStr.Value = getConcreteStrength(Grade.Value);
         meanCompStr.Value = charCompStr.Value + 8;
-        expression.Add(string.Format("{0}={1}+8={2}{3}", meanCompStr.Symbol, charCompStr.Symbol, meanCompStr.Value,
-            meanCompStr.Unit));
+        expression.Add(new LatexItem(string.Format("{0}={1}+8={2}{3}", meanCompStr.Symbol, charCompStr.Symbol, meanCompStr.Value,
+            meanCompStr.Unit)));
 
         meanAxialTenStr.Value = 0.3 * Math.Pow(charCompStr.Value, 2f / 3f);
-        expression.Add(string.Format(@"{0}=0.3\times {1}^{{2/3}}={2}{3}", meanAxialTenStr.Symbol, charCompStr.Symbol,
-            Math.Round(meanAxialTenStr.Value, 2), meanAxialTenStr.Unit));
+        expression.Add(new LatexItem(string.Format(@"{0}=0.3\times {1}^{{2/3}}={2}{3}", meanAxialTenStr.Symbol, charCompStr.Symbol,
+            Math.Round(meanAxialTenStr.Value, 2), meanAxialTenStr.Unit)));
 
         secModElasticicity.Value = 22 * Math.Pow(meanCompStr.Value / 10f, 0.3) * aggregateAdjustmentFactor.Value;
-        expression.Add(string.Format(@"{0}=22\times \left(\frac{{{1}}}{{10}}\right)^{{0.3}}={2}{3}",
+        expression.Add(new LatexItem(string.Format(@"{0}=22\times \left(\frac{{{1}}}{{10}}\right)^{{0.3}}={2}{3}",
             secModElasticicity.Symbol, meanCompStr.Symbol, Math.Round(secModElasticicity.Value, 3),
-            secModElasticicity.Unit));
+            secModElasticicity.Unit)));
         k2.Value = 0.6 + 0.0014 / ultStrain.Value;
         k4.Value = 0.6 + 0.0014 / ultStrain.Value;
         desCompStrConc.Value = compStrCoeff.Value * charCompStr.Value / partialFacConc.Value;
         desCompStrConcw.Value = compStrCoeffw.Value * charCompStr.Value / partialFacConc.Value;
         rebarDesYieldStr.Value = rebarCharYieldStr.Value / rebarPartialFactor.Value;
 
-        Expressions.Add(new Formula() { Expressions = expression, Reference = "Property calcs", Narrative = "" });
-        expression = new List<string>();
+        Expressions.Add(new OutputItem() { Expressions = expression, Reference = "Property calcs", Narrative = "" });
+        expression = new List<IExpression>();
 
         // Lever arm
         effDepth.Value = Profile.Height.Value - BottomCover.Value - 10 - 16;
@@ -205,15 +205,15 @@ public class RectangularRcBeamCalculation : ICalculation
                              effCompZoneHtFac.Value * (delta.Value - k1.Value) *
                              (1 - effCompZoneHtFac.Value * (delta.Value - k1.Value) / (2 * k2.Value));
 
-        expression.Add(effDepth.Symbol + @" = h - c - \phi_{link} - \phi_{bar}/2 = " + Profile.Height.Value + " - " +
-                       BottomCover.Value + " - 10 - 32/2 = " + effDepth.Value + " mm");
-        expression.Add(redistRatio.Symbol + @" = \frac{ " + bendingMom.Symbol + "}{" + Profile.Width.Unit +
-                       effDepth.Symbol + "²f_{ck}} = " + Math.Round(redistRatio.Value, 3));
-        expression.Add(redistRatio2.Symbol + @" = " + effStrFac.Symbol + @" \frac{" + compStrCoeff.Symbol + "}{" +
+        expression.Add(new LatexItem(effDepth.Symbol + @" = h - c - \phi_{link} - \phi_{bar}/2 = " + Profile.Height.Value + " - " +
+                       BottomCover.Value + " - 10 - 32/2 = " + effDepth.Value + " mm"));
+        expression.Add(new LatexItem(redistRatio.Symbol + @" = \frac{ " + bendingMom.Symbol + "}{" + Profile.Width.Unit +
+                       effDepth.Symbol + "²f_{ck}} = " + Math.Round(redistRatio.Value, 3)));
+        expression.Add(new LatexItem(redistRatio2.Symbol + @" = " + effStrFac.Symbol + @" \frac{" + compStrCoeff.Symbol + "}{" +
                        partialFacConc.Symbol + k2.Symbol + "}" + effCompZoneHtFac.Symbol
                        + @"\frac{" + delta.Symbol + "- " + k1.Symbol + "}{" + k2.Symbol + @"}\left(1 -" +
                        effCompZoneHtFac.Symbol + @"\frac{" + delta.Symbol + " - " + k1.Symbol + "}{2" + k2.Symbol +
-                       @"}\right) = " + Math.Round(redistRatio2.Value, 3));
+                       @"}\right) = " + Math.Round(redistRatio2.Value, 3)));
 
         if (redistRatio.Value < redistRatio2.Value)
         {
@@ -226,14 +226,14 @@ public class RectangularRcBeamCalculation : ICalculation
             naDepth.Value = 2 * (effDepth.Value - leverArm.Value) / effCompZoneHtFac.Value;
             rebarAsReqd.Value = bendingMom.Value * 1000000 / (rebarDesYieldStr.Value * leverArm.Value);
 
-            expression.Add(redistRatio.Symbol + @" \leq " + redistRatio2.Symbol);
-            expression.Add(leverArm.Symbol +
+            expression.Add(new LatexItem(redistRatio.Symbol + @" \leq " + redistRatio2.Symbol));
+            expression.Add(new LatexItem(leverArm.Symbol +
                            @" = min\left[\frac{d}{2}\left(1+\sqrt{1-\frac{2K}{\eta\alpha_{cc}/\gamma_c}}\right),0.95d\right] = min(" +
-                           Math.Round(val0) + "," + Math.Round(val1) + ") = " + Math.Round(leverArm.Value) + " mm");
-            expression.Add(naDepth.Symbol + @" = \frac{2(" + effDepth.Symbol + "-" + leverArm.Symbol + ")}{" +
-                           effCompZoneHtFac.Symbol + "} = " + Math.Round(naDepth.Value) + " mm");
-            expression.Add(string.Format(@"{0}=\frac{{{1}}}{{{2}{3}}}={4}{5}", rebarAsReqd.Symbol, bendingMom.Symbol,
-                rebarDesYieldStr.Symbol, leverArm.Symbol, Math.Round(rebarAsReqd.Value, 0), rebarAsReqd.Unit));
+                           Math.Round(val0) + "," + Math.Round(val1) + ") = " + Math.Round(leverArm.Value) + " mm"));
+            expression.Add(new LatexItem(naDepth.Symbol + @" = \frac{2(" + effDepth.Symbol + "-" + leverArm.Symbol + ")}{" +
+                           effCompZoneHtFac.Symbol + "} = " + Math.Round(naDepth.Value) + " mm"));
+            expression.Add(new LatexItem(string.Format(@"{0}=\frac{{{1}}}{{{2}{3}}}={4}{5}", rebarAsReqd.Symbol, bendingMom.Symbol,
+                rebarDesYieldStr.Symbol, leverArm.Symbol, Math.Round(rebarAsReqd.Value, 0), rebarAsReqd.Unit)));
         }
         else
         {
@@ -253,20 +253,20 @@ public class RectangularRcBeamCalculation : ICalculation
                                  + Mp / (rebarDesYieldStr.Value * (leverArm.Value - d2))) * 1e6;
 
 
-            expression.Add(redistRatio.Symbol + @" > " + redistRatio2.Symbol);
-            expression.Add(leverArm.Symbol +
+            expression.Add(new LatexItem(redistRatio.Symbol + @" > " + redistRatio2.Symbol));
+            expression.Add(new LatexItem(leverArm.Symbol +
                            @" = min\left[\frac{d}{2}\left(1+\sqrt{1-\frac{2K}{\eta\alpha_{cc}/\gamma_c}}\right),0.95d\right] = min(" +
-                           Math.Round(val0) + "," + Math.Round(val1) + ") = " + Math.Round(leverArm.Value) + " mm");
-            expression.Add(naDepth.Symbol + @" = \frac{2(" + effDepth.Symbol + "-" + leverArm.Symbol + ")}{" +
-                           effCompZoneHtFac.Symbol + "} = " + Math.Round(naDepth.Value) + " mm");
-            expression.Add("M' = " + Profile.Width.Unit + effDepth.Symbol + "²" + charCompStr.Symbol + "(" +
-                           redistRatio.Symbol + " - " + redistRatio2.Symbol + ") = " + Math.Round(Mp, 1) + "kNm");
-            expression.Add("d_2 = " + TopCover.Symbol + @"\phi_{link} + \phi_{bar/2} = " + d2 + "mm");
-            expression.Add(rebarAsReqd.Symbol + @"= \frac{" + redistRatio2.Symbol + charCompStr.Symbol +
+                           Math.Round(val0) + "," + Math.Round(val1) + ") = " + Math.Round(leverArm.Value) + " mm"));
+            expression.Add(new LatexItem(naDepth.Symbol + @" = \frac{2(" + effDepth.Symbol + "-" + leverArm.Symbol + ")}{" +
+                           effCompZoneHtFac.Symbol + "} = " + Math.Round(naDepth.Value) + " mm"));
+            expression.Add(new LatexItem("M' = " + Profile.Width.Unit + effDepth.Symbol + "²" + charCompStr.Symbol + "(" +
+                           redistRatio.Symbol + " - " + redistRatio2.Symbol + ") = " + Math.Round(Mp, 1) + "kNm"));
+            expression.Add(new LatexItem("d_2 = " + TopCover.Symbol + @"\phi_{link} + \phi_{bar/2} = " + d2 + "mm"));
+            expression.Add(new LatexItem(rebarAsReqd.Symbol + @"= \frac{" + redistRatio2.Symbol + charCompStr.Symbol +
                            Profile.Width.Unit + effDepth.Symbol + "²}{" + rebarDesYieldStr.Symbol + leverArm.Symbol +
                            "} +"
                            + @"\frac{M'}{" + rebarDesYieldStr.Symbol + "(" + effDepth.Symbol + " - d2)} = " +
-                           Math.Round(rebarAsReqd.Value) + "mm²");
+                           Math.Round(rebarAsReqd.Value) + "mm²"));
         }
 
         Tuple<double, double> bottomBars = calcBarSizeAndDia(rebarAsReqd.Value);
@@ -275,9 +275,9 @@ public class RectangularRcBeamCalculation : ICalculation
             rebarAsProv.Status = CalcStatus.Fail;
         else
             rebarAsProv.Status = CalcStatus.None;
-        expression.Add(string.Format("{0}={1}{2}", rebarAsProv.Symbol, Math.Round(rebarAsProv.Value, 0),
-            rebarAsProv.Unit));
-        Expressions.Add(new Formula()
+        expression.Add(new LatexItem(string.Format("{0}={1}{2}", rebarAsProv.Symbol, Math.Round(rebarAsProv.Value, 0),
+            rebarAsProv.Unit)));
+        Expressions.Add(new OutputItem()
         {
             Expressions = expression,
             Reference = "cl. 6.1",
@@ -287,21 +287,21 @@ public class RectangularRcBeamCalculation : ICalculation
         });
 
         // Check As_prov exceeds As_min
-        expression = new List<string>();
+        expression = new List<IExpression>();
         rebarMinArea.Value = Math.Max(0.26 * meanAxialTenStr.Value / rebarCharYieldStr.Value, 0.0013) *
                              Profile.Width.Value * effDepth.Value;
-        expression.Add(string.Format(@"{0}=max(0.26\frac{{{1}}}{{{2}}}, 0.0013)\times {3}\times {4}={5}{6}",
+        expression.Add(new LatexItem(string.Format(@"{0}=max(0.26\frac{{{1}}}{{{2}}}, 0.0013)\times {3}\times {4}={5}{6}",
             rebarMinArea.Symbol,
             meanAxialTenStr.Symbol,
             rebarCharYieldStr.Symbol,
             Profile.Width.Unit,
             effDepth.Symbol,
             Math.Round(rebarMinArea.Value, 0),
-            rebarMinArea.Unit));
+            rebarMinArea.Unit)));
         if (rebarAsProv.Value >= rebarMinArea.Value)
         {
-            expression.Add(string.Format(@"{0}>={1}", rebarAsProv.Symbol, rebarMinArea.Symbol));
-            Expressions.Add(new Formula()
+            expression.Add(new LatexItem(string.Format(@"{0}>={1}", rebarAsProv.Symbol, rebarMinArea.Symbol)));
+            Expressions.Add(new OutputItem()
             {
                 Expressions = expression,
                 Reference = "equ. 9.1N",
@@ -312,8 +312,8 @@ public class RectangularRcBeamCalculation : ICalculation
         }
         else
         {
-            expression.Add(string.Format(@"{0}<{1}", rebarAsProv.Symbol, rebarMinArea.Symbol));
-            Expressions.Add(new Formula()
+            expression.Add(new LatexItem(string.Format(@"{0}<{1}", rebarAsProv.Symbol, rebarMinArea.Symbol)));
+            Expressions.Add(new OutputItem()
             {
                 Expressions = expression,
                 Reference = "equ. 9.1N",
@@ -324,18 +324,18 @@ public class RectangularRcBeamCalculation : ICalculation
         }
 
         // Check As_prov is less than As_max
-        expression = new List<string>();
+        expression = new List<IExpression>();
         rebarMaxArea.Value = 0.04 * Profile.Width.Value * Profile.Height.Value;
-        expression.Add(string.Format(@"{0}=0.04\times {1}\times {2}={3}{4}",
+        expression.Add(new LatexItem(string.Format(@"{0}=0.04\times {1}\times {2}={3}{4}",
             rebarMaxArea.Symbol,
             Profile.Width.Unit,
             Profile.Height.Unit,
             Math.Round(rebarMaxArea.Value, 0),
-            rebarMaxArea.Unit));
+            rebarMaxArea.Unit)));
         if (rebarAsProv.Value <= rebarMaxArea.Value)
         {
-            expression.Add(string.Format(@"{0}<={1}", rebarAsProv.Symbol, rebarMaxArea.Symbol));
-            Expressions.Add(new Formula()
+            expression.Add(new LatexItem(string.Format(@"{0}<={1}", rebarAsProv.Symbol, rebarMaxArea.Symbol)));
+            Expressions.Add(new OutputItem()
             {
                 Expressions = expression,
                 Reference = "cl. 9.2.1(3)",
@@ -346,8 +346,8 @@ public class RectangularRcBeamCalculation : ICalculation
         }
         else
         {
-            expression.Add(string.Format(@"{0}>{1}", rebarAsProv.Symbol, rebarMaxArea.Symbol));
-            Expressions.Add(new Formula()
+            expression.Add(new LatexItem(string.Format(@"{0}>{1}", rebarAsProv.Symbol, rebarMaxArea.Symbol)));
+            Expressions.Add(new OutputItem()
             {
                 Expressions = expression,
                 Reference = "cl. 9.2.1.1(3)",

@@ -16,7 +16,7 @@ using Scaffold.Core.CalcQuantities;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Images.Drawing;
 using Scaffold.Core.Interfaces;
-using Scaffold.Core.Models;
+using Scaffold.Core;
 using SkiaSharp;
 using UnitsNet;
 using UnitsNet.Units;
@@ -52,8 +52,8 @@ public class ConcreteSection : CalcObjectInput<CalcConcreteSection>
     public override List<IOutputItem> GetFormulae()
     {
         ICalcImage image = Core.Images.Drawing.Sections.DrawSection(Output);
-        var formula = new Formula();
-        formula.SetImage(image);
+        var formula = new OutputItem();
+        formula.AddImage(image);
         return new List<IOutputItem>() { formula };
     }
 

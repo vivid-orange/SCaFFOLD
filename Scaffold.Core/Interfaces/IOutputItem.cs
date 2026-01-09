@@ -2,7 +2,7 @@
 
 public interface IOutputItem : ICalculationStatus
 {
-    List<string> Expressions { get; }
+    List<IExpression> Expressions { get; }
     string Reference { get; }
     //string Narrative { get; }
     string Conclusion { get; }

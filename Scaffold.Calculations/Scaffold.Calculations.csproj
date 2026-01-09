@@ -6,8 +6,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;netstandard2.0;net6.0;net7.0</TargetFrameworks>
-		<LangVersion>10.0</LangVersion>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<LangVersion>12.0</LangVersion>
 		<Platforms>AnyCPU</Platforms>
 		<RootNamespace>Scaffold.Calculations</RootNamespace>
 	</PropertyGroup>
@@ -19,6 +19,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/MagmaWorks/SCaFFOLD/</RepositoryUrl>
 		<PackageIcon>MagmaWorks.png</PackageIcon>
+		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>

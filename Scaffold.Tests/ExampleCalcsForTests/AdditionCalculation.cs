@@ -56,17 +56,17 @@ public class AdditionCalculation : ICalculation
 
         var list = new List<IFormula>
         {
-            Formula.New("Narrative to appear above the expression")
+            OutputItem.New("Narrative to appear above the expression")
                 .WithConclusion("Some text here")
                 .WithReference("Some ref here")
                 .AddExpression("x &=& a + b")
                 .SetImage(new ImageFromEmbeddedResource<AdditionCalculation>("ImageAsEmbeddedResource.png")),
-            Formula.New("2. Narrative to appear above the expression")
+            OutputItem.New("2. Narrative to appear above the expression")
                 .WithConclusion("2. Some text here")
                 .WithReference("2. Some ref here")
                 .AddExpression("x &=& a + b")
                 .SetImage(new ImageFromSkBitmap(keyImage)),
-            Formula.New("Final narrative")
+            OutputItem.New("Final narrative")
                 .WithReference("3.a")
                 .SetImage(new ImageFromRelativePath("ImageAsRelativePath.png"))
         };

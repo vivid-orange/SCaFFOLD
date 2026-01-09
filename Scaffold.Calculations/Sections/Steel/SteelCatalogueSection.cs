@@ -12,7 +12,7 @@ using Scaffold.Core.CalcObjects.Sections;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Images.Drawing;
 using Scaffold.Core.Interfaces;
-using Scaffold.Core.Models;
+using Scaffold.Core;
 using SkiaSharp;
 
 namespace Scaffold.Calculations.Sections.Steel;
@@ -30,8 +30,8 @@ public class SteelCatalogueSection : CalcObjectInput<CalcSection>
     public override List<IOutputItem> GetFormulae()
     {
         ICalcImage image = Core.Images.Drawing.Sections.DrawSection(Output);
-        var formula = new Formula();
-        formula.SetImage(image);
+        var formula = new OutputItem();
+        formula.AddImage(image);
         return new List<IOutputItem>() { formula };
     }
 
