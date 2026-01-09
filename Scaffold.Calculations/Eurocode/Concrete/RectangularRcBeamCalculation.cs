@@ -15,7 +15,7 @@ namespace Scaffold.Core;
 [CalculationMetadata("Rectangular RC beam calculation")]
 public class RectangularRcBeamCalculation : ICalculation
 {
-    public string ReferenceName { get; set; }
+    public string DisplayName { get; set; }
     public string CalculationName { get; set; }
     public CalcStatus Status { get; }
 
@@ -358,7 +358,7 @@ public class RectangularRcBeamCalculation : ICalculation
         }
     }
 
-    public IList<IOutputItem> GetFormulae()
+    public List<IOutputItem> GetFormulae()
     {
         return Expressions;
     }
@@ -396,4 +396,7 @@ public class RectangularRcBeamCalculation : ICalculation
             new Dictionary<string, double> { { @"C30/40", 30 }, { @"C35/42", 35 }, { @"C40/50", 40 } };
         return concGradeToStrength[grade];
     }
+
+    public List<ICalcValue> GetInputs() => throw new NotImplementedException();
+    public List<ICalcValue> GetOutputs() => throw new NotImplementedException();
 }

@@ -7,7 +7,7 @@ public interface ICalculation : ICalculationStatus
     /// </summary>
     public string DisplayName { get; set; } // ReferenceName
 
-    IEnumerable<IOutputItem> GetFormulae();
+    List<IOutputItem> GetFormulae();
 
     List<ICalcValue> GetInputs();
 

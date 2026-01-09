@@ -49,7 +49,7 @@ public class ConcreteSection : CalcObjectInput<CalcConcreteSection>
     [InputCalcValue("Sds", "Side rebars")]
     public CalcFaceReinforcementLayer Sides { get; set; } = new CreateFaceReinforcementLayerBySpacing(SectionFace.Sides);
 
-    public override IList<IOutputItem> GetFormulae()
+    public override List<IOutputItem> GetFormulae()
     {
         ICalcImage image = Core.Images.Drawing.Sections.DrawSection(Output);
         var formula = new Formula();

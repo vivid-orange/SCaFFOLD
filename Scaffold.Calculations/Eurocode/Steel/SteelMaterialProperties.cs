@@ -17,7 +17,7 @@ namespace Scaffold.Calculations.Eurocode.Steel
 {
     public class SteelMaterialProperties : ICalculation
     {
-        public string ReferenceName { get; set; }
+        public string DisplayName { get; set; }
         public string CalculationName { get; set; } = "Steel Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -79,11 +79,14 @@ namespace Scaffold.Calculations.Eurocode.Steel
             Calculate();
         }
 
-        public IList<IOutputItem> GetFormulae()
+        public List<IOutputItem> GetFormulae()
         {
             return new List<IOutputItem>();
         }
 
         public void Calculate() { }
+
+        public List<ICalcValue> GetInputs() => throw new NotImplementedException();
+        public List<ICalcValue> GetOutputs() => throw new NotImplementedException();
     }
 }

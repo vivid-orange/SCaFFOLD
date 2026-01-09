@@ -26,7 +26,7 @@ public abstract class CalcObjectInput<T> : ICalcObjectInput<T>, ITaxonomySeriali
     public static implicit operator T(CalcObjectInput<T> value) => value.Output;
     public virtual void Calculate() { }
     protected abstract T InitialiseOutput();
-    public virtual IEnumerable<IOutputItem> GetFormulae() => new List<IOutputItem>();
+    public virtual List<IOutputItem> GetFormulae() => new List<IOutputItem>();
     protected virtual void SetOutput(T value)
     {
         _output = value;

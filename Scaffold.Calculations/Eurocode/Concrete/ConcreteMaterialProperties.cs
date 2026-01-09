@@ -16,7 +16,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete
 {
     public class ConcreteMaterialProperties : ICalculation
     {
-        public string ReferenceName { get; set; }
+        public string DisplayName { get; set; }
         public string CalculationName { get; set; } = "Concrete Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -113,7 +113,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete
             Calculate();
         }
 
-        public IList<IOutputItem> GetFormulae()
+        public List<IOutputItem> GetFormulae()
         {
             return new List<IOutputItem>();
         }
@@ -122,5 +122,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete
 
         private Pressure GetStrength() => new Pressure(
             double.Parse(Material.Grade.ToString().Split('C', '_')[1]), _unit);
+        public List<ICalcValue> GetInputs() => throw new NotImplementedException();
+        public List<ICalcValue> GetOutputs() => throw new NotImplementedException();
     }
 }

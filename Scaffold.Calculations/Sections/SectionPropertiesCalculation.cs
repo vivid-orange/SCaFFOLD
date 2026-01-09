@@ -11,7 +11,7 @@ using UnitsNet.Units;
 namespace Scaffold.Calculations;
 public class SectionPropertiesCalculation : ICalculation
 {
-    public string ReferenceName { get; set; }
+    public string DisplayName { get; set; }
     public string CalculationName { get; set; } = "Section Properties";
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -20,7 +20,7 @@ public class SectionPropertiesCalculation : ICalculation
         = new CalcRectangularProfile(new Length(400, LengthUnit.Millimeter), new Length(800, LengthUnit.Millimeter), "400 x 800mm");
 
     [OutputCalcValue("Section Properties", "SP")]
-    public CalcSectionProperties Properties => new CalcSectionProperties(Profile, ReferenceName);
+    public CalcSectionProperties Properties => new CalcSectionProperties(Profile, DisplayName);
 
     [OutputCalcValue]
     public CalcLength CentroidY => Properties.Centroid.Y;
@@ -53,7 +53,7 @@ public class SectionPropertiesCalculation : ICalculation
     public CalcLength RadiusOfGyrationZz => Properties.RadiusOfGyrationZz;
 
     public List<IOutputItem> Expressions = new List<IOutputItem>();
-    public IList<IOutputItem> GetFormulae() => Expressions;
+    public List<IOutputItem> GetFormulae() => Expressions;
 
     public SectionPropertiesCalculation()
     {
@@ -61,4 +61,7 @@ public class SectionPropertiesCalculation : ICalculation
     }
 
     public void Calculate() { }
+
+    public List<ICalcValue> GetInputs() => throw new System.NotImplementedException();
+    public List<ICalcValue> GetOutputs() => throw new System.NotImplementedException();
 }

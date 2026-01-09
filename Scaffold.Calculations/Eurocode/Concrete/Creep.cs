@@ -15,7 +15,7 @@ using UnitsNet.Units;
 namespace Scaffold.Calculations.Eurocode.Concrete;
 public class Creep : ICalculation
 {
-    public string ReferenceName { get; set; }
+    public string DisplayName { get; set; }
     public string CalculationName { get; set; } = "Concrete Creep";
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -57,7 +57,7 @@ public class Creep : ICalculation
     public CalcDouble CreepCoefficient { get; private set; }
 
     public List<IOutputItem> Expressions = new List<IOutputItem>();
-    public IList<IOutputItem> GetFormulae() => Expressions;
+    public List<IOutputItem> GetFormulae() => Expressions;
 
     public Creep()
     {
@@ -151,4 +151,7 @@ public class Creep : ICalculation
 
         CreepCoefficient = NotionalCreepCoefficient * CreepTimeCoefficient;
     }
+
+    public List<ICalcValue> GetInputs() => throw new NotImplementedException();
+    public List<ICalcValue> GetOutputs() => throw new NotImplementedException();
 }

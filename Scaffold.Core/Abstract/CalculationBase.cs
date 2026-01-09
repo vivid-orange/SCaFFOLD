@@ -18,7 +18,7 @@ namespace Scaffold.Core.Abstract
 
         public CalcStatus Status { get; }
 
-        public abstract IEnumerable<IOutputItem> GetFormulae();
+        public abstract List<IOutputItem> GetFormulae();
 
         public List<ICalcValue> GetInputs()
         {

@@ -2,7 +2,7 @@
 
 public class Formula : IOutputItem
 {
-    public List<IExpression> Expressions { get; set; } = new List<IExpression>();
+    public List<string> Expressions { get; set; } = new List<string>();
     public string Reference { get; set; } = "";
     public string Narrative { get; set; } = "";
     public string Conclusion { get; set; } = "";
@@ -13,7 +13,7 @@ public class Formula : IOutputItem
 
     public Formula() { }
 
-    public Formula(string reference, string narrative, string conclusion, IExpression expression,
+    public Formula(string reference, string narrative, string conclusion, string expression,
         CalcStatus status = CalcStatus.None)
     {
         Reference = reference;
@@ -46,13 +46,13 @@ public class Formula : IOutputItem
         return this;
     }
 
-    public Formula AddExpression(IExpression expression)
+    public Formula AddExpression(string expression)
     {
         Expressions.Add(expression);
         return this;
     }
 
-    public Formula AddExpressions(IEnumerable<IExpression> expressions)
+    public Formula AddExpressions(IEnumerable<string> expressions)
     {
         Expressions.AddRange(expressions);
         return this;

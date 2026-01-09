@@ -27,7 +27,7 @@ public class SteelCatalogueSection : CalcObjectInput<CalcSection>
     [InputCalcValue]
     public CreateEuropeanCatalogueProfile Profile { get; set; } = new CreateEuropeanCatalogueProfile();
 
-    public override IList<IOutputItem> GetFormulae()
+    public override List<IOutputItem> GetFormulae()
     {
         ICalcImage image = Core.Images.Drawing.Sections.DrawSection(Output);
         var formula = new Formula();

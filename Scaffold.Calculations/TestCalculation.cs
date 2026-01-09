@@ -8,7 +8,7 @@ namespace Scaffold.Calculations
 {
     public class TestCalculation : ICalculation
     {
-        public string ReferenceName { get; set; } = "";
+        public string DisplayName { get; set; } = "";
         public string CalculationName { get; set; } = "Test Calculation";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -21,7 +21,7 @@ namespace Scaffold.Calculations
         [OutputCalcValue(@"R", "Result")]
         public double Result { get; private set; } = 0;
 
-        public IList<IOutputItem> GetFormulae()
+        public List<IOutputItem> GetFormulae()
         {
             return new List<IOutputItem>();
         }
@@ -30,5 +30,8 @@ namespace Scaffold.Calculations
         {
             Result = Force.Value * Multiplier;
         }
+
+        public List<ICalcValue> GetInputs() => throw new System.NotImplementedException();
+        public List<ICalcValue> GetOutputs() => throw new System.NotImplementedException();
     }
 }
