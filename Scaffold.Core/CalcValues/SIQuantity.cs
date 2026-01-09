@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Scaffold.Core.CalcValues;
 
-public class SIQuantity<T> : ISIQuantity<T> where T : UnitsNet.IQuantity
+public class SIQuantity<T> : ISIQuantity where T : UnitsNet.IQuantity
 {
     private T _quantity;
     private string _displayName;

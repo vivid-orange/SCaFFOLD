@@ -37,7 +37,7 @@ namespace Scaffold.Calculations
         public SteelGrade SteelGradeBaseplate { get; } = new SteelGrade();
 
         [OutputCalcValue]
-        public ISIQuantity<Area> Area { get; } = new SIQuantity<Area>("Area", "A", new Area(0, UnitsNet.Units.AreaUnit.SquareMillimeter));
+        public SIQuantity<Area> Area { get; } = new SIQuantity<Area>("Area", "A", new Area(0, UnitsNet.Units.AreaUnit.SquareMillimeter));
         [OutputCalcValue]
         public SIQuantity<Force> CompressionResistance { get; } = new SIQuantity<Force>("Compression Resistance", "P", new Force(0, UnitsNet.Units.ForceUnit.Kilonewton));
 

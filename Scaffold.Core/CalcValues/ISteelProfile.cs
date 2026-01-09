@@ -10,6 +10,6 @@ namespace Scaffold.Core.CalcValues
 {
     public interface ISteelProfile : ICalcValue
     {
-        ISIQuantity<Area> Area { get; }
+        SIQuantity<Area> Area { get; }
     }
 }
