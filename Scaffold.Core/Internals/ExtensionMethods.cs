@@ -16,9 +16,9 @@ internal static class InternalExtensionMethods
         return displayName;
     }
 
-    internal static void InsertCalcValue(this List<ICalcValue> collection, ICalcValue calcValue)
-    {
-        calcValue.DisplayName = UniqueDisplayName(collection, calcValue.DisplayName);
-        collection.Add(calcValue);
-    }
+    //internal static void InsertCalcValue(this List<ICalcValue> collection, ICalcValue calcValue)
+    //{
+    //    calcValue.DisplayName = UniqueDisplayName(collection, calcValue.DisplayName);
+    //    collection.Add(calcValue);
+    //}
 }

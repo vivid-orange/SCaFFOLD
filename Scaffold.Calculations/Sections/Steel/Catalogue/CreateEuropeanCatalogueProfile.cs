@@ -7,7 +7,7 @@ using Scaffold.Core.CalcObjects;
 namespace Scaffold.Calculations.Sections.Steel.Catalogue;
 public class CreateEuropeanCatalogueProfile : CalcObjectInput<CalcObjectWrapper<IEuropeanCatalogue>>
 {
-    public override string CalculationName { get; set; } = "European Catalogue Profile";
+    public override string DisplayName { get; set; } = "European Catalogue Profile";
 
     [InputCalcValue("Prfl", "Profile")]
     // this is a CalcSelectionsList (ProfileType) but needs to be passed as a type so maintain access

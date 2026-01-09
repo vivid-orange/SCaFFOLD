@@ -24,7 +24,7 @@ using UnitsNet.Units;
 namespace Scaffold.Calculations.Sections.Concrete;
 public class ConcreteSection : CalcObjectInput<CalcConcreteSection>
 {
-    public override string CalculationName { get; set; } = "Concrete Section";
+    public override string DisplayName { get; set; } = "Concrete Section";
 
     [InputCalcValue("Grd", "Concrete Grade")]
     public CalcSelectionList ConcreteGrade { get; set; }
@@ -49,12 +49,12 @@ public class ConcreteSection : CalcObjectInput<CalcConcreteSection>
     [InputCalcValue("Sds", "Side rebars")]
     public CalcFaceReinforcementLayer Sides { get; set; } = new CreateFaceReinforcementLayerBySpacing(SectionFace.Sides);
 
-    public override IList<IFormula> GetFormulae()
+    public override IList<IOutputItem> GetFormulae()
     {
         ICalcImage image = Core.Images.Drawing.Sections.DrawSection(Output);
         var formula = new Formula();
         formula.SetImage(image);
-        return new List<IFormula>() { formula };
+        return new List<IOutputItem>() { formula };
     }
 
     protected override CalcConcreteSection InitialiseOutput()

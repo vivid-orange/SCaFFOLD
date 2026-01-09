@@ -56,8 +56,8 @@ public class Creep : ICalculation
     [OutputCalcValue("Creep coefficient", @"\varphi_0")]
     public CalcDouble CreepCoefficient { get; private set; }
 
-    public List<IFormula> Expressions = new List<IFormula>();
-    public IList<IFormula> GetFormulae() => Expressions;
+    public List<IOutputItem> Expressions = new List<IOutputItem>();
+    public IList<IOutputItem> GetFormulae() => Expressions;
 
     public Creep()
     {
@@ -66,7 +66,7 @@ public class Creep : ICalculation
 
     public void Calculate()
     {
-        Expressions = new List<IFormula>();
+        Expressions = new List<IOutputItem>();
         CalcStress fcm = new ConcreteMaterialProperties(ConcreteGrade.GetEnum<EnConcreteGrade>("/", "_")).fcm;
         IProfile profile = new Rectangle(Width, Length);
         var sectionProperties = new SectionProperties(profile);

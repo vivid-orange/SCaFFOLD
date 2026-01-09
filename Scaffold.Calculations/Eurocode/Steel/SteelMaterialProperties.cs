@@ -79,9 +79,9 @@ namespace Scaffold.Calculations.Eurocode.Steel
             Calculate();
         }
 
-        public IList<IFormula> GetFormulae()
+        public IList<IOutputItem> GetFormulae()
         {
-            return new List<IFormula>();
+            return new List<IOutputItem>();
         }
 
         public void Calculate() { }

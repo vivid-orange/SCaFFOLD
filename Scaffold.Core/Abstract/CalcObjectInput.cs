@@ -6,8 +6,7 @@ namespace Scaffold.Core.Abstract;
 
 public abstract class CalcObjectInput<T> : ICalcObjectInput<T>, ITaxonomySerializable where T : ICalcValue
 {
-    public virtual string CalculationName { get; set; } = _calculationName;
-    public virtual string ReferenceName { get; set; }
+    public virtual string DisplayName { get; set; } = _calculationName;
     public virtual CalcStatus Status { get; set; } = CalcStatus.None;
 
     private static string _calculationName = typeof(T).Name.SplitPascalCaseToString();
@@ -27,7 +26,7 @@ public abstract class CalcObjectInput<T> : ICalcObjectInput<T>, ITaxonomySeriali
     public static implicit operator T(CalcObjectInput<T> value) => value.Output;
     public virtual void Calculate() { }
     protected abstract T InitialiseOutput();
-    public virtual IList<IFormula> GetFormulae() => new List<IFormula>();
+    public virtual IEnumerable<IOutputItem> GetFormulae() => new List<IOutputItem>();
     protected virtual void SetOutput(T value)
     {
         _output = value;
@@ -39,9 +38,9 @@ public abstract class CalcObjectInput<T> : ICalcObjectInput<T>, ITaxonomySeriali
         {
             var obj = strValue.FromJson<CalcObjectInput<T>>();
             Output = obj.Output;
-            if (obj.ReferenceName != null)
+            if (obj.DisplayName != null)
             {
-                ReferenceName = obj.ReferenceName;
+                DisplayName = obj.DisplayName;
             }
 
             Status = obj.Status;
@@ -53,4 +52,6 @@ public abstract class CalcObjectInput<T> : ICalcObjectInput<T>, ITaxonomySeriali
         }
     }
     public string ValueAsString() => this.ToJson();
+    public List<ICalcValue> GetInputs() { return null; }
+    public List<ICalcValue> GetOutputs() { return null; }
 }

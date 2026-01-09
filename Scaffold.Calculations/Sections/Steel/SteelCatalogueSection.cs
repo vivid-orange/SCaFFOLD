@@ -18,7 +18,7 @@ using SkiaSharp;
 namespace Scaffold.Calculations.Sections.Steel;
 public class SteelCatalogueSection : CalcObjectInput<CalcSection>
 {
-    public override string CalculationName { get; set; } = "Steel Catalogue Section";
+    public override string DisplayName { get; set; } = "Steel Catalogue Section";
 
     [InputCalcValue("Grd", "Steel Grade")]
     public CalcSelectionList SteelGrade { get; set; }
@@ -27,12 +27,12 @@ public class SteelCatalogueSection : CalcObjectInput<CalcSection>
     [InputCalcValue]
     public CreateEuropeanCatalogueProfile Profile { get; set; } = new CreateEuropeanCatalogueProfile();
 
-    public override IList<IFormula> GetFormulae()
+    public override IList<IOutputItem> GetFormulae()
     {
         ICalcImage image = Core.Images.Drawing.Sections.DrawSection(Output);
         var formula = new Formula();
         formula.SetImage(image);
-        return new List<IFormula>() { formula };
+        return new List<IOutputItem>() { formula };
     }
 
     public SteelCatalogueSection() { }

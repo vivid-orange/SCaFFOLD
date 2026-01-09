@@ -104,7 +104,7 @@ public class RectangularRcBeamCalculation : ICalculation
 
     [OutputCalcValue] public CalcDouble rebarMaxArea { get; }
 
-    List<IFormula> Expressions { get; set; }
+    List<IOutputItem> Expressions { get; set; }
 
     public RectangularRcBeamCalculation()
     {
@@ -164,7 +164,7 @@ public class RectangularRcBeamCalculation : ICalculation
             throw new ArgumentException("Calculation only supports rectangular profiles");
         }
 
-        Expressions = new List<IFormula>
+        Expressions = new List<IOutputItem>
         {
             new Formula()
             {
@@ -192,7 +192,7 @@ public class RectangularRcBeamCalculation : ICalculation
         desCompStrConcw.Value = compStrCoeffw.Value * charCompStr.Value / partialFacConc.Value;
         rebarDesYieldStr.Value = rebarCharYieldStr.Value / rebarPartialFactor.Value;
 
-        Expressions.Add(new Formula() { Expression = expression, Reference = "Property calcs", Narrative = "" });
+        Expressions.Add(new Formula() { Expressions = expression, Reference = "Property calcs", Narrative = "" });
         expression = new List<string>();
 
         // Lever arm
@@ -279,7 +279,7 @@ public class RectangularRcBeamCalculation : ICalculation
             rebarAsProv.Unit));
         Expressions.Add(new Formula()
         {
-            Expression = expression,
+            Expressions = expression,
             Reference = "cl. 6.1",
             Narrative = "Calculates the tension reinforcement required to resist bending.",
             Conclusion = string.Format("{0}No. H{1} bars provided", bottomBars.Item1, bottomBars.Item2),
@@ -303,7 +303,7 @@ public class RectangularRcBeamCalculation : ICalculation
             expression.Add(string.Format(@"{0}>={1}", rebarAsProv.Symbol, rebarMinArea.Symbol));
             Expressions.Add(new Formula()
             {
-                Expression = expression,
+                Expressions = expression,
                 Reference = "equ. 9.1N",
                 Narrative = "Check that provided reinforcement exceeds minimum",
                 Conclusion = "OK",
@@ -315,7 +315,7 @@ public class RectangularRcBeamCalculation : ICalculation
             expression.Add(string.Format(@"{0}<{1}", rebarAsProv.Symbol, rebarMinArea.Symbol));
             Expressions.Add(new Formula()
             {
-                Expression = expression,
+                Expressions = expression,
                 Reference = "equ. 9.1N",
                 Narrative = "Check that provided reinforcement exceeds minimum",
                 Conclusion = "Too little reinforcing steel",
@@ -337,7 +337,7 @@ public class RectangularRcBeamCalculation : ICalculation
             expression.Add(string.Format(@"{0}<={1}", rebarAsProv.Symbol, rebarMaxArea.Symbol));
             Expressions.Add(new Formula()
             {
-                Expression = expression,
+                Expressions = expression,
                 Reference = "cl. 9.2.1(3)",
                 Narrative = "Check that provided reinforcement is less than maximum",
                 Conclusion = "OK",
@@ -349,7 +349,7 @@ public class RectangularRcBeamCalculation : ICalculation
             expression.Add(string.Format(@"{0}>{1}", rebarAsProv.Symbol, rebarMaxArea.Symbol));
             Expressions.Add(new Formula()
             {
-                Expression = expression,
+                Expressions = expression,
                 Reference = "cl. 9.2.1.1(3)",
                 Narrative = "Check that provided reinforcement is less than maximum",
                 Conclusion = "Too much reinforcing steel",
@@ -358,7 +358,7 @@ public class RectangularRcBeamCalculation : ICalculation
         }
     }
 
-    public IList<IFormula> GetFormulae()
+    public IList<IOutputItem> GetFormulae()
     {
         return Expressions;
     }

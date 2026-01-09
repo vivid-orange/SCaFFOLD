@@ -52,8 +52,8 @@ public class SectionPropertiesCalculation : ICalculation
     [OutputCalcValue]
     public CalcLength RadiusOfGyrationZz => Properties.RadiusOfGyrationZz;
 
-    public List<IFormula> Expressions = new List<IFormula>();
-    public IList<IFormula> GetFormulae() => Expressions;
+    public List<IOutputItem> Expressions = new List<IOutputItem>();
+    public IList<IOutputItem> GetFormulae() => Expressions;
 
     public SectionPropertiesCalculation()
     {

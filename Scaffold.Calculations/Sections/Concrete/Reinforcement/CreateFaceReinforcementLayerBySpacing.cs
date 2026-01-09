@@ -11,7 +11,7 @@ using UnitsNet.Units;
 namespace Scaffold.Calculations.Sections.Concrete.Reinforcement;
 public class CreateFaceReinforcementLayerBySpacing : CalcObjectInput<CalcFaceReinforcementLayer>
 {
-    public override string CalculationName { get; set; } = "Create Face Reinforcement Layer By Spacing";
+    public override string DisplayName { get; set; } = "Create Face Reinforcement Layer By Spacing";
 
     [InputCalcValue("Face", "Section Face")]
     public CalcSelectionList SectionFace { get; set; }
@@ -33,6 +33,6 @@ public class CreateFaceReinforcementLayerBySpacing : CalcObjectInput<CalcFaceRei
     protected override CalcFaceReinforcementLayer InitialiseOutput()
     {
         SectionFace face = SectionFace.GetEnum<SectionFace>();
-        return new CalcFaceReinforcementLayer(face, Rebar, Spacing, ReferenceName ?? $"{SectionFace.Value} {Rebar.DisplayName} @ {Spacing} c/c");
+        return new CalcFaceReinforcementLayer(face, Rebar, Spacing, DisplayName ?? $"{SectionFace.Value} {Rebar.DisplayName} @ {Spacing} c/c");
     }
 }
