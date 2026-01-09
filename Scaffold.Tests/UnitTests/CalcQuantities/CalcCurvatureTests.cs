@@ -474,7 +474,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcLength = new CalcCurvature(4.5, ReciprocalLengthUnit.InverseFoot, "myQuantity", "Q");
 
             // Act
-            string value = calcLength.ValueAsString();
+            string value = calcLength.GetValue();
 
             // Assert
             Assert.Equal("4.5 ft⁻¹", value);

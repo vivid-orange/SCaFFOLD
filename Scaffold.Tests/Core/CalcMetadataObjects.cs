@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Scaffold.Core.Attributes;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
 using Scaffold.Core.Models;

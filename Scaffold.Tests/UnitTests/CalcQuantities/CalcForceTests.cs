@@ -508,7 +508,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcQuantity = new CalcForce(4.5, ForceUnit.PoundForce, "myQuantity", "Q");
 
             // Act
-            string value = calcQuantity.ValueAsString();
+            string value = calcQuantity.GetValue();
 
             // Assert
             Assert.Equal("4.5 lbf", value); // note: using Thin Space \u2009

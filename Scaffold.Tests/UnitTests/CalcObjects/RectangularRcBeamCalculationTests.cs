@@ -2,6 +2,7 @@
 using Scaffold.Core;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcObjects.Profiles;
+using Scaffold.Core.CalcValues;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -27,8 +28,8 @@ public class RectangularRcBeamCalculationTests
         var calc = new RectangularRcBeamCalculation();
 
         Core.Models.CalculationMetadata metadata = Reader.GetMetadata(calc);
-        IReadOnlyList<Core.Interfaces.ICalcValue> inputs = Reader.GetInputs(calc);
-        IReadOnlyList<Core.Interfaces.ICalcValue> outputs = Reader.GetOutputs(calc);
+        IReadOnlyList<ICalcValue> inputs = Reader.GetInputs(calc);
+        IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs(calc);
 
         calc.CalculationName.Should().Be(TypeName);
         calc.ReferenceName.Should().BeNull();
@@ -53,7 +54,7 @@ public class RectangularRcBeamCalculationTests
         calc.Calculate();
         var test = new CalcRectangularProfile(new Length(800, LengthUnit.Millimeter),
             new Length(500, LengthUnit.Millimeter), "", "");
-        string x = test.ValueAsString();
+        string x = test.GetValue();
 
         calc.Profile = CalcRectangularProfile.Parse(x, null);
 

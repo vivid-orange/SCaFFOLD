@@ -23,8 +23,8 @@ namespace Scaffold.Tests.UnitTests.CalcObjects
 }}";
 
             // Act & Assert
-            Assert.False(material.TryParse("invalid"));
-            Assert.True(material.TryParse(json));
+            Assert.False(material.SetValue("invalid"));
+            Assert.True(material.SetValue(json));
             Assert.Equal("Foo", material.DisplayName);
             Assert.Equal("M", material.Symbol);
             Assert.Equal(CalcStatus.Fail, material.Status);
@@ -40,8 +40,8 @@ namespace Scaffold.Tests.UnitTests.CalcObjects
             string json = $@"{{""Grade"": ""C30_37""}}";
 
             // Act & Assert
-            Assert.False(material.TryParse("invalid"));
-            Assert.True(material.TryParse(json));
+            Assert.False(material.SetValue("invalid"));
+            Assert.True(material.SetValue(json));
             Assert.Equal(EnConcreteGrade.C30_37, material.Grade);
 
             Assert.Equal(StandardBody.EN, material.Standard.Body);

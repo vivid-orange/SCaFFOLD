@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.Internals;
 
@@ -30,7 +31,7 @@ internal sealed class InternalCalcValue : ICalcValue
         }
     }
 
-    internal IQuantity Unit { get; set; }
+    internal UnitsNet.IQuantity Unit { get; set; }
 
     private object Convert(string input)
     {
@@ -38,7 +39,7 @@ internal sealed class InternalCalcValue : ICalcValue
         return converter.ConvertFromString(input);
     }
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         object newValue = Convert(strValue);
         PropertyInfo member = Calculation.GetType().GetProperty(MemberName);
@@ -50,5 +51,5 @@ internal sealed class InternalCalcValue : ICalcValue
         return member != null;
     }
 
-    public string ValueAsString() => Value.ToString();
+    public string GetValue() => Value.ToString();
 }

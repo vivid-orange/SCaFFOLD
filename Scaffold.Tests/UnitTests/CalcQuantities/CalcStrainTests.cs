@@ -457,7 +457,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcStrain = new CalcStrain(4.5, StrainUnit.Percent, "myQuantity", "Q");
 
             // Act
-            string value = calcStrain.ValueAsString();
+            string value = calcStrain.GetValue();
 
             // Assert
             Assert.Equal("4.5 %", value);

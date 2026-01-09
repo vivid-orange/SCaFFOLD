@@ -12,7 +12,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Act
             // Assert
-            Assert.True(calcString.TryParse("olleh"));
+            Assert.True(calcString.SetValue("olleh"));
             Assert.Equal("olleh", calcString.Value);
         }
 

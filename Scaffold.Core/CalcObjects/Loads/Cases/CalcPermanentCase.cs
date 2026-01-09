@@ -1,6 +1,7 @@
 using MagmaWorks.Taxonomy.Loads.Cases;
 using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Loads.Cases;
@@ -40,9 +41,9 @@ public sealed class CalcPermanentCase : PermanentCase, ICalcValue
         return s.FromJson<CalcPermanentCase>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcPermanentCase result = null;
         if (TryParse(strValue, null, out result))

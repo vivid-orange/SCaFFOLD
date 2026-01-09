@@ -52,7 +52,7 @@ public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T
         return value.Value <= other.Quantity.As(value.Quantity.Unit);
     }
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         try
         {
@@ -107,7 +107,7 @@ public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T
         return false;
     }
 
-    public string ValueAsString() => ToString();
+    public string GetValue() => ToString();
     public override string ToString() => Quantity.ToString(CultureInfo.InvariantCulture).Replace(" ", "\u2009");
 
     internal static (string name, string symbol, U unit) OperatorMetadataHelper<U>(

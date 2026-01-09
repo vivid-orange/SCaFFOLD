@@ -1,5 +1,6 @@
 ﻿using MagmaWorks.Taxonomy.Serialization;
 using Scaffold.Core.Attributes;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.Abstract;

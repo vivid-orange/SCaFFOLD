@@ -555,7 +555,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcArea = new CalcInertia(4.5, AreaMomentOfInertiaUnit.FootToTheFourth, "myQuantity", "Q");
 
             // Act
-            string value = calcArea.ValueAsString();
+            string value = calcArea.GetValue();
 
             // Assert
             Assert.Equal("4.5 ft⁴", value);

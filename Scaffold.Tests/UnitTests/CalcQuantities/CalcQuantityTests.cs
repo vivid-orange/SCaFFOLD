@@ -15,7 +15,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Act
             // Assert
-            Assert.True(calcArea.TryParse("5.5 cm²"));
+            Assert.True(calcArea.SetValue("5.5 cm²"));
             Assert.Equal(5.5, calcArea.Value);
             Assert.Equal("cm²", calcArea.Unit);
         }
@@ -28,7 +28,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Act
             // Assert
-            Assert.False(calcArea.TryParse("5.5 cm"));
+            Assert.False(calcArea.SetValue("5.5 cm"));
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Act
             // Assert
-            Assert.True(calcArea.TryParse("5.5"));
+            Assert.True(calcArea.SetValue("5.5"));
             Assert.Equal(5.5, calcArea.Value);
             Assert.Equal("ft²", calcArea.Unit);
         }

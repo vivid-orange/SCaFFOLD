@@ -1,6 +1,7 @@
 using MagmaWorks.Taxonomy.Loads.Combinations;
 using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Loads.Combinations;
@@ -40,9 +41,9 @@ public sealed class CalcSeismicCombination : SeismicCombination, ICalcValue
         return s.FromJson<CalcSeismicCombination>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcSeismicCombination result = null;
         if (TryParse(strValue, null, out result))

@@ -2,6 +2,7 @@ using MagmaWorks.Taxonomy.Sections.Reinforcement;
 using MagmaWorks.Taxonomy.Serialization;
 using MagmaWorks.Taxonomy.Standards.Eurocode;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Sections.Reinforcement;
@@ -48,9 +49,9 @@ public sealed class CalcMinimumReinforcementSpacing : MinimumReinforcementSpacin
         return s.FromJson<CalcMinimumReinforcementSpacing>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcMinimumReinforcementSpacing result = null;
         if (TryParse(strValue, null, out result))

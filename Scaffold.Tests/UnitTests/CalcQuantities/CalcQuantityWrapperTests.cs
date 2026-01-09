@@ -383,7 +383,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             var calcHumidity = new CalcQuantityWrapper<RelativeHumidity>(new RelativeHumidity(4.5, RelativeHumidityUnit.Percent), "myQuantity", "Q");
 
             // Act
-            string value = calcHumidity.ValueAsString();
+            string value = calcHumidity.GetValue();
 
             // Assert
             Assert.Equal("4.5 %RH", value);

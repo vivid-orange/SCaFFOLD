@@ -14,7 +14,7 @@ public class CalcSelectionList : CalcValue<string>
         Value = selectedItem == null ? SelectionList[0] : selectedValue;
     }
 
-    public override bool TryParse(string strValue)
+    public override bool SetValue(string strValue)
     {
         string exists = SelectionList.FirstOrDefault(x => x == strValue);
         if (exists == null)

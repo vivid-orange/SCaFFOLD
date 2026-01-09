@@ -7,7 +7,6 @@ using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
 using MagmaWorks.Taxonomy.Profiles;
 using MagmaWorks.Taxonomy.Standards.Eurocode;
 using Scaffold.Core.CalcValues;
-using Scaffold.Core.Interfaces;
 using UnitsNet;
 using UnitsNet.Units;
 

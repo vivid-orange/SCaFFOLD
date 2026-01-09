@@ -1,6 +1,7 @@
 using MagmaWorks.Taxonomy.Materials;
 using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Materials;
@@ -47,9 +48,9 @@ public sealed class CalcBiLinearMaterial : BiLinearMaterial, ICalcValue
         return s.FromJson<CalcBiLinearMaterial>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcBiLinearMaterial result = null;
         if (TryParse(strValue, null, out result))

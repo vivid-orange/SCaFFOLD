@@ -3,6 +3,7 @@ using MagmaWorks.Taxonomy.Sections;
 using MagmaWorks.Taxonomy.Sections.SectionProperties;
 using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Sections;
@@ -49,9 +50,9 @@ public sealed class CalcSectionProperties : SectionProperties, ICalcValue
         return s.FromJson<CalcSectionProperties>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcSectionProperties result = null;
         if (TryParse(strValue, null, out result))

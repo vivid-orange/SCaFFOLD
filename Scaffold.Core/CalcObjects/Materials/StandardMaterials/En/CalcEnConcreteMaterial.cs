@@ -2,6 +2,7 @@ using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
 using MagmaWorks.Taxonomy.Serialization;
 using MagmaWorks.Taxonomy.Standards.Eurocode;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
@@ -55,9 +56,9 @@ public sealed class CalcEnConcreteMaterial : EnConcreteMaterial, ICalcValue
         return s.FromJson<CalcEnConcreteMaterial>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcEnConcreteMaterial result = null;
         if (TryParse(strValue, null, out result))

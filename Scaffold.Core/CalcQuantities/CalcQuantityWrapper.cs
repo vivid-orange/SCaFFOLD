@@ -156,7 +156,7 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
         return false;
     }
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         try
         {
@@ -175,7 +175,7 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
         return false;
     }
 
-    public string ValueAsString() => ToString();
+    public string GetValue() => ToString();
     public override string ToString() => Quantity.ToString(CultureInfo.InvariantCulture).Replace(" ", "\u2009");
 
     private string GetUnit()

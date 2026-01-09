@@ -1,4 +1,5 @@
 ﻿using MagmaWorks.Taxonomy.Serialization;
+using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.CalcObjects;
 public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
@@ -40,7 +41,7 @@ public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
         }
     }
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         try
         {
@@ -57,5 +58,5 @@ public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
         }
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 }

@@ -3,6 +3,7 @@ using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcObjects.Profiles;
 using Scaffold.Core.CalcObjects.Sections;
 using Scaffold.Core.CalcQuantities;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
 using UnitsNet;

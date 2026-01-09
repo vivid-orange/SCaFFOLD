@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.Abstract;
 
@@ -9,7 +10,7 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
     public CalcStatus Status { get; set; }
     public T Value { get; set; }
     public string Unit { get; set; } = string.Empty;
-    public string ValueAsString() => ToString();
+    public string GetValue() => ToString();
 
     protected CalcValue(T value, string name, string symbol, string unit = "")
     {
@@ -32,7 +33,7 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
         return !value.Equals((object)other);
     }
 
-    public virtual bool TryParse(string input)
+    public virtual bool SetValue(string input)
     {
         TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
         if (converter != null)

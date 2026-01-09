@@ -1,5 +1,6 @@
 ﻿using Scaffold.Calculations;
 using Scaffold.Core.Abstract;
+using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Tests.UnitTests
 {
@@ -14,8 +15,8 @@ namespace Scaffold.Tests.UnitTests
             calculation.Calculate();
 
             Core.Models.CalculationMetadata metadata = reader.GetMetadata(calculation);
-            IReadOnlyList<Core.Interfaces.ICalcValue> inputs = reader.GetInputs(calculation);
-            IReadOnlyList<Core.Interfaces.ICalcValue> outputs = reader.GetOutputs(calculation);
+            IReadOnlyList<ICalcValue> inputs = reader.GetInputs(calculation);
+            IReadOnlyList<ICalcValue> outputs = reader.GetOutputs(calculation);
             IList<Core.Interfaces.IFormula> formulae = reader.GetFormulae(calculation);
 
             Console.WriteLine(inputs[0]);

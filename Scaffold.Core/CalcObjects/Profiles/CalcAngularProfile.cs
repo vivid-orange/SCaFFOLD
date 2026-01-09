@@ -1,6 +1,7 @@
 using MagmaWorks.Taxonomy.Profiles;
 using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 using Scaffold.Core.Utility;
 using Angle = MagmaWorks.Taxonomy.Profiles.Angle;
@@ -54,9 +55,9 @@ public sealed class CalcAngularProfile : Angle, ICalcProfile<CalcAngularProfile>
         return s.FromJson<CalcAngularProfile>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcAngularProfile result = null;
         if (TryParse(strValue, null, out result))

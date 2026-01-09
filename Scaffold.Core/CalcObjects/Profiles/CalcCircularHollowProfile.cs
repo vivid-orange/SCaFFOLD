@@ -1,6 +1,7 @@
 using MagmaWorks.Taxonomy.Profiles;
 using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 using Scaffold.Core.Utility;
 
@@ -53,9 +54,9 @@ public sealed class CalcCircularHollowProfile : CircularHollow, ICalcProfile<Cal
         return s.FromJson<CalcCircularHollowProfile>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcCircularHollowProfile result = null;
         if (TryParse(strValue, null, out result))

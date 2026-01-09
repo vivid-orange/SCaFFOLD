@@ -2,6 +2,7 @@ using MagmaWorks.Geometry;
 using MagmaWorks.Taxonomy.Profiles;
 using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
+using Scaffold.Core.CalcValues;
 using Scaffold.Core.Extensions;
 using Scaffold.Core.Utility;
 
@@ -82,9 +83,9 @@ public sealed class CalcPerimeterProfile : Perimeter, ICalcProfile<CalcPerimeter
         return s.FromJson<CalcPerimeterProfile>();
     }
 
-    public string ValueAsString() => this.ToJson();
+    public string GetValue() => this.ToJson();
 
-    public bool TryParse(string strValue)
+    public bool SetValue(string strValue)
     {
         CalcPerimeterProfile result = null;
         if (TryParse(strValue, null, out result))

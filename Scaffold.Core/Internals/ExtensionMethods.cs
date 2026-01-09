@@ -1,4 +1,6 @@
-﻿namespace Scaffold.Core.Internals;
+﻿using Scaffold.Core.CalcValues;
+
+namespace Scaffold.Core.Internals;
 
 internal static class InternalExtensionMethods
 {
