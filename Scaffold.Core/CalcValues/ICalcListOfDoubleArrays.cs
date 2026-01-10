@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core.CalcValues
 {
-    public interface ISelectionList : ICalcValue
+    public interface ICalcListOfDoubleArrays : ICalcValue
     {
-        List<string> Selections { get; }
-
-        int SelectedItemIndex { get; set; }
-
-        string Value { get; }
-
+        List<double[]> Value { get; }
     }
 }

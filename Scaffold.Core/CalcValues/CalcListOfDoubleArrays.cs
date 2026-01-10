@@ -6,7 +6,7 @@ using System.Text;
 // TODO: output is not currently formatting.
 namespace Scaffold.Core.CalcValues;
 
-public class CalcListOfDoubleArrays : IListOfDoubleArrays
+public class CalcListOfDoubleArrays : ICalcListOfDoubleArrays
 {
     public List<double[]> Value { get; private set; }   // TODO: Default value from type param.
     public void ResetArray() => Value.Clear();

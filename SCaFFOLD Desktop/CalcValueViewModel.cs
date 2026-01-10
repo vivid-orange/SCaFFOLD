@@ -98,7 +98,7 @@ namespace SCaFFOLD_Desktop
         {
             get
             {
-                if (_model is IListOfDoubleArrays arrayModel)
+                if (_model is ICalcListOfDoubleArrays arrayModel)
                     return FormatArrayOutput(arrayModel.Value);
                 return _model.GetValueAsString();
             }
@@ -118,18 +118,18 @@ namespace SCaFFOLD_Desktop
 
         public bool IsStandard => !IsSelectionList && !IsDoubleListArray;
         public bool IsComplex => _model is ICalculation && _onNavigateRequest != null;
-        public bool IsSelectionList => _model is ISelectionList;
-        public bool IsDoubleListArray => _model is IListOfDoubleArrays;
+        public bool IsSelectionList => _model is ICalcSelectionList;
+        public bool IsDoubleListArray => _model is ICalcListOfDoubleArrays;
 
         public IEnumerable<string> SelectionOptions =>
-            (_model as ISelectionList)?.Selections ?? (IEnumerable<string>)[];
+            (_model as ICalcSelectionList)?.Selections ?? (IEnumerable<string>)[];
 
         public int SelectedIndex
         {
-            get => (_model as ISelectionList)?.SelectedItemIndex ?? -1;
+            get => (_model as ICalcSelectionList)?.SelectedItemIndex ?? -1;
             set
             {
-                if (_model is ISelectionList listModel && listModel.SelectedItemIndex != value)
+                if (_model is ICalcSelectionList listModel && listModel.SelectedItemIndex != value)
                 {
                     listModel.SelectedItemIndex = value;
                     OnPropertyChanged();
@@ -144,7 +144,7 @@ namespace SCaFFOLD_Desktop
 
         private void InitializeComplexTypes()
         {
-            if (IsDoubleListArray && _model is IListOfDoubleArrays arrayModel)
+            if (IsDoubleListArray && _model is ICalcListOfDoubleArrays arrayModel)
             {
                 RebuildTable();
             }
@@ -153,14 +153,14 @@ namespace SCaFFOLD_Desktop
         private void RebuildTable()
         {
             TableRows.Clear();
-            var list = (_model as IListOfDoubleArrays)?.Value;
+            var list = (_model as ICalcListOfDoubleArrays)?.Value;
             if (list == null) return;
             foreach (var row in list) TableRows.Add(new ArrayRowViewModel(row, _onValueChanged));
         }
 
         private void AddTableRow()
         {
-            if (_model is IListOfDoubleArrays arrayModel)
+            if (_model is ICalcListOfDoubleArrays arrayModel)
             {
                 int colCount = (arrayModel.Value.Count > 0) ? arrayModel.Value[0].Length : 1;
                 var newRow = new double[colCount];

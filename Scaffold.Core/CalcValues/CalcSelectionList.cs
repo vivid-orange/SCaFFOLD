@@ -4,7 +4,7 @@ using System;
 
 namespace Scaffold.Core.CalcValues;
 
-public class CalcSelectionList : CalcValue<string>, ISelectionList
+public class CalcSelectionList : CalcValue<string>, ICalcSelectionList
 {
     public List<string> Selections { get; private set; }
 
