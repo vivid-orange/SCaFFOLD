@@ -13,7 +13,12 @@ namespace Scaffold.Core.Abstract
 {
     public abstract class CalculationBase : ICalculation
     {
-        public string TypeName { get;  } = "";
+        public string TypeName
+        { get
+            {
+                return GetType().Name;
+            }
+        }
         public abstract string InstanceName { get; set; }
 
         public CalcStatus Status { get; }
