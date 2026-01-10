@@ -10,7 +10,7 @@ public sealed class CalcReinforcementLayoutBySpacing : ReinforcementLayoutBySpac
     , IParsable<CalcReinforcementLayoutBySpacing>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcReinforcementLayoutBySpacing : ReinforcementLayoutBySpac
     public CalcReinforcementLayoutBySpacing(IRebar rebar, Length maxSpacing, string name, string symbol = "")
         : base(rebar, maxSpacing)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

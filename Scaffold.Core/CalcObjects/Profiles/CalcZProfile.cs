@@ -11,7 +11,7 @@ public sealed class CalcZProfile : Z, ICalcProfile<CalcZProfile>, ICalcValue
     , IParsable<CalcZProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcZProfile : Z, ICalcProfile<CalcZProfile>, ICalcValue
     public CalcZProfile(Length height, Length topFlangeWidth, Length bottomFlangeWidth, Length thickness, Length topLip, Length bottomLip, string name, string symbol = "")
         : base(height, topFlangeWidth, bottomFlangeWidth, thickness, topLip, bottomLip)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcZProfile(double height, double topFlangeWidth, double bottomFlangeWidth, double thickness, double topLip, double bottomLip, LengthUnit unit, string name, string symbol = "")
         : base(new Length(height, unit), new Length(topFlangeWidth, unit), new Length(bottomFlangeWidth, unit), new Length(thickness, unit), new Length(topLip, unit), new Length(bottomLip, unit))
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

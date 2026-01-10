@@ -10,7 +10,7 @@ public sealed class CalcParabolaRectangleMaterial : ParabolaRectangleMaterial, I
     , IParsable<CalcParabolaRectangleMaterial>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcParabolaRectangleMaterial : ParabolaRectangleMaterial, I
     public CalcParabolaRectangleMaterial(MaterialType type, Pressure yieldStrength, Ratio yieldStrain, Ratio failureStrain, double exponent, string name, string symbol = "")
         : base(type, yieldStrength, yieldStrain, failureStrain, exponent)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

@@ -18,8 +18,8 @@ namespace Scaffold.Calculations.Eurocode.Steel
 {
     public class SteelMaterialProperties : CalculationBase
     {
-        public string DisplayName { get; set; } = "Steel material properties";
-        public override string TypeName { get;  } = "Steel Material Properties";
+        public string TypeName { get;  } = "Steel material properties";
+        public override string InstanceName { get; set; } = "Steel Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue("Grd", "Grade")]

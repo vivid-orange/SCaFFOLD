@@ -11,7 +11,7 @@ public sealed class CalcLink : Link, ICalcValue
     , IParsable<CalcLink>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,21 +19,21 @@ public sealed class CalcLink : Link, ICalcValue
     public CalcLink(IMaterial material, Length diameter, string name, string symbol = "")
         : base(material, diameter)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcLink(IMaterial material, BarDiameter diameter, string name, string symbol = "")
         : base(material, diameter)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcLink(IRebar rebar, string name, string symbol = "")
         : base(rebar)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

@@ -24,7 +24,7 @@ public class CreateFaceReinforcementLayerByCountTests
         Assert.Equal("Create Face Reinforcement Layer By Count", calc.ReferenceName);
         Assert.Equal("Create Face Reinforcement Layer By Count", calc.CalculationName);
         Assert.Single(outputs);
-        Assert.Equal("Bottom Rebar 4 No.", outputs.FirstOrDefault().DisplayName);
+        Assert.Equal("Bottom Rebar 4 No.", outputs.FirstOrDefault().TypeName);
     }
 
     [Theory]
@@ -42,7 +42,7 @@ public class CreateFaceReinforcementLayerByCountTests
         // Assert
         Assert.Equal(expectedType, inputs[id].GetType());
         Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].DisplayName);
+        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
     }
 
     [Fact]

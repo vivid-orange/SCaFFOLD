@@ -91,7 +91,7 @@ namespace SCaFFOLD_Desktop
         }
 
         // --- Standard Properties ---
-        public string DisplayName => _model.DisplayName;
+        public string DisplayName => _model.TypeName;
         public string Symbol => _model.Symbol;
 
         public string Value
@@ -113,7 +113,7 @@ namespace SCaFFOLD_Desktop
             }
         }
 
-        public string Unit => (_model as IQuantity)?.Unit ?? string.Empty;
+        public string Unit => (_model as ICalcQuantity)?.Unit ?? string.Empty;
         public bool HasUnit => !string.IsNullOrEmpty(Unit);
 
         public bool IsStandard => !IsSelectionList && !IsDoubleListArray;

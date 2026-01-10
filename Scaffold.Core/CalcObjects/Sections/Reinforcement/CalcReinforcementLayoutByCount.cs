@@ -10,7 +10,7 @@ public sealed class CalcReinforcementLayoutByCount : ReinforcementLayoutByCount,
     , IParsable<CalcReinforcementLayoutByCount>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcReinforcementLayoutByCount : ReinforcementLayoutByCount,
     public CalcReinforcementLayoutByCount(IRebar rebar, int numberOfBars, string name, string symbol = "")
         : base(rebar, numberOfBars)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

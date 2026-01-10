@@ -10,7 +10,7 @@ public sealed class CalcEquilibriumCombination : EquilibriumCombination, ICalcVa
     , IParsable<CalcEquilibriumCombination>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcEquilibriumCombination : EquilibriumCombination, ICalcVa
     public CalcEquilibriumCombination(string name, string symbol = "")
         : base()
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

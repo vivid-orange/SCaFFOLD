@@ -11,13 +11,14 @@ public class ListOfDoubleArrays : IListOfDoubleArrays
     public List<double[]> Value { get; private set; }   // TODO: Default value from type param.
     public void ResetArray() => Value.Clear();
 
-    public string DisplayName { get; } = "";
+    public string TypeName { get; } = "";
 
+    public string InstanceName { get; private set; } = "";
 
     public ListOfDoubleArrays(string name, string symbol, List<double[]> multiDimensionalArray)
     {
         Value = multiDimensionalArray ?? [];
-        TypeName = name;
+        InstanceName = name;
         Symbol = symbol;
     }
 
@@ -78,8 +79,7 @@ public class ListOfDoubleArrays : IListOfDoubleArrays
         return final.ToString();
     }
 
-    public string TypeName { get; private set; }
     public string Symbol { get; private set; }
-    public CalcStatus Status { get; set; }
+    public CalcStatus Status { get;  }
 
 }

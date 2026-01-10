@@ -11,7 +11,7 @@ public sealed class CalcChannelProfile : Channel, ICalcProfile<CalcChannelProfil
     , IParsable<CalcChannelProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcChannelProfile : Channel, ICalcProfile<CalcChannelProfil
     public CalcChannelProfile(Length height, Length width, Length webThickness, Length flangeThickness, string name, string symbol = "")
         : base(height, width, webThickness, flangeThickness)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcChannelProfile(double height, double width, double webThickness, double flangeThickness, LengthUnit unit, string name, string symbol = "")
         : base(new Length(height, unit), new Length(width, unit), new Length(webThickness, unit), new Length(flangeThickness, unit))
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

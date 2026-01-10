@@ -11,7 +11,7 @@ public sealed class CalcEnRebarMaterial : EnRebarMaterial, ICalcValue
     , IParsable<CalcEnRebarMaterial>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,7 +19,7 @@ public sealed class CalcEnRebarMaterial : EnRebarMaterial, ICalcValue
     public CalcEnRebarMaterial(EnRebarGrade grade, NationalAnnex nationalAnnex, string name, string symbol = "")
         : base(grade, nationalAnnex)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

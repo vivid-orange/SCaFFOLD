@@ -10,7 +10,7 @@ public sealed class CalcLinearElasticMaterial : LinearElasticMaterial, ICalcValu
     , IParsable<CalcLinearElasticMaterial>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcLinearElasticMaterial : LinearElasticMaterial, ICalcValu
     public CalcLinearElasticMaterial(MaterialType type, Pressure elasticModulus, Pressure strength, string name, string symbol = "")
         : base(type, elasticModulus, strength)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

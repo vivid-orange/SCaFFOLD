@@ -7,7 +7,7 @@ public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
     , IParsable<CalcObjectWrapper<T>>
 #endif
 {
-    public string DisplayName { get; set; }
+    public string TypeName { get; set; }
     public string Symbol { get; set; }
     public CalcStatus Status { get; set; } = CalcStatus.None;
     public T Value { get; set; }
@@ -16,7 +16,7 @@ public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
     public CalcObjectWrapper(T typeValue, string name, string symbol)
     {
         Value = typeValue;
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
@@ -48,7 +48,7 @@ public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
             var obj = strValue.FromJson<CalcObjectWrapper<T>>();
             Value = obj.Value;
             Symbol = obj.Symbol;
-            DisplayName = obj.DisplayName;
+            TypeName = obj.TypeName;
             Status = obj.Status;
             return true;
         }

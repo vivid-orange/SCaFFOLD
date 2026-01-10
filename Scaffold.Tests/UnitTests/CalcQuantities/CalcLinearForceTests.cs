@@ -55,7 +55,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5, value.Value);
-            Assert.Equal(string.Empty, value.DisplayName);
+            Assert.Equal(string.Empty, value.TypeName);
             Assert.Equal(string.Empty, value.Symbol);
         }
 
@@ -100,7 +100,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(10, result.Value);
             Assert.Equal("w", result.Symbol);
             Assert.Equal("N/m", result.Unit);
-            Assert.Equal("w1 + w2", result.DisplayName);  // note: using Thin Space
+            Assert.Equal("w1 + w2", result.TypeName);  // note: using Thin Space
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(-1, result.Value);
             Assert.Equal("w", result.Symbol);
             Assert.Equal("N/m", result.Unit);
-            Assert.Equal("w1 - w2", result.DisplayName);  // note: using Thin Space
+            Assert.Equal("w1 - w2", result.TypeName);  // note: using Thin Space
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(-4.5, result.Value);
             Assert.Equal("w", result.Symbol);
             Assert.Equal("N/m", result.Unit);
-            Assert.Equal("-w1", result.DisplayName);
+            Assert.Equal("-w1", result.TypeName);
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 5.5, result.Value);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.Equal("kN", result.Unit);
-            Assert.Equal("w · l", result.DisplayName);  // note: using Thin Space
+            Assert.Equal("w · l", result.TypeName);  // note: using Thin Space
         }
 
         [Fact]
@@ -165,7 +165,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5 / 5.5, result.Value);
-            Assert.Equal("w / l", result.DisplayName);  // note: using Thin Space
+            Assert.Equal("w / l", result.TypeName);  // note: using Thin Space
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.Equal("kN/m²", result.Unit);
         }
@@ -182,7 +182,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5 / 5.5, result.Value, 12);
-            Assert.Equal("w1 / w2", result.DisplayName);  // note: using Thin Space
+            Assert.Equal("w1 / w2", result.TypeName);  // note: using Thin Space
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.True(string.IsNullOrEmpty(result.Unit));
         }
@@ -200,7 +200,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 + 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("kN/m", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcLinearForce.Value);
         }
 
@@ -217,7 +217,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 - 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("kN/m", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcLinearForce.Value);
         }
 
@@ -234,7 +234,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("kN/m", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcLinearForce.Value);
         }
 
@@ -251,7 +251,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 / 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("kN/m", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcLinearForce.Value);
         }
 

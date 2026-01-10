@@ -21,7 +21,7 @@ public class CreateEuropeanCatalogueProfileTypeTests
         Assert.Equal("Create European Catalogue Profile Type", calc.ReferenceName);
         Assert.Equal("European Catalogue Profile Type", calc.CalculationName);
         Assert.Single(outputs);
-        Assert.Equal("Profile", outputs.FirstOrDefault().DisplayName);
+        Assert.Equal("Profile", outputs.FirstOrDefault().TypeName);
     }
 
     [Theory]
@@ -37,7 +37,7 @@ public class CreateEuropeanCatalogueProfileTypeTests
         // Assert
         Assert.Equal(expectedType, inputs[id].GetType());
         Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].DisplayName);
+        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
     }
 
     [Fact]

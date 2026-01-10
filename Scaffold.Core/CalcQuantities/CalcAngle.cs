@@ -1,12 +1,11 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcAngle : CalcQuantity<Angle>
+public sealed class CalcAngle : CalcSIQuantity<Angle>
 #if NET7_0_OR_GREATER
     , IParsable<CalcAngle>
     , IAdditionOperators<CalcAngle, CalcAngle, CalcAngle>
@@ -38,7 +37,7 @@ public sealed class CalcAngle : CalcQuantity<Angle>
 
     public static CalcAngle operator +(CalcAngle x, double y)
     {
-        return new CalcAngle(x.Value + y, (AngleUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcAngle(x.Value + y, (AngleUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcAngle operator +(double x, CalcAngle y) => y + x;
@@ -47,7 +46,7 @@ public sealed class CalcAngle : CalcQuantity<Angle>
     #region SubtractionOperators
     public static CalcAngle operator -(CalcAngle x)
     {
-        return new CalcAngle(-(Angle)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcAngle(-(Angle)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
 
     public static CalcAngle operator -(CalcAngle x, CalcAngle y)
@@ -58,14 +57,14 @@ public sealed class CalcAngle : CalcQuantity<Angle>
 
     public static CalcAngle operator -(CalcAngle x, double y)
     {
-        return new CalcAngle(x.Value - y, (AngleUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcAngle(x.Value - y, (AngleUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 
     #region MultiplicationOperators
     public static CalcAngle operator *(CalcAngle x, double y)
     {
-        return new CalcAngle(x.Value * y, (AngleUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcAngle(x.Value * y, (AngleUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcAngle operator *(double x, CalcAngle y) => y * x;
@@ -80,7 +79,7 @@ public sealed class CalcAngle : CalcQuantity<Angle>
 
     public static CalcAngle operator /(CalcAngle x, double y)
     {
-        return new CalcAngle(x.Value / y, (AngleUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcAngle(x.Value / y, (AngleUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 

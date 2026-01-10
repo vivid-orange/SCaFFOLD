@@ -13,7 +13,7 @@ public class CalcMetadataTests
         var calc = new CalcMetadataEmptyConstructor();
         Reader.Update(calc);
 
-        calc.CalculationName.Should().Be("TypeNameSet");
+        calc.InstanceName.Should().Be("TypeNameSet");
         calc.ReferenceName.Should().Be("TitleSet");
     }
 
@@ -23,7 +23,7 @@ public class CalcMetadataTests
         var calc = new CalcMetadataTypeNameConstructor();
         Reader.Update(calc);
 
-        calc.CalculationName.Should().Be("TypeNameSet");
+        calc.InstanceName.Should().Be("TypeNameSet");
         calc.ReferenceName.Should().BeNull();
     }
 
@@ -33,7 +33,7 @@ public class CalcMetadataTests
         var calc = new CalcMetadataEmptyConstructor();
         Reader.Update(calc);
 
-        calc.CalculationName.Should().Be("TypeNameSet");
+        calc.InstanceName.Should().Be("TypeNameSet");
         calc.ReferenceName.Should().Be("TitleSet");
     }
 
@@ -44,7 +44,7 @@ public class CalcMetadataTests
         var calc = new CalcMetadataFallback();
         Reader.Update(calc);
 
-        calc.CalculationName.Should().Be(fallbackValue);
+        calc.InstanceName.Should().Be(fallbackValue);
         calc.ReferenceName.Should().Be(fallbackValue);
     }
 }

@@ -55,7 +55,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5, value.Value);
-            Assert.Equal(string.Empty, value.DisplayName);
+            Assert.Equal(string.Empty, value.TypeName);
             Assert.Equal(string.Empty, value.Symbol);
         }
 
@@ -100,7 +100,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 + 5.5, result.Value, 12);
             Assert.Equal("L", result.Symbol);
             Assert.Equal("rad", result.Unit);
-            Assert.Equal("l1 + l2", result.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("l1 + l2", result.TypeName); // note: using Thin Space \u2009
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(-1, result.Value, 12);
             Assert.Equal("L", result.Symbol);
             Assert.Equal("rad", result.Unit);
-            Assert.Equal("l1 - l2", result.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("l1 - l2", result.TypeName); // note: using Thin Space \u2009
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(-4.5, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("rad", result.Unit);
-            Assert.Equal("-a1", result.DisplayName);
+            Assert.Equal("-a1", result.TypeName);
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5 / 5.5, result.Value, 12);
-            Assert.Equal("l1 / l2", result.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("l1 / l2", result.TypeName); // note: using Thin Space \u2009
             Assert.Equal("-", result.Unit);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
         }
@@ -166,7 +166,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 + 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("rad", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcAngle.Value);
         }
 
@@ -183,7 +183,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 - 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("rad", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcAngle.Value);
         }
 
@@ -200,7 +200,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("rad", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcAngle.Value);
         }
 
@@ -217,7 +217,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 / 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("rad", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcAngle.Value);
         }
 
@@ -473,7 +473,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             // Assert
             Assert.Equal(4.5, calcAngle.Value);
             Assert.Equal("°", calcAngle.Unit);
-            Assert.Equal("myQuantity", calcAngle.DisplayName);
+            Assert.Equal("myQuantity", calcAngle.TypeName);
             Assert.Equal("Q", calcAngle.Symbol);
         }
 
@@ -487,7 +487,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             // Assert
             Assert.Equal(4.5, calcAngle.Value);
             Assert.Equal("rad", calcAngle.Unit);
-            Assert.Equal("myQuantity", calcAngle.DisplayName);
+            Assert.Equal("myQuantity", calcAngle.TypeName);
             Assert.Equal("Q", calcAngle.Symbol);
         }
     }

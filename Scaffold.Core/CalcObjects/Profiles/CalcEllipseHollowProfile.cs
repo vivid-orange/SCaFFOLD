@@ -11,7 +11,7 @@ public sealed class CalcEllipseHollowProfile : EllipseHollow, ICalcProfile<CalcE
     , IParsable<CalcEllipseHollowProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcEllipseHollowProfile : EllipseHollow, ICalcProfile<CalcE
     public CalcEllipseHollowProfile(Length width, Length height, Length thickness, string name, string symbol = "")
         : base(width, height, thickness)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcEllipseHollowProfile(double width, double height, double thickness, LengthUnit unit, string name, string symbol = "")
         : base(new Length(width, unit), new Length(height, unit), new Length(thickness, unit))
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

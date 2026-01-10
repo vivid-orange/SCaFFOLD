@@ -1,13 +1,12 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcCurvature : CalcQuantity<ReciprocalLength>
+public sealed class CalcCurvature : CalcSIQuantity<ReciprocalLength>
 #if NET7_0_OR_GREATER
     , IParsable<CalcCurvature>
     , IAdditionOperators<CalcCurvature, CalcCurvature, CalcCurvature>
@@ -40,7 +39,7 @@ public sealed class CalcCurvature : CalcQuantity<ReciprocalLength>
 
     public static CalcCurvature operator +(CalcCurvature x, double y)
     {
-        return new CalcCurvature(x.Value + y, (ReciprocalLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcCurvature(x.Value + y, (ReciprocalLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcCurvature operator +(double x, CalcCurvature y) => y + x;
@@ -49,7 +48,7 @@ public sealed class CalcCurvature : CalcQuantity<ReciprocalLength>
     #region SubtractionOperators
     public static CalcCurvature operator -(CalcCurvature x)
     {
-        return new CalcCurvature(-(ReciprocalLength)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcCurvature(-(ReciprocalLength)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
 
     public static CalcCurvature operator -(CalcCurvature x, CalcCurvature y)
@@ -60,21 +59,21 @@ public sealed class CalcCurvature : CalcQuantity<ReciprocalLength>
 
     public static CalcCurvature operator -(CalcCurvature x, double y)
     {
-        return new CalcCurvature(x.Value - y, (ReciprocalLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcCurvature(x.Value - y, (ReciprocalLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 
     #region MultiplicationOperators
     public static CalcDouble operator *(CalcCurvature x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009·\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009·\u2009{y.TypeName}";
         LengthUnit unit = ((ReciprocalLengthUnit)x.Quantity.Unit).GetEquivilantLengthUnit();
         return new CalcDouble(x.Value * y.Quantity.As(unit), name, string.Empty, "-");
     }
     public static CalcCurvature operator *(CalcCurvature x, double y)
     {
-        return new CalcCurvature(x.Value * y, (ReciprocalLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcCurvature(x.Value * y, (ReciprocalLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcCurvature operator *(double x, CalcCurvature y) => y * x;
@@ -89,7 +88,7 @@ public sealed class CalcCurvature : CalcQuantity<ReciprocalLength>
 
     public static CalcCurvature operator /(CalcCurvature x, double y)
     {
-        return new CalcCurvature(x.Value / y, (ReciprocalLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcCurvature(x.Value / y, (ReciprocalLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 

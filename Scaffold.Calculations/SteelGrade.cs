@@ -15,9 +15,9 @@ namespace Scaffold.Calculations
 {
     public class SteelGrade : CalculationBase, ICalcValue
     {
-        public new string ReferenceName { get; set; } = "Beam grade";
+        public override string InstanceName { get; set; } = "Beam grade";
 
-        public override string TypeName => "Steel grade";
+        public string TypeName => "Steel grade";
 
         public new CalcStatus Status { get; set; }
 
@@ -26,7 +26,7 @@ namespace Scaffold.Calculations
         public CalcSelectionList SteelGrades { get; } = new("Steel grade", 1, ["S275", "S355", "S460"]);
 
         [OutputCalcValue]
-        public SIQuantity<Pressure> Gradestrength { get; } = new("Grade strength", "p", new Pressure(260, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter));
+        public CalcSIQuantity<Pressure> Gradestrength { get; } = new("Grade strength", "p", new Pressure(260, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter));
         public string Symbol { get => ""; }
 
         public SteelGrade()

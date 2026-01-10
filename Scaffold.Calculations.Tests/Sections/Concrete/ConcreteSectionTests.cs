@@ -45,7 +45,7 @@ public class ConcreteSectionTests
         // Assert
         Assert.Equal(expectedType, inputs[id].GetType());
         Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].DisplayName);
+        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
     }
 
     [Fact]

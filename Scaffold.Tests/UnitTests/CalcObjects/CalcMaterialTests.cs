@@ -25,7 +25,7 @@ namespace Scaffold.Tests.UnitTests.CalcObjects
             // Act & Assert
             Assert.False(material.TryParse("invalid"));
             Assert.True(material.TryParse(json));
-            Assert.Equal("Foo", material.DisplayName);
+            Assert.Equal("Foo", material.TypeName);
             Assert.Equal("M", material.Symbol);
             Assert.Equal(CalcStatus.Fail, material.Status);
             Assert.Equal(StandardBody.EN, material.Standard.Body);

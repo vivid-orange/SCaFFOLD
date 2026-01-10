@@ -10,7 +10,7 @@ public sealed class CalcPointDisplacement2d : PointDisplacement2d, ICalcValue
     , IParsable<CalcPointDisplacement2d>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcPointDisplacement2d : PointDisplacement2d, ICalcValue
     public CalcPointDisplacement2d(Length x, Length z, string name, string symbol = "")
         : base(x, z)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

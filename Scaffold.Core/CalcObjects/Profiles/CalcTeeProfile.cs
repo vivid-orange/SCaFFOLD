@@ -11,7 +11,7 @@ public sealed class CalcTeeProfile : Tee, ICalcProfile<CalcTeeProfile>, ICalcVal
     , IParsable<CalcTeeProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcTeeProfile : Tee, ICalcProfile<CalcTeeProfile>, ICalcVal
     public CalcTeeProfile(Length height, Length width, Length flangeThickness, Length webThickness, string name, string symbol = "")
         : base(height, width, flangeThickness, webThickness)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcTeeProfile(double height, double width, double flangeThickness, double webThickness, LengthUnit unit, string name, string symbol = "")
         : base(new Length(height, unit), new Length(width, unit), new Length(flangeThickness, unit), new Length(webThickness, unit))
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

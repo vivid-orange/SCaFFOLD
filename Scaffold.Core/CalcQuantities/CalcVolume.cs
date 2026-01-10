@@ -1,13 +1,12 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcVolume : CalcQuantity<Volume>
+public sealed class CalcVolume : CalcSIQuantity<Volume>
 #if NET7_0_OR_GREATER
     , IParsable<CalcVolume>
     , IAdditionOperators<CalcVolume, CalcVolume, CalcVolume>
@@ -42,7 +41,7 @@ public sealed class CalcVolume : CalcQuantity<Volume>
 
     public static CalcVolume operator +(CalcVolume x, double y)
     {
-        return new CalcVolume(x.Value + y, (VolumeUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcVolume(x.Value + y, (VolumeUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcVolume operator +(double x, CalcVolume y) => y + x;
@@ -51,7 +50,7 @@ public sealed class CalcVolume : CalcQuantity<Volume>
     #region SubtractionOperators
     public static CalcVolume operator -(CalcVolume x)
     {
-        return new CalcVolume(-(Volume)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcVolume(-(Volume)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
     public static CalcVolume operator -(CalcVolume x, CalcVolume y)
     {
@@ -61,15 +60,15 @@ public sealed class CalcVolume : CalcQuantity<Volume>
 
     public static CalcVolume operator -(CalcVolume x, double y)
     {
-        return new CalcVolume(x.Value - y, (VolumeUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcVolume(x.Value - y, (VolumeUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 
     #region MultiplicationOperators
     public static CalcInertia operator *(CalcVolume x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009·\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009·\u2009{y.TypeName}";
         VolumeUnit unit = (VolumeUnit)x.Quantity.Unit;
         return new CalcInertia(new AreaMomentOfInertia(x.Quantity.As(unit) * y.Quantity.As(unit.GetEquivilantLengthUnit()),
             unit.GetEquivilantInertiaUnit()), name, "");
@@ -77,7 +76,7 @@ public sealed class CalcVolume : CalcQuantity<Volume>
 
     public static CalcVolume operator *(CalcVolume x, double y)
     {
-        return new CalcVolume(x.Value * y, (VolumeUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcVolume(x.Value * y, (VolumeUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcVolume operator *(double x, CalcVolume y) => y * x;
@@ -92,8 +91,8 @@ public sealed class CalcVolume : CalcQuantity<Volume>
 
     public static CalcLength operator /(CalcVolume x, CalcArea y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         VolumeUnit unit = (VolumeUnit)x.Quantity.Unit;
         return new CalcLength(new Length(x.Quantity.As(unit) / y.Quantity.As(unit.GetEquivilantAreaUnit()),
             unit.GetEquivilantLengthUnit()), name, "");
@@ -101,8 +100,8 @@ public sealed class CalcVolume : CalcQuantity<Volume>
 
     public static CalcArea operator /(CalcVolume x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         VolumeUnit unit = (VolumeUnit)x.Quantity.Unit;
         return new CalcArea(new Area(x.Quantity.As(unit) / y.Quantity.As(unit.GetEquivilantLengthUnit()),
             unit.GetEquivilantAreaUnit()), name, "");
@@ -110,7 +109,7 @@ public sealed class CalcVolume : CalcQuantity<Volume>
 
     public static CalcVolume operator /(CalcVolume x, double y)
     {
-        return new CalcVolume(x.Value / y, (VolumeUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcVolume(x.Value / y, (VolumeUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 

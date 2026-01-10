@@ -10,7 +10,7 @@ public sealed class CalcFrequentCombination : FrequentCombination, ICalcValue
     , IParsable<CalcFrequentCombination>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcFrequentCombination : FrequentCombination, ICalcValue
     public CalcFrequentCombination(string name, string symbol = "")
         : base()
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

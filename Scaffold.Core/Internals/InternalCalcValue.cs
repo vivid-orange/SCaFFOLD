@@ -10,7 +10,7 @@ internal sealed class InternalCalcValue : ICalcValue
     private Type ValueType { get; }
     private string MemberName { get; }
 
-    public string DisplayName { get; set; }
+    public string TypeName { get; set; }
     public string Symbol { get; set; }
     public string UnitName => Unit?.QuantityInfo.Name ?? "";
     public CalcStatus Status { get; set; }

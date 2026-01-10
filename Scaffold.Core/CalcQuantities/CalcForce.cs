@@ -1,13 +1,12 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcForce : CalcQuantity<Force>
+public sealed class CalcForce : CalcSIQuantity<Force>
 #if NET7_0_OR_GREATER
     , IParsable<CalcForce>
     , IAdditionOperators<CalcForce, CalcForce, CalcForce>
@@ -45,7 +44,7 @@ public sealed class CalcForce : CalcQuantity<Force>
 
     public static CalcForce operator +(CalcForce x, double y)
     {
-        return new CalcForce(x.Value + y, (ForceUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcForce(x.Value + y, (ForceUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcForce operator +(double x, CalcForce y) => y + x;
@@ -54,12 +53,12 @@ public sealed class CalcForce : CalcQuantity<Force>
     #region SubtractionOperators
     public static CalcForce operator -(CalcForce x)
     {
-        return new CalcForce(-(Force)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcForce(-(Force)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
 
     public static CalcForce operator -(CalcForce x, double y)
     {
-        return new CalcForce(x.Value - y, (ForceUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcForce(x.Value - y, (ForceUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcForce operator -(CalcForce x, CalcForce y)
@@ -72,8 +71,8 @@ public sealed class CalcForce : CalcQuantity<Force>
     #region MultiplicationOperators
     public static CalcMoment operator *(CalcForce x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009·\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009·\u2009{y.TypeName}";
         ForceUnit unit = (ForceUnit)x.Quantity.Unit;
         return new CalcMoment(new Moment(x.Quantity.As(unit) * y.Value,
             unit.GetEquivilantMomentUnit((LengthUnit)y.Quantity.Unit)), name, "");
@@ -83,7 +82,7 @@ public sealed class CalcForce : CalcQuantity<Force>
 
     public static CalcForce operator *(CalcForce x, double y)
     {
-        return new CalcForce(x.Value * y, (ForceUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcForce(x.Value * y, (ForceUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcForce operator *(double x, CalcForce y) => y * x;
@@ -92,8 +91,8 @@ public sealed class CalcForce : CalcQuantity<Force>
     #region DivisionOperators
     public static CalcLinearForce operator /(CalcForce x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         ForceUnit unit = (ForceUnit)x.Quantity.Unit;
         return new CalcLinearForce(new ForcePerLength(x.Quantity.As(unit) / y.Value,
             unit.GetEquivilantForcePerLengthUnit((LengthUnit)y.Quantity.Unit)), name, "");
@@ -101,8 +100,8 @@ public sealed class CalcForce : CalcQuantity<Force>
 
     public static CalcStress operator /(CalcForce x, CalcArea y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         ForceUnit unit = (ForceUnit)x.Quantity.Unit;
         return new CalcStress(new Pressure(x.Quantity.As(unit) / y.Value,
             unit.GetEquivilantPressureUnit((AreaUnit)y.Quantity.Unit)), name, "");
@@ -116,7 +115,7 @@ public sealed class CalcForce : CalcQuantity<Force>
 
     public static CalcForce operator /(CalcForce x, double y)
     {
-        return new CalcForce(x.Value / y, (ForceUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcForce(x.Value / y, (ForceUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 

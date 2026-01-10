@@ -20,7 +20,7 @@ namespace SCaFFOLD_Desktop
         public ObservableCollection<CalcValueViewModel> Outputs { get; } = [];
         public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
-        public string CurrentTitle => _currentCalculation?.DisplayName;
+        public string CurrentTitle => _currentCalculation?.TypeName;
         public ICommand NavigateUpCommand { get; }
 
         public CalculationViewModel(ICalculation rootCalculation)

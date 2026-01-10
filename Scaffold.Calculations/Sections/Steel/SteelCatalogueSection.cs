@@ -18,7 +18,7 @@ using SkiaSharp;
 namespace Scaffold.Calculations.Sections.Steel;
 public class SteelCatalogueSection : CalcObjectInput<CalcSection>
 {
-    public override string DisplayName { get; set; } = "Steel Catalogue Section";
+    public override string TypeName { get;  } = "Steel Catalogue Section";
 
     [InputCalcValue("Grd", "Steel Grade")]
     public CalcSelectionList SteelGrade { get; set; }

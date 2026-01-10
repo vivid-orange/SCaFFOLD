@@ -11,7 +11,7 @@ public sealed class CalcCustomIProfile : CustomI, ICalcProfile<CalcCustomIProfil
     , IParsable<CalcCustomIProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcCustomIProfile : CustomI, ICalcProfile<CalcCustomIProfil
     public CalcCustomIProfile(Length height, Length topFlangeWidth, Length bottomFlangeWidth, Length topFlangeThickness, Length bottomFlangeThickness, Length webThickness, string name, string symbol = "")
         : base(height, topFlangeWidth, bottomFlangeWidth, topFlangeThickness, bottomFlangeThickness, webThickness)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcCustomIProfile(double height, double topFlangeWidth, double bottomFlangeWidth, double topFlangeThickness, double bottomFlangeThickness, double webThickness, LengthUnit unit, string name, string symbol = "")
         : base(new Length(height, unit), new Length(topFlangeWidth, unit), new Length(bottomFlangeWidth, unit), new Length(topFlangeThickness, unit), new Length(bottomFlangeThickness, unit), new Length(webThickness, unit))
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

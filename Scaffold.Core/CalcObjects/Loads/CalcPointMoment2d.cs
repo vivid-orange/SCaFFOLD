@@ -10,7 +10,7 @@ public sealed class CalcPointMoment2d : PointMoment2d, ICalcValue
     , IParsable<CalcPointMoment2d>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcPointMoment2d : PointMoment2d, ICalcValue
     public CalcPointMoment2d(Torque yy, Torque zz, string name, string symbol = "")
         : base(yy, zz)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

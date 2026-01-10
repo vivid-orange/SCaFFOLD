@@ -10,7 +10,7 @@ public sealed class CalcGravity2d : Gravity2d, ICalcValue
     , IParsable<CalcGravity2d>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,14 +18,14 @@ public sealed class CalcGravity2d : Gravity2d, ICalcValue
     public CalcGravity2d(string name, string symbol = "")
         : base()
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcGravity2d(Ratio z, string name, string symbol = "")
         : base(z)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

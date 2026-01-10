@@ -11,7 +11,7 @@ public sealed class CalcMinimumReinforcementSpacing : MinimumReinforcementSpacin
     , IParsable<CalcMinimumReinforcementSpacing>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcMinimumReinforcementSpacing : MinimumReinforcementSpacin
     public CalcMinimumReinforcementSpacing(string name, string symbol = "")
         : base()
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcMinimumReinforcementSpacing(NationalAnnex nationalAnnex, string name, string symbol = "")
         : base(nationalAnnex)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

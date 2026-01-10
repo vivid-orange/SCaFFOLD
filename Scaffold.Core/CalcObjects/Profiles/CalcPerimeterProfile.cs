@@ -12,7 +12,7 @@ public sealed class CalcPerimeterProfile : Perimeter, ICalcProfile<CalcPerimeter
     , IParsable<CalcPerimeterProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -20,42 +20,42 @@ public sealed class CalcPerimeterProfile : Perimeter, ICalcProfile<CalcPerimeter
     public CalcPerimeterProfile(ILocalPolyline2d edge, string name, string symbol = "")
         : base(edge)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcPerimeterProfile(IList<ILocalPoint2d> edgePoints, string name, string symbol = "")
         : base(edgePoints)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcPerimeterProfile(ILocalPolyline2d outerEdge, IList<ILocalPolyline2d> voidEdges, string name, string symbol = "")
         : base(outerEdge, voidEdges)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcPerimeterProfile(IProfile profile, string name, string symbol = "")
         : base(profile)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcPerimeterProfile(IProfile profile, Length tolerance, string name, string symbol = "")
         : base(profile, tolerance)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcPerimeterProfile(IProfile profile, int divisions, string name, string symbol = "")
         : base(profile, divisions)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

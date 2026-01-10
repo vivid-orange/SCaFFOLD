@@ -134,7 +134,7 @@ public sealed class CalcInt : CalcValue<int>
 
     public static CalcInt operator *(CalcInt x, int y)
     {
-        return new CalcInt(x.Value * y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcInt(x.Value * y, x.TypeName, x.Symbol, x.Unit);
     }
 
     public static CalcInt operator *(int x, CalcInt y)
@@ -144,6 +144,6 @@ public sealed class CalcInt : CalcValue<int>
 
     public static CalcInt operator /(CalcInt x, int y)
     {
-        return new CalcInt(x.Value / y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcInt(x.Value / y, x.TypeName, x.Symbol, x.Unit);
     }
 }

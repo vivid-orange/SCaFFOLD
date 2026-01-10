@@ -43,7 +43,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5, value.Value);
-            Assert.Equal(string.Empty, value.DisplayName);
+            Assert.Equal(string.Empty, value.TypeName);
             Assert.Equal(string.Empty, value.Symbol);
         }
 
@@ -105,7 +105,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(100, result.Value);
             Assert.Equal("%RH", result.Unit);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
-            Assert.True(string.IsNullOrEmpty(result.DisplayName));
+            Assert.True(string.IsNullOrEmpty(result.TypeName));
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(40, result.Value);
             Assert.Equal("%RH", result.Unit);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
-            Assert.True(string.IsNullOrEmpty(result.DisplayName));
+            Assert.True(string.IsNullOrEmpty(result.TypeName));
         }
 
         [Fact]
@@ -140,7 +140,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             // Assert
             Assert.Equal(-70, result.Value);
             Assert.Equal("%RH", result.Unit);
-            Assert.Equal("-Relative Humidity", result.DisplayName);
+            Assert.Equal("-Relative Humidity", result.TypeName);
             Assert.Equal("RH", result.Symbol);
         }
 
@@ -159,7 +159,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(72, result.Value);
             Assert.Equal("%RH", result.Unit);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
-            Assert.True(string.IsNullOrEmpty(result.DisplayName));
+            Assert.True(string.IsNullOrEmpty(result.TypeName));
             Assert.Equal(70, calcHumidity.Value);
         }
 
@@ -177,7 +177,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(68, result.Value);
             Assert.Equal("%RH", result.Unit);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
-            Assert.True(string.IsNullOrEmpty(result.DisplayName));
+            Assert.True(string.IsNullOrEmpty(result.TypeName));
             Assert.Equal(70, calcHumidity.Value);
         }
 

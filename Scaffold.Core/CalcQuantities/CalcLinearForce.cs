@@ -1,13 +1,12 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
+public sealed class CalcLinearForce : CalcSIQuantity<ForcePerLength>
 #if NET7_0_OR_GREATER
     , IParsable<CalcLinearForce>
     , IAdditionOperators<CalcLinearForce, CalcLinearForce, CalcLinearForce>
@@ -43,7 +42,7 @@ public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
     }
     public static CalcLinearForce operator +(CalcLinearForce x, double y)
     {
-        return new CalcLinearForce(x.Value + y, (ForcePerLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcLinearForce(x.Value + y, (ForcePerLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcLinearForce operator +(double x, CalcLinearForce y) => y + x;
@@ -52,7 +51,7 @@ public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
     #region SubtractionOperators
     public static CalcLinearForce operator -(CalcLinearForce x)
     {
-        return new CalcLinearForce(-(ForcePerLength)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcLinearForce(-(ForcePerLength)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
     public static CalcLinearForce operator -(CalcLinearForce x, CalcLinearForce y)
     {
@@ -62,15 +61,15 @@ public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
 
     public static CalcLinearForce operator -(CalcLinearForce x, double y)
     {
-        return new CalcLinearForce(x.Value - y, (ForcePerLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcLinearForce(x.Value - y, (ForcePerLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 
     #region MultiplicationOperators
     public static CalcForce operator *(CalcLinearForce x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-           ? string.Empty : $"{x.DisplayName}\u2009·\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+           ? string.Empty : $"{x.TypeName}\u2009·\u2009{y.TypeName}";
         ForcePerLengthUnit unit = (ForcePerLengthUnit)x.Quantity.Unit;
         return new CalcForce(new Force(x.Quantity.As(unit) * y.Quantity.As(unit.GetEquivilantLengthUnit()),
             unit.GetEquivilantForceUnit()), name, "");
@@ -80,7 +79,7 @@ public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
 
     public static CalcLinearForce operator *(CalcLinearForce x, double y)
     {
-        return new CalcLinearForce(x.Value * y, (ForcePerLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcLinearForce(x.Value * y, (ForcePerLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcLinearForce operator *(double x, CalcLinearForce y) => y * x;
@@ -89,8 +88,8 @@ public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
     #region DivisionOperators
     public static CalcStress operator /(CalcLinearForce x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-           ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+           ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         ForcePerLengthUnit unit = (ForcePerLengthUnit)x.Quantity.Unit;
         return new CalcStress(new Pressure(x.Quantity.As(unit) / y.Quantity.As(unit.GetEquivilantLengthUnit()),
             unit.GetEquivilantPressureUnit()), name, "");
@@ -104,7 +103,7 @@ public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
 
     public static CalcLinearForce operator /(CalcLinearForce x, double y)
     {
-        return new CalcLinearForce(x.Value / y, (ForcePerLengthUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcLinearForce(x.Value / y, (ForcePerLengthUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 

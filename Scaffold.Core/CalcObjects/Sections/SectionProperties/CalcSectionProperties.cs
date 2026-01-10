@@ -12,7 +12,7 @@ public sealed class CalcSectionProperties : SectionProperties, ICalcValue
     , IParsable<CalcSectionProperties>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -20,14 +20,14 @@ public sealed class CalcSectionProperties : SectionProperties, ICalcValue
     public CalcSectionProperties(ISection section, string name, string symbol = "")
         : base(section)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcSectionProperties(IProfile profile, string name, string symbol = "")
         : base(profile)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

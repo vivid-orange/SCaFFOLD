@@ -10,7 +10,7 @@ public sealed class CalcPointForce : PointForce, ICalcValue
     , IParsable<CalcPointForce>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcPointForce : PointForce, ICalcValue
     public CalcPointForce(Force x, Force y, Force z, string name, string symbol = "")
         : base(x, y, z)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

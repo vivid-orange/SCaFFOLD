@@ -12,7 +12,7 @@ public sealed class CalcLongitudinalReinforcement : LongitudinalReinforcement, I
     , IParsable<CalcLongitudinalReinforcement>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -20,14 +20,14 @@ public sealed class CalcLongitudinalReinforcement : LongitudinalReinforcement, I
     public CalcLongitudinalReinforcement(IRebar rebar, ILocalPoint2d position, string name, string symbol = "")
         : base(rebar, position)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcLongitudinalReinforcement(IMaterial material, Length diameter, ILocalPoint2d position, string name, string symbol = "")
         : base(material, diameter, position)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

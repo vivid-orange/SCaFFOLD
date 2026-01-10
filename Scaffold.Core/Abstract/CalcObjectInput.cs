@@ -7,10 +7,11 @@ namespace Scaffold.Core.Abstract;
 
 public abstract class CalcObjectInput<T> : ICalcObjectInput<T>, ITaxonomySerializable where T : ICalcValue
 {
-    public virtual string DisplayName { get; set; } = _calculationName;
+    public virtual string TypeName { get; } = _typeName;
+    public string InstanceName { get; set; }
     public virtual CalcStatus Status { get; set; } = CalcStatus.None;
 
-    private static string _calculationName = typeof(T).Name.SplitPascalCaseToString();
+    private static string _typeName = typeof(T).Name.SplitPascalCaseToString();
 
     private T _output = default;
 
@@ -39,9 +40,9 @@ public abstract class CalcObjectInput<T> : ICalcObjectInput<T>, ITaxonomySeriali
         {
             var obj = strValue.FromJson<CalcObjectInput<T>>();
             Output = obj.Output;
-            if (obj.DisplayName != null)
+            if (obj.TypeName != null)
             {
-                DisplayName = obj.DisplayName;
+                _typeName = obj.TypeName;
             }
 
             Status = obj.Status;

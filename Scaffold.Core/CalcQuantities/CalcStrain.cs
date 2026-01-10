@@ -1,12 +1,11 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcStrain : CalcQuantity<Strain>
+public sealed class CalcStrain : CalcSIQuantity<Strain>
 #if NET7_0_OR_GREATER
     , IParsable<CalcStrain>
     , IAdditionOperators<CalcStrain, CalcStrain, CalcStrain>
@@ -38,7 +37,7 @@ public sealed class CalcStrain : CalcQuantity<Strain>
 
     public static CalcStrain operator +(CalcStrain x, double y)
     {
-        return new CalcStrain(x.Value + y, (StrainUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcStrain(x.Value + y, (StrainUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcStrain operator +(double x, CalcStrain y) => y + x;
@@ -47,7 +46,7 @@ public sealed class CalcStrain : CalcQuantity<Strain>
     #region SubtractionOperators
     public static CalcStrain operator -(CalcStrain x)
     {
-        return new CalcStrain(-(Strain)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcStrain(-(Strain)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
     public static CalcStrain operator -(CalcStrain x, CalcStrain y)
     {
@@ -57,14 +56,14 @@ public sealed class CalcStrain : CalcQuantity<Strain>
 
     public static CalcStrain operator -(CalcStrain x, double y)
     {
-        return new CalcStrain(x.Value - y, (StrainUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcStrain(x.Value - y, (StrainUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 
     #region MultiplicationOperators
     public static CalcStrain operator *(CalcStrain x, double y)
     {
-        return new CalcStrain(x.Value * y, (StrainUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcStrain(x.Value * y, (StrainUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcStrain operator *(double x, CalcStrain y) => y * x;
@@ -79,7 +78,7 @@ public sealed class CalcStrain : CalcQuantity<Strain>
 
     public static CalcStrain operator /(CalcStrain x, double y)
     {
-        return new CalcStrain(x.Value / y, (StrainUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcStrain(x.Value / y, (StrainUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 

@@ -90,7 +90,7 @@ public sealed class CalcDouble : CalcValue<double>
 
     public static CalcDouble operator +(CalcDouble x, double y)
     {
-        return new CalcDouble(x.Value + y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcDouble(x.Value + y, x.TypeName, x.Symbol, x.Unit);
     }
 
     public static CalcDouble operator +(double x, CalcDouble y)
@@ -111,12 +111,12 @@ public sealed class CalcDouble : CalcValue<double>
 
     public static CalcDouble operator -(CalcDouble x, double y)
     {
-        return new CalcDouble(x.Value - y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcDouble(x.Value - y, x.TypeName, x.Symbol, x.Unit);
     }
 
     public static CalcDouble operator -(double x, CalcDouble y)
     {
-        return new CalcDouble(x - y.Value, y.DisplayName, y.Symbol, y.Unit);
+        return new CalcDouble(x - y.Value, y.TypeName, y.Symbol, y.Unit);
     }
 
     public static CalcDouble operator +(CalcDouble x, CalcInt y)
@@ -178,7 +178,7 @@ public sealed class CalcDouble : CalcValue<double>
 
     public static CalcDouble operator *(CalcDouble x, double y)
     {
-        return new CalcDouble(x.Value * y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcDouble(x.Value * y, x.TypeName, x.Symbol, x.Unit);
     }
 
     public static CalcDouble operator *(double x, CalcDouble y)
@@ -188,17 +188,17 @@ public sealed class CalcDouble : CalcValue<double>
 
     public static CalcDouble operator /(CalcDouble x, double y)
     {
-        return new CalcDouble(x.Value / y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcDouble(x.Value / y, x.TypeName, x.Symbol, x.Unit);
     }
 
     public static CalcDouble operator /(double x, CalcDouble y)
     {
-        return new CalcDouble(x / y.Value, y.DisplayName, y.Symbol, y.Unit);
+        return new CalcDouble(x / y.Value, y.TypeName, y.Symbol, y.Unit);
     }
 
     public static CalcDouble operator *(CalcDouble x, int y)
     {
-        return new CalcDouble(x.Value * y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcDouble(x.Value * y, x.TypeName, x.Symbol, x.Unit);
     }
 
     public static CalcDouble operator *(int x, CalcDouble y)
@@ -208,11 +208,11 @@ public sealed class CalcDouble : CalcValue<double>
 
     public static CalcDouble operator /(CalcDouble x, int y)
     {
-        return new CalcDouble(x.Value / y, x.DisplayName, x.Symbol, x.Unit);
+        return new CalcDouble(x.Value / y, x.TypeName, x.Symbol, x.Unit);
     }
 
     public static CalcDouble operator /(int x, CalcDouble y)
     {
-        return new CalcDouble(x / y.Value, y.DisplayName, y.Symbol, y.Unit);
+        return new CalcDouble(x / y.Value, y.TypeName, y.Symbol, y.Unit);
     }
 }

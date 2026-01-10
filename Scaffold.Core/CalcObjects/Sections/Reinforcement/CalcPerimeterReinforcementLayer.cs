@@ -10,7 +10,7 @@ public sealed class CalcPerimeterReinforcementLayer : PerimeterReinforcementLaye
     , IParsable<CalcPerimeterReinforcementLayer>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,14 +18,14 @@ public sealed class CalcPerimeterReinforcementLayer : PerimeterReinforcementLaye
     public CalcPerimeterReinforcementLayer(IRebar rebar, int numberOfRebars, string name, string symbol = "")
         : base(rebar, numberOfRebars)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcPerimeterReinforcementLayer(IRebar rebar, Length maxSpacing, string name, string symbol = "")
         : base(rebar, maxSpacing)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

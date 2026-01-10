@@ -10,7 +10,7 @@ public sealed class CalcBiLinearMaterial : BiLinearMaterial, ICalcValue
     , IParsable<CalcBiLinearMaterial>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,14 +18,14 @@ public sealed class CalcBiLinearMaterial : BiLinearMaterial, ICalcValue
     public CalcBiLinearMaterial(MaterialType type, Pressure elasticModulus, Pressure yieldStrength, Pressure ultimateStrength, Ratio failureStrain, string name, string symbol = "")
         : base(type, elasticModulus, yieldStrength, ultimateStrength, failureStrain)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcBiLinearMaterial(ILinearElasticMaterial linearElasticMaterial, Pressure ultimateStrength, Ratio failureStrain, string name, string symbol = "")
         : base(linearElasticMaterial, ultimateStrength, failureStrain)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

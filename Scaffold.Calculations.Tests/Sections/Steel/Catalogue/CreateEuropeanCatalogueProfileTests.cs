@@ -22,7 +22,7 @@ public class CreateEuropeanCatalogueProfileTests
         Assert.Equal("Create European Catalogue Profile", calc.ReferenceName);
         Assert.Equal("European Catalogue Profile", calc.CalculationName);
         Assert.Single(outputs);
-        Assert.Equal("Catalogue Profile", outputs.FirstOrDefault().DisplayName);
+        Assert.Equal("Catalogue Profile", outputs.FirstOrDefault().TypeName);
     }
 
     [Fact]

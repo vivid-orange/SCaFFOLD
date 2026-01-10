@@ -1,8 +1,9 @@
 ﻿using System.Numerics;
+using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuantityWrapper<T>>
+public sealed class CalcQuantityWrapper<T> : ICalcSIQuantity, IEquatable<CalcQuantityWrapper<T>>
 #if NET7_0_OR_GREATER
     , IParsable<CalcQuantityWrapper<T>>
     , IAdditionOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>
@@ -15,9 +16,9 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
     , IUnaryNegationOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>
     , IComparisonOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, bool>
 #endif
-    where T : IQuantity
+    where T : UnitsNet.IQuantity
 {
-    public IQuantity Quantity
+    public UnitsNet.IQuantity Quantity
     {
         get { return _quantity; }
         set
@@ -30,17 +31,25 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
             _quantity = value;
         }
     }
+    public UnitsNet.IQuantity GenericQuantity
+    {
+        get => _quantity;
+    }
     public string Unit => GetUnit();
-    public string DisplayName { get; set; }
+    public string TypeName { get; set; }
     public string Symbol { get; set; }
     public CalcStatus Status { get; set; }
-    public double Value => (double)Quantity.Value;
-    private IQuantity _quantity;
+    public double Value
+    {
+        get => (Double)_quantity.Value;
+        set => _quantity = (T)UnitsNet.Quantity.From(value, _quantity.Unit);
+    }
+    private UnitsNet.IQuantity _quantity;
 
     public CalcQuantityWrapper(T quantity, string name, string symbol)
     {
         Quantity = quantity;
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
@@ -50,13 +59,13 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
 
     public static CalcQuantityWrapper<T> operator +(CalcQuantityWrapper<T> x, CalcQuantityWrapper<T> y)
     {
-        UnitsNet.Quantity.TryFrom(x.Value + y.Quantity.As(x.Quantity.Unit), x.Quantity.Unit, out IQuantity quantity);
+        UnitsNet.Quantity.TryFrom(x.Value + y.Quantity.As(x.Quantity.Unit), x.Quantity.Unit, out UnitsNet.IQuantity quantity);
         return new CalcQuantityWrapper<T>((T)quantity, string.Empty, string.Empty);
     }
 
     public static CalcQuantityWrapper<T> operator +(CalcQuantityWrapper<T> x, double y)
     {
-        UnitsNet.Quantity.TryFrom(x.Value + y, x.Quantity.Unit, out IQuantity quantity);
+        UnitsNet.Quantity.TryFrom(x.Value + y, x.Quantity.Unit, out UnitsNet.IQuantity quantity);
         return new CalcQuantityWrapper<T>((T)quantity, string.Empty, string.Empty);
     }
 
@@ -64,19 +73,19 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
 
     public static CalcQuantityWrapper<T> operator -(CalcQuantityWrapper<T> x)
     {
-        UnitsNet.Quantity.TryFrom(-x.Value, x.Quantity.Unit, out IQuantity quantity);
-        return new CalcQuantityWrapper<T>((T)quantity, $"-{x.DisplayName}", x.Symbol);
+        UnitsNet.Quantity.TryFrom(-x.Value, x.Quantity.Unit, out UnitsNet.IQuantity quantity);
+        return new CalcQuantityWrapper<T>((T)quantity, $"-{x.TypeName}", x.Symbol);
     }
 
     public static CalcQuantityWrapper<T> operator -(CalcQuantityWrapper<T> x, CalcQuantityWrapper<T> y)
     {
-        UnitsNet.Quantity.TryFrom(x.Value - y.Quantity.As(x.Quantity.Unit), x.Quantity.Unit, out IQuantity quantity);
+        UnitsNet.Quantity.TryFrom(x.Value - y.Quantity.As(x.Quantity.Unit), x.Quantity.Unit, out UnitsNet.IQuantity quantity);
         return new CalcQuantityWrapper<T>((T)quantity, string.Empty, string.Empty);
     }
 
     public static CalcQuantityWrapper<T> operator -(CalcQuantityWrapper<T> x, double y)
     {
-        UnitsNet.Quantity.TryFrom(x.Value - y, x.Quantity.Unit, out IQuantity quantity);
+        UnitsNet.Quantity.TryFrom(x.Value - y, x.Quantity.Unit, out UnitsNet.IQuantity quantity);
         return new CalcQuantityWrapper<T>((T)quantity, string.Empty, string.Empty);
     }
 
@@ -104,7 +113,7 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
 
     public static bool TryParse(string str, IFormatProvider provider, out CalcQuantityWrapper<T> result)
     {
-        if (UnitsNet.Quantity.TryParse(provider, typeof(T), str, out IQuantity quantity))
+        if (UnitsNet.Quantity.TryParse(provider, typeof(T), str, out UnitsNet.IQuantity quantity))
         {
             result = new CalcQuantityWrapper<T>((T)quantity, string.Empty, string.Empty);
             return true;
@@ -116,7 +125,7 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
 
     public static CalcQuantityWrapper<T> Parse(string str, IFormatProvider provider)
     {
-        IQuantity quantity = UnitsNet.Quantity.Parse(provider, typeof(T), str);
+        UnitsNet.IQuantity quantity = UnitsNet.Quantity.Parse(provider, typeof(T), str);
         return new CalcQuantityWrapper<T>((T)quantity, string.Empty, string.Empty);
     }
 
@@ -142,7 +151,7 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
 
     public override int GetHashCode()
     {
-        return DisplayName.GetHashCode() ^ Symbol.GetHashCode() ^ Status.GetHashCode()
+        return TypeName.GetHashCode() ^ Symbol.GetHashCode() ^ Status.GetHashCode()
             ^ Value.GetHashCode() ^ Unit.GetHashCode();
     }
 
@@ -160,7 +169,7 @@ public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuant
     {
         try
         {
-            IQuantity quantity = UnitsNet.Quantity.Parse(CultureInfo.InvariantCulture, _quantity.QuantityInfo.ValueType, strValue);
+            UnitsNet.IQuantity quantity = UnitsNet.Quantity.Parse(CultureInfo.InvariantCulture, _quantity.QuantityInfo.ValueType, strValue);
             _quantity = (T)quantity;
             return true;
         }

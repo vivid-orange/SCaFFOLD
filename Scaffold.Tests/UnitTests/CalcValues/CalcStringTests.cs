@@ -72,7 +72,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
             Assert.Equal("hellofriend", result.Value);
             Assert.Equal("L", result.Symbol);
             Assert.Equal("m", result.Unit);
-            Assert.Equal("l1 + l2", result.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("l1 + l2", result.TypeName); // note: using Thin Space \u2009
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.Equal("test value", calcString.Value);
-            Assert.True(string.IsNullOrEmpty(calcString.DisplayName));
+            Assert.True(string.IsNullOrEmpty(calcString.TypeName));
             Assert.True(string.IsNullOrEmpty(calcString.Symbol));
             Assert.True(string.IsNullOrEmpty(calcString.Unit));
         }
@@ -96,7 +96,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.Equal("test value", calcString.Value);
-            Assert.Equal("display name", calcString.DisplayName);
+            Assert.Equal("display name", calcString.TypeName);
             Assert.True(string.IsNullOrEmpty(calcString.Symbol));
             Assert.True(string.IsNullOrEmpty(calcString.Unit));
         }
@@ -109,7 +109,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.Equal("test value", calcString.Value);
-            Assert.Equal("display name", calcString.DisplayName);
+            Assert.Equal("display name", calcString.TypeName);
             Assert.Equal("α", calcString.Symbol);
             Assert.True(string.IsNullOrEmpty(calcString.Unit));
         }
@@ -122,7 +122,7 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.Equal("test value", calcString.Value);
-            Assert.Equal("display name", calcString.DisplayName);
+            Assert.Equal("display name", calcString.TypeName);
             Assert.Equal("α", calcString.Symbol);
             Assert.Equal("unit", calcString.Unit);
         }

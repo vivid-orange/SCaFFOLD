@@ -12,8 +12,8 @@ using UnitsNet.Units;
 namespace Scaffold.Calculations;
 public class SectionPropertiesCalculation : ICalculation
 {
-    public string DisplayName { get; set; }
-    public string CalculationName { get; set; } = "Section Properties";
+    public string TypeName { get; set; }
+    public string InstanceName { get; set; } = "Section Properties";
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
     [InputCalcValue]
@@ -21,7 +21,7 @@ public class SectionPropertiesCalculation : ICalculation
         = new CalcRectangularProfile(new Length(400, LengthUnit.Millimeter), new Length(800, LengthUnit.Millimeter), "400 x 800mm");
 
     [OutputCalcValue("Section Properties", "SP")]
-    public CalcSectionProperties Properties => new CalcSectionProperties(Profile, DisplayName);
+    public CalcSectionProperties Properties => new CalcSectionProperties(Profile, TypeName);
 
     [OutputCalcValue]
     public CalcLength CentroidY => Properties.Centroid.Y;

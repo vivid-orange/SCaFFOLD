@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Scaffold.Core;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;
+using Scaffold.Core.CalcQuantities;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Images.Models;
 using Scaffold.Core.Interfaces;
@@ -17,20 +18,20 @@ namespace Scaffold.Calculations
 {
     public class TestCalc : CalculationBase
     {
-        public string DisplayName { get; set; } = "This is my test calc";
-        public override string TypeName { get; } = "Test Calc";
+        public new string TypeName { get;  } = "Test calc";
+        public override string InstanceName { get; set; } = "This is my test calc";
 
         [InputCalcValue]
-        public SIQuantity<Force> CompressiveForce { get; } = new("Compression", "F_c", new Force(20, ForceUnit.Kilonewton));
+        public CalcSIQuantity<Force> CompressiveForce { get; } = new("Compression", "F_c", new Force(20, ForceUnit.Kilonewton));
 
         [InputCalcValue]
-        public SIQuantity<Length> ColumnLength { get; } = new("Column Length", "L", new Length(3, LengthUnit.Meter));
+        public CalcSIQuantity<Length> ColumnLength { get; } = new("Column Length", "L", new Length(3, LengthUnit.Meter));
 
         [InputCalcValue]
-        public SIQuantity<Length> ColumnBaseplate { get; } = new("Column baseplate thickness", "BT", new Length(30, LengthUnit.Millimeter));
+        public CalcSIQuantity<Length> ColumnBaseplate { get; } = new("Column baseplate thickness", "BT", new Length(30, LengthUnit.Millimeter));
 
         [OutputCalcValue]
-        public SIQuantity<Pressure> CompressiveStress { get; private set; } = new("Compressive stress", @"\sigma_c", new Pressure(20, PressureUnit.NewtonPerSquareMillimeter));
+        public CalcSIQuantity<Pressure> CompressiveStress { get; private set; } = new("Compressive stress", @"\sigma_c", new Pressure(20, PressureUnit.NewtonPerSquareMillimeter));
 
         [InputCalcValue]
         public ISteelProfile SteelProfile { get; set; } = new SteelProfile();
@@ -42,7 +43,7 @@ namespace Scaffold.Calculations
         public ListOfDoubleArrays Coords { get; } = new ListOfDoubleArrays("Test output", "CC", [[1, 10, 100], [200, 20, 2]]);
 
         [OutputCalcValue]
-        public SIQuantity<Length> NewLength { get; private set; } = new("Calculated length", "L", new Length(0, LengthUnit.Meter));
+        public CalcSIQuantity<Length> NewLength { get; private set; } = new("Calculated length", "L", new Length(0, LengthUnit.Meter));
 
         public override List<IOutputItem> GetFormulae()
         {
@@ -67,6 +68,10 @@ namespace Scaffold.Calculations
             CompressiveStress.Quantity = CompressiveForce.Quantity / SteelProfile.Area.Quantity;
 
             NewLength.Quantity = ColumnLength.Quantity + ColumnBaseplate.Quantity;
+
+            CalcForce newForce = new CalcForce(10, "testforce", "F");
+            CalcArea newArea = new CalcArea(100, AreaUnit.SquareMeter, "area", "A");
+
         }
 
     }

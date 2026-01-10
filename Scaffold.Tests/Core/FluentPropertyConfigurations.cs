@@ -10,7 +10,7 @@ namespace Scaffold.XUnitTests.Core;
 public class FluentDisplayNameSingle : ICalculation, ICalculationConfiguration<FluentDisplayNameSingle>
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
     public CalcDouble Result { get; set; }
 
@@ -36,7 +36,7 @@ public class FluentDisplayNameSingle : ICalculation, ICalculationConfiguration<F
 public class FluentDisplayNameMultiple : ICalculation, ICalculationConfiguration<FluentDisplayNameMultiple>
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
     public CalcDouble Result { get; set; }
     public CalcDouble AnotherResult { get; set; }

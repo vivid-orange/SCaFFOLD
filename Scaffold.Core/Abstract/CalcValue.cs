@@ -5,7 +5,7 @@ namespace Scaffold.Core.Abstract;
 
 public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
 {
-    public string DisplayName { get; set; }
+    public string TypeName { get; set; }
     public string Symbol { get; set; }
     public CalcStatus Status { get; set; }
     public virtual T Value { get; set; }
@@ -15,14 +15,14 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
     protected CalcValue(T value, string name, string symbol, string unit = "")
     {
         Value = value;
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol?.Trim();
         Unit = unit?.Trim();
     }
 
     protected CalcValue(string name, string symbol, string unit = "")
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol?.Trim();
         Unit = unit?.Trim();
     }
@@ -59,8 +59,8 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
     internal static (string name, string symbol, string unit) OperatorMetadataHelper<U1, U2>(
         CalcValue<U1> x, CalcValue<U2> y, char operation)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009{operation}\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009{operation}\u2009{y.TypeName}";
         string symbol = x.Symbol == y.Symbol ? x.Symbol : string.Empty;
         string unit = x.Unit == y.Unit ? x.Unit : string.Empty;
         return (name, symbol, unit);
@@ -70,7 +70,7 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
     {
         if (x.Unit != y.Unit)
         {
-            throw new UnitsNotSameException(x.DisplayName, y.DisplayName, x.Unit, y.Unit);
+            throw new UnitsNotSameException(x.TypeName, y.TypeName, x.Unit, y.Unit);
         }
     }
 
@@ -113,7 +113,7 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
 
     public override int GetHashCode()
     {
-        return DisplayName.GetHashCode() ^ Symbol.GetHashCode() ^ Status.GetHashCode()
+        return TypeName.GetHashCode() ^ Symbol.GetHashCode() ^ Status.GetHashCode()
             ^ Value.GetHashCode() ^ Unit.GetHashCode();
     }
 

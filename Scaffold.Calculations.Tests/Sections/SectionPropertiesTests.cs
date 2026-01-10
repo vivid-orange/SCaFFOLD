@@ -19,7 +19,7 @@ public class SectionPropertiesTests
 
         // Assert
         Assert.Equal("Section Properties Calculation", calc.ReferenceName);
-        Assert.Equal("Section Properties", calc.CalculationName);
+        Assert.Equal("Section Properties", calc.InstanceName);
         Assert.Single(inputs);
         Assert.Equal(11, outputs.Count);
     }

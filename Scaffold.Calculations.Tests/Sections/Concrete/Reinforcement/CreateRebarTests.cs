@@ -23,7 +23,7 @@ public class CreateRebarTests
         Assert.Equal("Create Rebar", calc.ReferenceName);
         Assert.Equal("Create Rebar", calc.CalculationName);
         Assert.Single(outputs);
-        Assert.Equal("Ø12 mm B500B Rebar", outputs.FirstOrDefault().DisplayName);
+        Assert.Equal("Ø12 mm B500B Rebar", outputs.FirstOrDefault().TypeName);
     }
 
     [Theory]
@@ -40,7 +40,7 @@ public class CreateRebarTests
         // Assert
         Assert.Equal(expectedType, inputs[id].GetType());
         Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].DisplayName);
+        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
     }
 
     [Fact]

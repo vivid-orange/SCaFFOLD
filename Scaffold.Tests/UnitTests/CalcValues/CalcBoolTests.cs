@@ -114,11 +114,11 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.False(expectedFalse);
-            Assert.Equal("truth & fake", expectedFalse.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth & fake", expectedFalse.TypeName); // note: using Thin Space \u2009
             Assert.True(expectedTrue);
-            Assert.Equal("truth & truth", expectedTrue.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth & truth", expectedTrue.TypeName); // note: using Thin Space \u2009
             Assert.False(expectedFalse2);
-            Assert.Equal("fake & fake", expectedFalse2.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("fake & fake", expectedFalse2.TypeName); // note: using Thin Space \u2009
         }
 
         [Fact]
@@ -135,11 +135,11 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.True(expectedTrue);
-            Assert.Equal("truth ∨ fake", expectedTrue.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth ∨ fake", expectedTrue.TypeName); // note: using Thin Space \u2009
             Assert.True(expectedTrue2);
-            Assert.Equal("truth ∨ truth", expectedTrue2.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth ∨ truth", expectedTrue2.TypeName); // note: using Thin Space \u2009
             Assert.False(expectedFalse);
-            Assert.Equal("fake ∨ fake", expectedFalse.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("fake ∨ fake", expectedFalse.TypeName); // note: using Thin Space \u2009
         }
 
         [Fact]
@@ -158,11 +158,11 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.False(expectedFalse1);
-            Assert.Equal("truth1 = fake1", expectedFalse1.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth1 = fake1", expectedFalse1.TypeName); // note: using Thin Space \u2009
             Assert.True(expectedTrue);
-            Assert.Equal("truth1 = truth2", expectedTrue.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth1 = truth2", expectedTrue.TypeName); // note: using Thin Space \u2009
             Assert.True(expectedTrue2);
-            Assert.Equal("fake1 = fake2", expectedTrue2.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("fake1 = fake2", expectedTrue2.TypeName); // note: using Thin Space \u2009
         }
 
         [Fact]
@@ -181,11 +181,11 @@ namespace Scaffold.Tests.UnitTests.CalcValues
 
             // Assert
             Assert.True(expectedTrue1);
-            Assert.Equal("truth1 ≠ fake1", expectedTrue1.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth1 ≠ fake1", expectedTrue1.TypeName); // note: using Thin Space \u2009
             Assert.False(expectedFalse1);
-            Assert.Equal("truth1 ≠ truth2", expectedFalse1.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("truth1 ≠ truth2", expectedFalse1.TypeName); // note: using Thin Space \u2009
             Assert.False(expectedFalse2);
-            Assert.Equal("fake1 ≠ fake2", expectedFalse2.DisplayName); // note: using Thin Space \u2009
+            Assert.Equal("fake1 ≠ fake2", expectedFalse2.TypeName); // note: using Thin Space \u2009
         }
 
         [Fact]

@@ -17,7 +17,7 @@ public class AdditionCalculationTests
     public void UnreadCalculation_Ok()
     {
         var calc = new AdditionCalculation();
-        calc.CalculationName.Should().BeNull();
+        calc.InstanceName.Should().BeNull();
         calc.ReferenceName.Should().BeNull();
     }
 
@@ -30,7 +30,7 @@ public class AdditionCalculationTests
         IReadOnlyList<ICalcValue> inputs = Reader.GetInputs(calc);
         IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs(calc);
 
-        calc.CalculationName.Should().Be(TypeName);
+        calc.InstanceName.Should().Be(TypeName);
         calc.ReferenceName.Should().Be(Title);
 
         metadata.Type.Should().Be(TypeName);
@@ -39,10 +39,10 @@ public class AdditionCalculationTests
         inputs.Count.Should().Be(2);
         outputs.Count.Should().Be(1);
 
-        inputs[0].DisplayName.Should().Be("Left assignment");
-        inputs[1].DisplayName.Should().Be("Right Assignment",
+        inputs[0].TypeName.Should().Be("Left assignment");
+        inputs[1].TypeName.Should().Be("Right Assignment",
             because: "Fallback to property name, class did not set DisplayName");
-        outputs[0].DisplayName.Should().Be("Result");
+        outputs[0].TypeName.Should().Be("Result");
     }
 
     [Fact]
@@ -60,10 +60,10 @@ public class AdditionCalculationTests
         inputs.Count.Should().Be(2);
         outputs.Count.Should().Be(1);
 
-        inputs[0].DisplayName.Should().Be("Left assignment");
-        inputs[1].DisplayName.Should().Be("Right Assignment",
+        inputs[0].TypeName.Should().Be("Left assignment");
+        inputs[1].TypeName.Should().Be("Right Assignment",
             because: "Fallback to property name, class did not set DisplayName");
-        outputs[0].DisplayName.Should().Be("Result");
+        outputs[0].TypeName.Should().Be("Result");
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class AdditionCalculationTests
         var calc = new FluentDisplayNameSingle();
         IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs(calc);
 
-        outputs[0].DisplayName.Should().Be("Result");
+        outputs[0].TypeName.Should().Be("Result");
     }
 
     [Fact]
@@ -81,8 +81,8 @@ public class AdditionCalculationTests
         var calc = new FluentDisplayNameMultiple();
         IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs(calc);
 
-        outputs[0].DisplayName.Should().Be("Result (1)");
-        outputs[1].DisplayName.Should().Be("Result (2)");
+        outputs[0].TypeName.Should().Be("Result (1)");
+        outputs[1].TypeName.Should().Be("Result (2)");
 
         outputs[0].Symbol.Should().Be("=");
         outputs[1].Symbol.Should().Be("=");
@@ -94,8 +94,8 @@ public class AdditionCalculationTests
         object activated = Activator.CreateInstance(typeof(FluentDisplayNameMultiple));
         IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs((ICalculation)activated);
 
-        outputs[0].DisplayName.Should().Be("Result (1)");
-        outputs[1].DisplayName.Should().Be("Result (2)");
+        outputs[0].TypeName.Should().Be("Result (1)");
+        outputs[1].TypeName.Should().Be("Result (2)");
 
         outputs[0].Symbol.Should().Be("=");
         outputs[1].Symbol.Should().Be("=");
@@ -115,10 +115,10 @@ public class AdditionCalculationTests
         inputs.Count.Should().Be(2);
         outputs.Count.Should().Be(1);
 
-        inputs[0].DisplayName.Should().Be("Left assignment");
-        inputs[1].DisplayName.Should().Be("Right assignment");
+        inputs[0].TypeName.Should().Be("Left assignment");
+        inputs[1].TypeName.Should().Be("Right assignment");
 
-        outputs[0].DisplayName.Should().Be("Result");
+        outputs[0].TypeName.Should().Be("Result");
 
         inputs[0].GetValueAsString().Should().Be("2");
         inputs[1].GetValueAsString().Should().Be("3");
@@ -150,10 +150,10 @@ public class AdditionCalculationTests
         inputs.Count.Should().Be(2);
         outputs.Count.Should().Be(1);
 
-        inputs[0].DisplayName.Should().Be("Value (1)");
-        inputs[1].DisplayName.Should().Be("Value (2)");
+        inputs[0].TypeName.Should().Be("Value (1)");
+        inputs[1].TypeName.Should().Be("Value (2)");
 
-        outputs[0].DisplayName.Should().Be("Result");
+        outputs[0].TypeName.Should().Be("Result");
 
         inputs[0].GetValueAsString().Should().Be("2");
         inputs[1].GetValueAsString().Should().Be("3");
@@ -185,13 +185,13 @@ public class AdditionCalculationTests
         inputs.Count.Should().Be(2);
         outputs.Count.Should().Be(1);
 
-        inputs[0].DisplayName.Should().Be("Left Assignment");
+        inputs[0].TypeName.Should().Be("Left Assignment");
         inputs[0].Symbol.Should().Be("L");
 
-        inputs[1].DisplayName.Should().Be("Right Assignment");
+        inputs[1].TypeName.Should().Be("Right Assignment");
         inputs[1].Symbol.Should().Be("R");
 
-        outputs[0].DisplayName.Should().Be("Result");
+        outputs[0].TypeName.Should().Be("Result");
         outputs[0].Symbol.Should().Be("=");
 
         inputs[0].GetValueAsString().Should().Be("2");
@@ -232,8 +232,8 @@ public class AdditionCalculationTests
     {
         var calc = new DuplicateDisplayNames();
         IReadOnlyList<ICalcValue> inputs = Reader.GetInputs(calc);
-        inputs[0].DisplayName.Should().Be("Value");
-        inputs[1].DisplayName.Should().Be("Value (1)");
+        inputs[0].TypeName.Should().Be("Value");
+        inputs[1].TypeName.Should().Be("Value (1)");
     }
 
     [Fact]
@@ -241,7 +241,7 @@ public class AdditionCalculationTests
     {
         var calc = new DuplicateDisplayNamesFluent();
         IReadOnlyList<ICalcValue> inputs = Reader.GetInputs(calc);
-        inputs[0].DisplayName.Should().Be("Value");
-        inputs[1].DisplayName.Should().Be("Value (1)");
+        inputs[0].TypeName.Should().Be("Value");
+        inputs[1].TypeName.Should().Be("Value (1)");
     }
 }

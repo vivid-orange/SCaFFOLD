@@ -11,7 +11,7 @@ public sealed class CalcRoundedRectangularHollowProfile : RoundedRectangularHoll
     , IParsable<CalcRoundedRectangularHollowProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcRoundedRectangularHollowProfile : RoundedRectangularHoll
     public CalcRoundedRectangularHollowProfile(Length width, Length height, Length flatWidth, Length flatHeight, Length thickness, string name, string symbol = "")
         : base(width, height, flatWidth, flatHeight, thickness)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcRoundedRectangularHollowProfile(double width, double height, double flatWidth, double flatHeight, double thickness, LengthUnit unit, string name, string symbol = "")
         : base(new Length(width, unit), new Length(height, unit), new Length(flatWidth, unit), new Length(flatHeight, unit), new Length(thickness, unit))
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

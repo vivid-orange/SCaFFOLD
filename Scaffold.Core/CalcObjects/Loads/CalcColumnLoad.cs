@@ -10,7 +10,7 @@ public sealed class CalcColumnLoad : ColumnLoad, ICalcValue
     , IParsable<CalcColumnLoad>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,14 +18,14 @@ public sealed class CalcColumnLoad : ColumnLoad, ICalcValue
     public CalcColumnLoad(Force force, string name, string symbol = "")
         : base(force)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcColumnLoad(Force force, IPointMoment2d topMoment, IPointMoment2d bottomMoment, string name, string symbol = "")
         : base(force, topMoment, bottomMoment)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

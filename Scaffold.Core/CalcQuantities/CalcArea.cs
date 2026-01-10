@@ -1,13 +1,12 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcArea : CalcQuantity<Area>
+public sealed class CalcArea : CalcSIQuantity<Area>
 #if NET7_0_OR_GREATER
     , IParsable<CalcArea>
     , IAdditionOperators<CalcArea, CalcArea, CalcArea>
@@ -42,7 +41,7 @@ public sealed class CalcArea : CalcQuantity<Area>
 
     public static CalcArea operator +(CalcArea x, double y)
     {
-        return new CalcArea(x.Value + y, (AreaUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcArea(x.Value + y, (AreaUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcArea operator +(double x, CalcArea y) => y + x;
@@ -51,12 +50,12 @@ public sealed class CalcArea : CalcQuantity<Area>
     #region SubtractionOperators
     public static CalcArea operator -(CalcArea x)
     {
-        return new CalcArea(-(Area)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcArea(-(Area)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
 
     public static CalcArea operator -(CalcArea x, double y)
     {
-        return new CalcArea(x.Value - y, (AreaUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcArea(x.Value - y, (AreaUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcArea operator -(CalcArea x, CalcArea y)
@@ -69,15 +68,15 @@ public sealed class CalcArea : CalcQuantity<Area>
     #region MultiplicationOperators
     public static CalcArea operator *(CalcArea x, double y)
     {
-        return new CalcArea(x.Value * y, (AreaUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcArea(x.Value * y, (AreaUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcArea operator *(double x, CalcArea y) => y * x;
 
     public static CalcVolume operator *(CalcArea x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009·\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009·\u2009{y.TypeName}";
         AreaUnit unit = (AreaUnit)x.Quantity.Unit;
         return new CalcVolume(new Volume(x.Quantity.As(unit) * y.Quantity.As(unit.GetEquivilantLengthUnit()),
             unit.GetEquivilantVolumeUnit()), name, "");
@@ -85,8 +84,8 @@ public sealed class CalcArea : CalcQuantity<Area>
 
     public static CalcInertia operator *(CalcArea x, CalcArea y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009·\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009·\u2009{y.TypeName}";
         AreaUnit unit = (AreaUnit)x.Quantity.Unit;
         return new CalcInertia(new AreaMomentOfInertia(x.Quantity.As(unit) * y.Quantity.As(unit),
             unit.GetEquivilantInertiaUnit()), name, "");
@@ -102,13 +101,13 @@ public sealed class CalcArea : CalcQuantity<Area>
 
     public static CalcArea operator /(CalcArea x, double y)
     {
-        return new CalcArea(x.Value / y, (AreaUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcArea(x.Value / y, (AreaUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcLength operator /(CalcArea x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         AreaUnit unit = (AreaUnit)x.Quantity.Unit;
         LengthUnit lengthUnit = unit.GetEquivilantLengthUnit();
         return new CalcLength(new Length(x.Quantity.As(unit) / y.Quantity.As(lengthUnit), lengthUnit), name, "");
@@ -116,19 +115,19 @@ public sealed class CalcArea : CalcQuantity<Area>
     #endregion
 
     #region PowerOperators
-    public static ICalcQuantity operator ^(CalcArea x, int y)
+    public static ICalcSIQuantity operator ^(CalcArea x, int y)
     {
         if (y == 2)
         {
             AreaUnit unit = (AreaUnit)x.Quantity.Unit;
-            string name = string.IsNullOrEmpty(x.DisplayName) ? string.Empty : $"{x.DisplayName}²";
+            string name = string.IsNullOrEmpty(x.TypeName) ? string.Empty : $"{x.TypeName}²";
             return new CalcInertia(Math.Pow(x.Value, y), unit.GetEquivilantInertiaUnit(), name, "");
         }
 
         throw new MathException("CalcArea can only be raised by the power of 2");
     }
 
-    public static ICalcQuantity operator ^(CalcArea x, double y)
+    public static ICalcSIQuantity operator ^(CalcArea x, double y)
     {
         if (y == 2)
         {
@@ -176,7 +175,7 @@ public sealed class CalcArea : CalcQuantity<Area>
     public CalcLength Sqrt()
     {
         AreaUnit unit = (AreaUnit)Quantity.Unit;
-        string name = string.IsNullOrEmpty(DisplayName) ? string.Empty : $"√{DisplayName}";
+        string name = string.IsNullOrEmpty(TypeName) ? string.Empty : $"√{TypeName}";
         return new CalcLength(Math.Sqrt(Value), unit.GetEquivilantLengthUnit(), name, "");
     }
 }

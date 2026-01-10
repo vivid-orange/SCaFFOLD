@@ -11,7 +11,7 @@ public sealed class CalcTrapezoidProfile : Trapezoid, ICalcProfile<CalcTrapezoid
     , IParsable<CalcTrapezoidProfile>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcTrapezoidProfile : Trapezoid, ICalcProfile<CalcTrapezoid
     public CalcTrapezoidProfile(Length topWidth, Length bottomWidth, Length height, string name, string symbol = "")
         : base(topWidth, bottomWidth, height)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcTrapezoidProfile(double topWidth, double bottomWidth, double height, LengthUnit unit, string name, string symbol = "")
         : base(new Length(topWidth, unit), new Length(bottomWidth, unit), new Length(height, unit))
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

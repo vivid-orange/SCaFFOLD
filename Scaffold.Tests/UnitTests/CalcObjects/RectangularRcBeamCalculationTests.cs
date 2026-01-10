@@ -18,7 +18,7 @@ public class RectangularRcBeamCalculationTests
     public void UnreadCalculation_Ok()
     {
         var calc = new RectangularRcBeamCalculation();
-        calc.CalculationName.Should().BeNull();
+        calc.InstanceName.Should().BeNull();
         calc.ReferenceName.Should().BeNull();
     }
 
@@ -31,7 +31,7 @@ public class RectangularRcBeamCalculationTests
         IReadOnlyList<ICalcValue> inputs = Reader.GetInputs(calc);
         IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs(calc);
 
-        calc.CalculationName.Should().Be(TypeName);
+        calc.InstanceName.Should().Be(TypeName);
         calc.ReferenceName.Should().BeNull();
 
         metadata.Type.Should().Be(TypeName);
@@ -40,7 +40,7 @@ public class RectangularRcBeamCalculationTests
         inputs.Count.Should().Be(24);
         outputs.Count.Should().Be(18);
 
-        inputs[0].DisplayName.Should().Be("Profile");
+        inputs[0].TypeName.Should().Be("Profile");
 
         calc.Calculate();
 

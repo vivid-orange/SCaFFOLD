@@ -17,7 +17,7 @@ public class ConcreteCreepTests
 
         // Assert
         Assert.Equal("Creep", calc.ReferenceName);
-        Assert.Equal("Concrete Creep", calc.CalculationName);
+        Assert.Equal("Concrete Creep", calc.InstanceName);
         Assert.Equal(6, inputs.Count);
         Assert.Equal(5, outputs.Count);
     }
@@ -38,7 +38,7 @@ public class ConcreteCreepTests
         // Assert
         Assert.Equal(expectedType, inputs[id].GetType());
         Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].DisplayName);
+        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
     }
 
     // TO-DO: a concept for organising in/outputs by Group and Position in that group

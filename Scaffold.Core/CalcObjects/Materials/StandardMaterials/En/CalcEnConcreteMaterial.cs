@@ -11,7 +11,7 @@ public sealed class CalcEnConcreteMaterial : EnConcreteMaterial, ICalcValue
     , IParsable<CalcEnConcreteMaterial>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,21 +19,21 @@ public sealed class CalcEnConcreteMaterial : EnConcreteMaterial, ICalcValue
     public CalcEnConcreteMaterial(EnConcreteGrade grade, NationalAnnex nationalAnnex, string name, string symbol = "")
         : base(grade, nationalAnnex)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcEnConcreteMaterial(EnConcreteGrade grade, NationalAnnex nationalAnnex, EnConcreteExposureClass exposureClass, Length maxAggregateSize, EnCementClass cementClass, string name, string symbol = "")
         : base(grade, nationalAnnex, exposureClass, maxAggregateSize, cementClass)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcEnConcreteMaterial(EnConcreteGrade grade, NationalAnnex nationalAnnex, EnConcreteExposureClass exposureClass, Length maxAggregateSize, EnCementClass cementClass, Length crackWidthLimit, Length minimumCover, string name, string symbol = "")
         : base(grade, nationalAnnex, exposureClass, maxAggregateSize, cementClass, crackWidthLimit, minimumCover)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

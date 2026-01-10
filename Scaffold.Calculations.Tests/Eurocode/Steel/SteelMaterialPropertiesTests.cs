@@ -20,7 +20,7 @@ public class SteelMaterialPropertiesTests
 
         // Assert
         Assert.Equal("Steel Material Properties", calc.ReferenceName);
-        Assert.Equal("Steel Material Properties", calc.CalculationName);
+        Assert.Equal("Steel Material Properties", calc.InstanceName);
         Assert.Equal(2, inputs.Count);
         Assert.Equal(10, outputs.Count);
     }
@@ -39,7 +39,7 @@ public class SteelMaterialPropertiesTests
         // Assert
         Assert.Equal(expectedType, inputs[id].GetType());
         Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].DisplayName);
+        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
     }
 
     // TO-DO: a concept for organising in/outputs by Group and Position in that group

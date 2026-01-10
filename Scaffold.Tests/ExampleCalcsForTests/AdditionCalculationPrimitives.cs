@@ -9,7 +9,7 @@ public class AdditionCalculationFluentPrimitives : ICalculation,
     ICalculationConfiguration<AdditionCalculationFluentPrimitives>
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
 
     public double LeftAssignment { get; set; }
@@ -53,7 +53,7 @@ public class AdditionCalculationFluentPrimitivesJoined : ICalculation,
     ICalculationConfiguration<AdditionCalculationFluentPrimitivesJoined>
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
     public double LeftAssignment { get; set; }
     public double RightAssignment { get; set; }
@@ -86,7 +86,7 @@ public class AdditionCalculationFluentPrimitivesJoined : ICalculation,
 public class AdditionCalculationAttributePrimitives : ICalculation
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
 
     [InputCalcValue("L")] public double LeftAssignment { get; set; }

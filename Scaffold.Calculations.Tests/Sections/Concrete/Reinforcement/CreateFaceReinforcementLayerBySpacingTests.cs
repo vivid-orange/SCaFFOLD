@@ -24,7 +24,7 @@ public class CreateFaceReinforcementLayerBySpacingTests
         Assert.Equal("Create Face Reinforcement Layer By Spacing", calc.ReferenceName);
         Assert.Equal("Create Face Reinforcement Layer By Spacing", calc.CalculationName);
         Assert.Single(outputs);
-        Assert.Equal("Bottom Rebar @ 200 mm c/c", outputs.FirstOrDefault().DisplayName);
+        Assert.Equal("Bottom Rebar @ 200 mm c/c", outputs.FirstOrDefault().TypeName);
     }
 
     [Theory]
@@ -42,7 +42,7 @@ public class CreateFaceReinforcementLayerBySpacingTests
         // Assert
         Assert.Equal(expectedType, inputs[id].GetType());
         Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].DisplayName);
+        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
     }
 
     [Fact]

@@ -12,7 +12,7 @@ namespace Scaffold.XUnitTests.Core;
 public class CalcMetadataEmptyConstructor : ICalculation
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
 
     public IReadOnlyList<ICalcValue> GetInputs() => [];
@@ -30,7 +30,7 @@ public class CalcMetadataEmptyConstructor : ICalculation
 public class CalcMetadataTypeNameConstructor : ICalculation
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
     public IReadOnlyList<ICalcValue> GetInputs() => [];
     public IReadOnlyList<ICalcValue> GetOutputs() => [];
@@ -47,7 +47,7 @@ public class CalcMetadataTypeNameConstructor : ICalculation
 public class CalcMetadataTypeAndTitleConstructor : ICalculation
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
     public IReadOnlyList<ICalcValue> GetInputs() => [];
     public IReadOnlyList<ICalcValue> GetOutputs() => [];
@@ -63,7 +63,7 @@ public class CalcMetadataTypeAndTitleConstructor : ICalculation
 public class CalcMetadataFallback : ICalculation
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
     public IReadOnlyList<ICalcValue> GetInputs() => [];
     public IReadOnlyList<ICalcValue> GetOutputs() => [];

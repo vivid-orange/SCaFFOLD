@@ -1,13 +1,12 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
-using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcMoment : CalcQuantity<Moment>
+public sealed class CalcMoment : CalcSIQuantity<Moment>
 #if NET7_0_OR_GREATER
     , IParsable<CalcMoment>
     , IAdditionOperators<CalcMoment, CalcMoment, CalcMoment>
@@ -44,7 +43,7 @@ public sealed class CalcMoment : CalcQuantity<Moment>
 
     public static CalcMoment operator +(CalcMoment x, double y)
     {
-        return new CalcMoment(x.Value + y, (MomentUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcMoment(x.Value + y, (MomentUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcMoment operator +(double x, CalcMoment y) => y + x;
@@ -53,7 +52,7 @@ public sealed class CalcMoment : CalcQuantity<Moment>
     #region SubtractionOperators
     public static CalcMoment operator -(CalcMoment x)
     {
-        return new CalcMoment(-(Moment)x.Quantity, $"-{x.DisplayName}", x.Symbol);
+        return new CalcMoment(-(Moment)x.Quantity, $"-{x.TypeName}", x.Symbol);
     }
 
     public static CalcMoment operator -(CalcMoment x, CalcMoment y)
@@ -64,14 +63,14 @@ public sealed class CalcMoment : CalcQuantity<Moment>
 
     public static CalcMoment operator -(CalcMoment x, double y)
     {
-        return new CalcMoment(x.Value - y, (MomentUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcMoment(x.Value - y, (MomentUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 
     #region MultiplicationOperators
     public static CalcMoment operator *(CalcMoment x, double y)
     {
-        return new CalcMoment(x.Value * y, (MomentUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcMoment(x.Value * y, (MomentUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
 
     public static CalcMoment operator *(double x, CalcMoment y) => y * x;
@@ -80,8 +79,8 @@ public sealed class CalcMoment : CalcQuantity<Moment>
     #region DivisionOperators
     public static CalcForce operator /(CalcMoment x, CalcLength y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-           ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+           ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         MomentUnit unit = (MomentUnit)x.Quantity.Unit;
         return new CalcForce(new Force(x.Quantity.As(unit) / y.Quantity.As(unit.GetEquivilantLengthUnit()),
             unit.GetEquivilantForceUnit()), name);
@@ -89,8 +88,8 @@ public sealed class CalcMoment : CalcQuantity<Moment>
 
     public static CalcLength operator /(CalcMoment x, CalcForce y)
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-           ? string.Empty : $"{x.DisplayName}\u2009/\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+           ? string.Empty : $"{x.TypeName}\u2009/\u2009{y.TypeName}";
         MomentUnit unit = (MomentUnit)x.Quantity.Unit;
         return new CalcLength(new Length(x.Quantity.As(unit) / y.Quantity.As(unit.GetEquivilantForceUnit()),
             unit.GetEquivilantLengthUnit()), name);
@@ -104,7 +103,7 @@ public sealed class CalcMoment : CalcQuantity<Moment>
 
     public static CalcMoment operator /(CalcMoment x, double y)
     {
-        return new CalcMoment(x.Value / y, (MomentUnit)x.Quantity.Unit, x.DisplayName, x.Symbol);
+        return new CalcMoment(x.Value / y, (MomentUnit)x.Quantity.Unit, x.TypeName, x.Symbol);
     }
     #endregion
 
@@ -143,7 +142,7 @@ public sealed class CalcMoment : CalcQuantity<Moment>
     {
         MomentUnit unit = (MomentUnit)Quantity.Unit;
         return new CalcLinearMoment(new MomentPerLength(Quantity.As(unit) / length.Value,
-            unit.GetEquivilantMomentPerLengthUnit((LengthUnit)length.Quantity.Unit)), DisplayName);
+            unit.GetEquivilantMomentPerLengthUnit((LengthUnit)length.Quantity.Unit)), TypeName);
     }
 
     public CalcLinearMoment MakeLinear() => MakeLinear(CalcLength.OneMeter);

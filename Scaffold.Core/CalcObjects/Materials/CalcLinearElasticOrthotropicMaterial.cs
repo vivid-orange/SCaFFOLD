@@ -10,7 +10,7 @@ public sealed class CalcLinearElasticOrthotropicMaterial : LinearElasticOrthotro
     , IParsable<CalcLinearElasticOrthotropicMaterial>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcLinearElasticOrthotropicMaterial : LinearElasticOrthotro
     public CalcLinearElasticOrthotropicMaterial(MaterialType type, Pressure elasticModulusX, Pressure strengthX, Pressure elasticModulusY, Pressure strengthY, Pressure elasticModulusZ, Pressure strengthZ, string name, string symbol = "")
         : base(type, elasticModulusX, strengthX, elasticModulusY, strengthY, elasticModulusZ, strengthZ)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

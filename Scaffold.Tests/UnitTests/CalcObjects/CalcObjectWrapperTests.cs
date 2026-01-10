@@ -23,7 +23,7 @@ namespace Scaffold.Tests.UnitTests.CalcObjects
             // Act & Assert
             Assert.False(standard.TryParse("invalid"));
             Assert.True(standard.TryParse(json));
-            Assert.Equal("DS EN 1992-1-1", standard.DisplayName);
+            Assert.Equal("DS EN 1992-1-1", standard.TypeName);
             Assert.Equal("EN2", standard.Symbol);
             Assert.Equal(CalcStatus.Fail, standard.Status);
             Assert.Equal(StandardBody.EN, standard.Value.Body);

@@ -1,8 +1,8 @@
-﻿namespace Scaffold.Core.Abstract;
+﻿namespace Scaffold.Core.CalcValues;
 
-public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T>> where T : IQuantity
+public class CalcSIQuantity<T> : ICalcSIQuantity, IEquatable<CalcSIQuantity<T>> where T : IQuantity
 {
-    public virtual IQuantity Quantity
+    public virtual T Quantity
     {
         get { return _quantity; }
         set
@@ -15,39 +15,55 @@ public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T
             _quantity = value;
         }
     }
-    public string Unit => GetUnit();
-    public string DisplayName { get; set; }
-    public string Symbol { get; set; }
-    public CalcStatus Status { get; set; }
-    public double Value => (double)Quantity.Value;
-    private IQuantity _quantity;
+    public IQuantity GenericQuantity
+    {
+        get => _quantity;
+    }
 
-    public CalcQuantity(T quantity, string name, string symbol)
+    public string Unit => GetUnit();
+    public string TypeName { get; set; }
+    public string Symbol { get; }
+    public CalcStatus Status { get; }
+    public double Value
+    {
+        get => (double)_quantity.Value;
+        set => _quantity = (T)UnitsNet.Quantity.From(value, _quantity.Unit);
+    }
+    private T _quantity;
+
+    public CalcSIQuantity(T quantity, string name, string symbol)
     {
         Quantity = quantity;
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
-    public static implicit operator T(CalcQuantity<T> value) => (T)value.Quantity;
-    public static implicit operator double(CalcQuantity<T> value) => value.Value;
+    public CalcSIQuantity(string name, string symbol, T quantity)
+    {
+        Quantity = quantity;
+        TypeName= name;
+        Symbol = symbol;
+    }
 
-    public static bool GreaterThan(CalcQuantity<T> value, CalcQuantity<T> other)
+    public static implicit operator T(CalcSIQuantity<T> value) => value.Quantity;
+    public static implicit operator double(CalcSIQuantity<T> value) => value.Value;
+
+    public static bool GreaterThan(CalcSIQuantity<T> value, CalcSIQuantity<T> other)
     {
         return value.Value > other.Quantity.As(value.Quantity.Unit);
     }
 
-    public static bool LessThan(CalcQuantity<T> value, CalcQuantity<T> other)
+    public static bool LessThan(CalcSIQuantity<T> value, CalcSIQuantity<T> other)
     {
         return value.Value < other.Quantity.As(value.Quantity.Unit);
     }
 
-    public static bool GreaterOrEqualThan(CalcQuantity<T> value, CalcQuantity<T> other)
+    public static bool GreaterOrEqualThan(CalcSIQuantity<T> value, CalcSIQuantity<T> other)
     {
         return value.Value >= other.Quantity.As(value.Quantity.Unit);
     }
 
-    public static bool LessOrEqualThan(CalcQuantity<T> value, CalcQuantity<T> other)
+    public static bool LessOrEqualThan(CalcSIQuantity<T> value, CalcSIQuantity<T> other)
     {
         return value.Value <= other.Quantity.As(value.Quantity.Unit);
     }
@@ -64,7 +80,7 @@ public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T
 
         if (double.TryParse(strValue, NumberStyles.Any, CultureInfo.InvariantCulture, out double val))
         {
-            _quantity = UnitsNet.Quantity.From(val, _quantity.Unit);
+            _quantity = (T)UnitsNet.Quantity.From(val, _quantity.Unit);
             return true;
         }
 
@@ -83,7 +99,7 @@ public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T
             return false;
         }
 
-        if (obj is CalcQuantity<T> other)
+        if (obj is CalcSIQuantity<T> other)
         {
             return Equals(other);
         }
@@ -93,11 +109,11 @@ public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T
 
     public override int GetHashCode()
     {
-        return DisplayName.GetHashCode() ^ Symbol.GetHashCode() ^ Status.GetHashCode()
+        return TypeName.GetHashCode() ^ Symbol.GetHashCode() ^ Status.GetHashCode()
             ^ Value.GetHashCode() ^ Unit.GetHashCode();
     }
 
-    public bool Equals(CalcQuantity<T> other)
+    public bool Equals(CalcSIQuantity<T> other)
     {
         if (Value == other?.Quantity.As(Quantity.Unit))
         {
@@ -108,13 +124,13 @@ public abstract class CalcQuantity<T> : ICalcQuantity, IEquatable<CalcQuantity<T
     }
 
     public string GetValueAsString() => ToString();
-    public override string ToString() => Quantity.ToString(CultureInfo.InvariantCulture).Replace(" ", "\u2009");
+    public override string ToString() => Quantity.Value.ToString(CultureInfo.InvariantCulture).Replace(" ", "\u2009");
 
     internal static (string name, string symbol, U unit) OperatorMetadataHelper<U>(
-        CalcQuantity<T> x, CalcQuantity<T> y, char operation) where U : Enum
+        CalcSIQuantity<T> x, CalcSIQuantity<T> y, char operation) where U : Enum
     {
-        string name = string.IsNullOrEmpty(x.DisplayName) || string.IsNullOrEmpty(y.DisplayName)
-            ? string.Empty : $"{x.DisplayName}\u2009{operation}\u2009{y.DisplayName}";
+        string name = string.IsNullOrEmpty(x.TypeName) || string.IsNullOrEmpty(y.TypeName)
+            ? string.Empty : $"{x.TypeName}\u2009{operation}\u2009{y.TypeName}";
         string symbol = x.Symbol == y.Symbol ? x.Symbol : string.Empty;
         U unit = (U)x.Quantity.Unit;
         return (name, symbol, unit);

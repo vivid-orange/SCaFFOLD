@@ -55,7 +55,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5, value.Value);
-            Assert.Equal(string.Empty, value.DisplayName);
+            Assert.Equal(string.Empty, value.TypeName);
             Assert.Equal(string.Empty, value.Symbol);
         }
 
@@ -100,7 +100,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(10, result.Value);
             Assert.Equal("σ", result.Symbol);
             Assert.Equal("Pa", result.Unit);
-            Assert.Equal("σ1 + σ2", result.DisplayName);
+            Assert.Equal("σ1 + σ2", result.TypeName);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(-4.5, result.Value);
             Assert.Equal("σ", result.Symbol);
             Assert.Equal("Pa", result.Unit);
-            Assert.Equal("-σ1", result.DisplayName);
+            Assert.Equal("-σ1", result.TypeName);
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(-1, result.Value);
             Assert.Equal("σ", result.Symbol);
             Assert.Equal("Pa", result.Unit);
-            Assert.Equal("σ1 - σ2", result.DisplayName);
+            Assert.Equal("σ1 - σ2", result.TypeName);
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 5.5, result.Value);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.Equal("kN/m", result.Unit);
-            Assert.Equal("σ · l", result.DisplayName);
+            Assert.Equal("σ · l", result.TypeName);
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 5.5 * 1000, result.Value, 12);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.Equal("N/mm", result.Unit);
-            Assert.Equal("σ · l", result.DisplayName);
+            Assert.Equal("σ · l", result.TypeName);
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 5.5, result.Value, 12);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.Equal("kN/cm", result.Unit);
-            Assert.Equal("σ · l", result.DisplayName);
+            Assert.Equal("σ · l", result.TypeName);
         }
 
         [Fact]
@@ -201,7 +201,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 5.5, result.Value);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.Equal("kN", result.Unit);
-            Assert.Equal("σ · A", result.DisplayName);
+            Assert.Equal("σ · A", result.TypeName);
         }
 
         [Fact]
@@ -216,7 +216,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
 
             // Assert
             Assert.Equal(4.5 / 5.5, result.Value, 12);
-            Assert.Equal("σ1 / σ2", result.DisplayName);
+            Assert.Equal("σ1 / σ2", result.TypeName);
             Assert.True(string.IsNullOrEmpty(result.Symbol));
             Assert.True(string.IsNullOrEmpty(result.Unit));
         }
@@ -234,7 +234,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 + 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("MPa", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcStress.Value);
         }
 
@@ -251,7 +251,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 - 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("MPa", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcStress.Value);
         }
 
@@ -268,7 +268,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 * 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("MPa", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcStress.Value);
         }
 
@@ -285,7 +285,7 @@ namespace Scaffold.Tests.UnitTests.CalcQuantities
             Assert.Equal(4.5 / 2, result.Value);
             Assert.Equal("A", result.Symbol);
             Assert.Equal("MPa", result.Unit);
-            Assert.Equal("a1", result.DisplayName);
+            Assert.Equal("a1", result.TypeName);
             Assert.Equal(4.5, calcStress.Value);
         }
 

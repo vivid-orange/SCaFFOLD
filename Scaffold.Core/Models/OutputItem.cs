@@ -18,7 +18,7 @@ public class OutputItem : IOutputItem
         Status = status;
     }
 
-    public string DisplayName { get; } = "";
+    public string TypeName { get; } = "";
     public List<IExpression> Expressions { get; set; } = [];
     public string Reference { get; set; } = "";
     public string Narrative { get; set; } = "";

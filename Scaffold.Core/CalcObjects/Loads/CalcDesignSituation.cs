@@ -10,7 +10,7 @@ public sealed class CalcDesignSituation : DesignSituation, ICalcValue
     , IParsable<CalcDesignSituation>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,7 +18,7 @@ public sealed class CalcDesignSituation : DesignSituation, ICalcValue
     public CalcDesignSituation(string name, string symbol = "")
         : base()
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

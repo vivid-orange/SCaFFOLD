@@ -10,7 +10,7 @@ public sealed class CalcLineForce : LineForce, ICalcValue
     , IParsable<CalcLineForce>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,14 +18,14 @@ public sealed class CalcLineForce : LineForce, ICalcValue
     public CalcLineForce(ForcePerLength z, string name, string symbol = "")
         : base(z)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcLineForce(ForcePerLength x, ForcePerLength y, ForcePerLength z, LoadApplication application, string name, string symbol = "")
         : base(x, y, z, application)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

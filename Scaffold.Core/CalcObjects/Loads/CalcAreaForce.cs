@@ -10,7 +10,7 @@ public sealed class CalcAreaForce : AreaForce, ICalcValue
     , IParsable<CalcAreaForce>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -18,14 +18,14 @@ public sealed class CalcAreaForce : AreaForce, ICalcValue
     public CalcAreaForce(Pressure z, string name, string symbol = "")
         : base(z)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcAreaForce(Pressure x, Pressure y, Pressure z, LoadApplication application, string name, string symbol = "")
         : base(x, y, z, application)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

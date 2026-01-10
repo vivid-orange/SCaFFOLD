@@ -11,7 +11,7 @@ public sealed class CalcFaceReinforcementLayer : FaceReinforcementLayer, ICalcVa
     , IParsable<CalcFaceReinforcementLayer>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -19,14 +19,14 @@ public sealed class CalcFaceReinforcementLayer : FaceReinforcementLayer, ICalcVa
     public CalcFaceReinforcementLayer(SectionFace face, IRebar rebar, int numberOfRebars, string name, string symbol = "")
         : base(face, rebar, numberOfRebars)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcFaceReinforcementLayer(SectionFace face, IRebar rebar, Length maxSpacing, string name, string symbol = "")
         : base(face, rebar, maxSpacing)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

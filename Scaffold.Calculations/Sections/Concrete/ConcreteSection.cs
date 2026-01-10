@@ -24,7 +24,7 @@ using UnitsNet.Units;
 namespace Scaffold.Calculations.Sections.Concrete;
 public class ConcreteSection : CalcObjectInput<CalcConcreteSection>
 {
-    public override string DisplayName { get; set; } = "Concrete Section";
+    public override string TypeName { get;  } = "Concrete Section";
 
     [InputCalcValue("Grd", "Concrete Grade")]
     public CalcSelectionList ConcreteGrade { get; set; }

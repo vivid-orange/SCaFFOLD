@@ -13,7 +13,7 @@ public sealed class CalcConcreteSection : ConcreteSection, ICalcValue
     , IParsable<CalcConcreteSection>
 #endif
 {
-    public string DisplayName { get; set; } = string.Empty;
+    public string TypeName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
@@ -21,49 +21,49 @@ public sealed class CalcConcreteSection : ConcreteSection, ICalcValue
     public CalcConcreteSection(IProfile profile, IMaterial material, string name, string symbol = "")
         : base(profile, material)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcConcreteSection(IProfile profile, IMaterial material, IRebar link, string name, string symbol = "")
         : base(profile, material, link)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcConcreteSection(IProfile profile, IMaterial material, IRebar link, Length cover, string name, string symbol = "")
         : base(profile, material, link, cover)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcConcreteSection(IProfile profile, IMaterial material, IRebar link, Length cover, IList<ILongitudinalReinforcement> rebars, string name, string symbol = "")
         : base(profile, material, link, cover, rebars)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcConcreteSection(IProfile profile, IMaterial material, ILink link, string name, string symbol = "")
         : base(profile, material, link)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcConcreteSection(IProfile profile, IMaterial material, ILink link, Length cover, string name, string symbol = "")
         : base(profile, material, link, cover)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 
     public CalcConcreteSection(IProfile profile, IMaterial material, ILink link, Length cover, IList<ILongitudinalReinforcement> rebars, string name, string symbol = "")
         : base(profile, material, link, cover, rebars)
     {
-        DisplayName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

@@ -12,7 +12,7 @@ namespace Scaffold.XUnitTests.Core;
 [CalculationMetadata("Duplicate", "Duplicate tester")]
 public class DuplicateDisplayNames : ICalculation
 {
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public string ReferenceName { get; set; }
     public CalcStatus Status { get; }
     [InputCalcValue] public CalcDouble LeftAssignment { get; set; }
@@ -78,7 +78,7 @@ public class DuplicateDisplayNames : ICalculation
 
 public class DuplicateDisplayNamesFluent : ICalculation, ICalculationConfiguration<DuplicateDisplayNamesFluent>
 {
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public string ReferenceName { get; set; }
     public CalcStatus Status { get; }
     public double LeftAssignment { get; set; } = 2;

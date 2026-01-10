@@ -16,20 +16,20 @@ namespace Scaffold.Calculations
 {
     public class SteelProfile : CalculationBase, ISteelProfile
     {
-        public new string DisplayName { get; set; } = "Steel profile";
+        public override string InstanceName{ get; set; } = "Steel profile";
 
-        public override string TypeName => "Built up steel I beam profile";
+        public  string TypeName => "Built up steel I beam profile";
 
         [InputCalcValue]
-        public SIQuantity<Length> Breadth { get; set; } = new("Breadth", "B", new Length(150, UnitsNet.Units.LengthUnit.Millimeter));
+        public CalcSIQuantity<Length> Breadth { get; set; } = new("Breadth", "B", new Length(150, UnitsNet.Units.LengthUnit.Millimeter));
         [InputCalcValue]
-        public SIQuantity<Length> FlangeThickness { get; set; } = new("Flange thickness", "T", new Length(30, UnitsNet.Units.LengthUnit.Millimeter));
+        public CalcSIQuantity<Length> FlangeThickness { get; set; } = new("Flange thickness", "T", new Length(30, UnitsNet.Units.LengthUnit.Millimeter));
         [InputCalcValue]
-        public SIQuantity<Length> Height { get; set; } = new("Height", "H", new Length(300, UnitsNet.Units.LengthUnit.Millimeter));
+        public CalcSIQuantity<Length> Height { get; set; } = new("Height", "H", new Length(300, UnitsNet.Units.LengthUnit.Millimeter));
         [InputCalcValue]
-        public SIQuantity<Length> WebThickness { get; set; } = new("Web thickness", "t", new Length(10, UnitsNet.Units.LengthUnit.Millimeter));
+        public CalcSIQuantity<Length> WebThickness { get; set; } = new("Web thickness", "t", new Length(10, UnitsNet.Units.LengthUnit.Millimeter));
         [InputCalcValue]
-        public SIQuantity<Length> RootRadius { get; } = new("Root radius", "r", new Length(10, UnitsNet.Units.LengthUnit.Millimeter));
+        public CalcSIQuantity<Length> RootRadius { get; } = new("Root radius", "r", new Length(10, UnitsNet.Units.LengthUnit.Millimeter));
 
         [InputCalcValue]
         public SteelGrade SteelGradeMember { get; } = new SteelGrade();
@@ -37,9 +37,9 @@ namespace Scaffold.Calculations
         public SteelGrade SteelGradeBaseplate { get; } = new SteelGrade();
 
         [OutputCalcValue]
-        public SIQuantity<Area> Area { get; } = new SIQuantity<Area>("Area", "A", new Area(0, UnitsNet.Units.AreaUnit.SquareMillimeter));
+        public CalcSIQuantity<Area> Area { get; } = new CalcSIQuantity<Area>("Area", "A", new Area(0, UnitsNet.Units.AreaUnit.SquareMillimeter));
         [OutputCalcValue]
-        public SIQuantity<Force> CompressionResistance { get; } = new SIQuantity<Force>("Compression Resistance", "P", new Force(0, UnitsNet.Units.ForceUnit.Kilonewton));
+        public CalcSIQuantity<Force> CompressionResistance { get; } = new CalcSIQuantity<Force>("Compression Resistance", "P", new Force(0, UnitsNet.Units.ForceUnit.Kilonewton));
 
 
         public string Symbol { get => ""; }

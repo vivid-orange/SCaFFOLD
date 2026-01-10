@@ -15,8 +15,8 @@ using UnitsNet.Units;
 namespace Scaffold.Calculations.Eurocode.Concrete;
 public class Creep : ICalculation
 {
-    public string DisplayName { get; set; }
-    public string CalculationName { get; set; } = "Concrete Creep";
+    public string TypeName { get; set; }
+    public string InstanceName { get; set; } = "Concrete Creep";
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
     [InputCalcValue("Grd", "Grade")]

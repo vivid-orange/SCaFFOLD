@@ -12,7 +12,7 @@ namespace Scaffold.Tests.ExampleCalcsForTests;
 public class AdditionCalculationFluent : ICalculation, ICalculationConfiguration<AdditionCalculationFluent>
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; }
+    public string InstanceName { get; set; }
     public CalcStatus Status { get; }
     public CalcDouble LeftAssignment { get; set; }
     public CalcDouble RightAssignment { get; set; }
