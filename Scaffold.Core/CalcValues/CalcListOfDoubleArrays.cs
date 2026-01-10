@@ -6,7 +6,7 @@ using System.Text;
 // TODO: output is not currently formatting.
 namespace Scaffold.Core.CalcValues;
 
-public class ListOfDoubleArrays : IListOfDoubleArrays
+public class CalcListOfDoubleArrays : IListOfDoubleArrays
 {
     public List<double[]> Value { get; private set; }   // TODO: Default value from type param.
     public void ResetArray() => Value.Clear();
@@ -15,7 +15,7 @@ public class ListOfDoubleArrays : IListOfDoubleArrays
 
     public string InstanceName { get; private set; } = "";
 
-    public ListOfDoubleArrays(string name, string symbol, List<double[]> multiDimensionalArray)
+    public CalcListOfDoubleArrays(string name, string symbol, List<double[]> multiDimensionalArray)
     {
         Value = multiDimensionalArray ?? [];
         InstanceName = name;

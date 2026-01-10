@@ -37,10 +37,10 @@ namespace Scaffold.Calculations
         public ISteelProfile SteelProfile { get; set; } = new SteelProfile();
 
         [InputCalcValue]
-        public ListOfDoubleArrays Coordinates { get; } = new("Test List", "C", [[50, 20, 10], [5, 5, 10]]);
+        public CalcListOfDoubleArrays Coordinates { get; } = new("Test List", "C", [[50, 20, 10], [5, 5, 10]]);
 
         [OutputCalcValue]
-        public ListOfDoubleArrays Coords { get; } = new ListOfDoubleArrays("Test output", "CC", [[1, 10, 100], [200, 20, 2]]);
+        public CalcListOfDoubleArrays Coords { get; } = new CalcListOfDoubleArrays("Test output", "CC", [[1, 10, 100], [200, 20, 2]]);
 
         [OutputCalcValue]
         public CalcSIQuantity<Length> NewLength { get; private set; } = new("Calculated length", "L", new Length(0, LengthUnit.Meter));
