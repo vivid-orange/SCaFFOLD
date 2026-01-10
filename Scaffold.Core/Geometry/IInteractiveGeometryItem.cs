@@ -12,9 +12,16 @@ namespace Scaffold.Core.Geometry
 {
     public interface IInteractiveGeometryItem
     {
-        double[] Position { get; set; }
+        double PositionX {get; set;}
+
+        double PositionY {get; set;}
 
         int[] Constraints { get;  }
+
+        string Symbol { get; }
+
+        string Summary { get; }
+
 
     }
 }

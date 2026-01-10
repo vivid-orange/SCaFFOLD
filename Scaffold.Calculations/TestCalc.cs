@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Scaffold.Core;
@@ -8,19 +9,19 @@ using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcQuantities;
 using Scaffold.Core.CalcValues;
+using Scaffold.Core.Geometry;
+using Scaffold.Core.Geometry.Abstract;
 using Scaffold.Core.Images.Models;
 using Scaffold.Core.Interfaces;
-using Scaffold.Core.Geometry;
 using SkiaSharp;
 using UnitsNet;
 using UnitsNet.Units;
-using Scaffold.Core.Geometry.Abstract;
 
 namespace Scaffold.Calculations
 {
     public class TestCalc : CalculationBase, IInteractiveGeometry
     {
-        public new string TypeName { get;  } = "Test calc";
+        public new string TypeName { get; } = "Test calc";
         public override string InstanceName { get; set; } = "This is my test calc";
 
         [InputCalcValue]
@@ -56,10 +57,12 @@ namespace Scaffold.Calculations
 
         public TestCalc()
         {
-            InteractiveGeometryDoubleArrays start = new InteractiveGeometryDoubleArrays(Coordinates.Value[0]);
+            InteractiveGeometryDoubleArrays start = new InteractiveGeometryDoubleArrays(Coordinates.Symbol, Coordinates.Value[0]);
             geometry.Add(start);
-            InteractiveGeometryDoubleArrays end = new InteractiveGeometryDoubleArrays(Coordinates.Value[1]);
+            InteractiveGeometryDoubleArrays end = new InteractiveGeometryDoubleArrays(Coordinates.Symbol, Coordinates.Value[1]);
             geometry.Add(end);
+            InteractiveGeometryQuantityOnY forcey = new InteractiveGeometryQuantityOnY(-10, CompressiveForce);
+            geometry.Add(forcey);
         }
 
         public override List<IOutputItem> GetFormulae()
@@ -92,16 +95,43 @@ namespace Scaffold.Calculations
             var lines = new List<Line>();
             lines.Add(new Line(new System.Numerics.Vector2((float)Coordinates.Value[0][0], (float)Coordinates.Value[0][1]),
                     new System.Numerics.Vector2((float)Coordinates.Value[1][0], (float)Coordinates.Value[1][1])));
-            lines.Add(new Line(new System.Numerics.Vector2(0,0), new System.Numerics.Vector2(100,0)));
-            lines.Add(new Line(new System.Numerics.Vector2(0,100), new System.Numerics.Vector2(100,100)));
-            lines.Add(new Line(new System.Numerics.Vector2(0, 0), new System.Numerics.Vector2(0, 100)));
-            lines.Add(new Line(new System.Numerics.Vector2(100, 0), new System.Numerics.Vector2(100, 100)));
+
+            lines.AddRange(CreateContinuousPath(new List<(double x, double y)> { (0, 0), (0, 100), (100, 100), (100, 0), (0, 0) }));
+            lines.AddRange(CreateContinuousPath(new List<(double x, double y)> {(0,0),(-20,0),(-20,CompressiveForce.Value), (0,CompressiveForce.Value),(0,0)  }));
 
             _geometryBases.Clear();
             _geometryBases.AddRange(lines);
-            
+
 
         }
 
+
+        /// <summary>
+        /// Converts a list of coordinates into a continuous chain of Line objects.
+        /// </summary>
+        private static List<Line> CreateContinuousPath(List<(double x, double y)> points)
+        {
+            var lines = new List<Line>();
+
+            // We need at least 2 points to make a line
+            if (points == null || points.Count < 2)
+                return lines;
+
+            // Iterate up to the second-to-last point
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                var current = points[i];
+                var next = points[i + 1];
+
+                // Convert doubles to Vector2 (which usually takes floats)
+                Vector2 start = new Vector2((float)current.x, (float)current.y);
+                Vector2 end = new Vector2((float)next.x, (float)next.y);
+
+                lines.Add(new Line(start, end));
+            }
+
+            return lines;
+        }
     }
+
 }

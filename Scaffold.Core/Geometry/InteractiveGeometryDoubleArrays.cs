@@ -14,25 +14,43 @@ namespace Scaffold.Core.Geometry
     {
         double[] _quantity;
 
-        double[] _position = [0, 0, 0];
         int[] _constraints = [1, 1, 0];
-        public double[] Position
+
+        public int[] Constraints => _constraints;
+
+        public double PositionX
         {
             get
             {
-                return _quantity;
-
+                return _quantity[0];
             }
             set
             {
-
+                _quantity[0] = value;
             }
         }
-        public int[] Constraints => _constraints;
 
-        public InteractiveGeometryDoubleArrays(double[] doubleArray)
+        public double PositionY
+        {
+            get
+            {
+                return _quantity[1];
+            }
+            set
+            {
+                _quantity[1] = value;
+            }
+        }
+
+        string _symbol = "";
+        public string Symbol => _symbol;
+
+        public string Summary => "";
+
+        public InteractiveGeometryDoubleArrays(string symbol, double[] doubleArray)
         {
             _quantity = doubleArray;
+            _symbol = symbol;
         }
     }
 }

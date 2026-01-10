@@ -70,7 +70,7 @@ namespace SCaFFOLD_Desktop
             }
         }
 
-        // NEW: Method to refresh view when model changes (e.g. during drag)
+        // Method to refresh view when model changes (e.g. during drag)
         public void Refresh()
         {
             // 1. Refresh Lines (Outputs)
@@ -149,8 +149,13 @@ namespace SCaFFOLD_Desktop
             _onMoved = onMoved;
         }
 
-        public double RawX => _model.Position[0];
-        public double RawY => _model.Position[1];
+        // NEW: Expose Symbol and Summary for ToolTips
+        public string Symbol => _model.Symbol;
+        public string Summary => _model.Summary;
+
+        // Use PositionX / PositionY properties
+        public double RawX => _model.PositionX;
+        public double RawY => _model.PositionY;
 
         public double X
         {
@@ -158,9 +163,10 @@ namespace SCaFFOLD_Desktop
             set
             {
                 double newRawX = (value - _offsetX) / _scaleX;
-                if (Math.Abs(_model.Position[0] - newRawX) > 0.0001)
+                // Check and set PositionX
+                if (Math.Abs(_model.PositionX - newRawX) > 0.0001)
                 {
-                    _model.Position[0] = newRawX;
+                    _model.PositionX = newRawX;
                     OnPropertyChanged();
                     _onMoved?.Invoke();
                 }
@@ -173,16 +179,16 @@ namespace SCaFFOLD_Desktop
             set
             {
                 double newRawY = (value - _offsetY) / _scaleY;
-                if (Math.Abs(_model.Position[1] - newRawY) > 0.0001)
+                // Check and set PositionY
+                if (Math.Abs(_model.PositionY - newRawY) > 0.0001)
                 {
-                    _model.Position[1] = newRawY;
+                    _model.PositionY = newRawY;
                     OnPropertyChanged();
                     _onMoved?.Invoke();
                 }
             }
         }
 
-        // Force UI to re-read properties from Model (useful if calc changed them)
         public void RefreshPosition()
         {
             OnPropertyChanged(nameof(X));

@@ -16,20 +16,36 @@ namespace Scaffold.Core.Geometry
 
         double[] _position = [0, 0, 0];
         int[] _constraints = [1, 0, 0];
-        public double[] Position
+
+        public double PositionX
         {
             get
             {
-                _position[0] = _quantity.Value;
-                return _position;
+                return _position[0];
             }
             set
             {
-                _quantity.Value = value[0];
-                _position[0] = _quantity.Value;
+                _position[0] = value;
             }
         }
+
+        public double PositionY
+        {
+            get
+            {
+                return _position[1];
+            }
+            set
+            {
+                _position[1] = value;
+            }
+        }
+
         public int[] Constraints => _constraints;
+
+        public string Symbol => _quantity.Symbol;
+
+        public string Summary => _quantity.GetValueAsString();
 
         public InteractiveGeometryQuantityOnX(ICalcSIQuantity quantity)
         {

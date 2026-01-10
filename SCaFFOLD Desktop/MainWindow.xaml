@@ -179,8 +179,8 @@
                         <ColumnDefinition Width="80" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="{Binding Ref}" 
-                               FontWeight="Bold" Foreground="Gray" VerticalAlignment="Top"/>
+                    <!--<TextBlock Grid.Column="0" Text="{Binding Ref}" 
+                               FontWeight="Bold" Foreground="Gray" VerticalAlignment="Top"/>-->
 
                     <StackPanel Grid.Column="1" Margin="10,0">
 
@@ -339,9 +339,7 @@
                     </Border>
                 </Grid>
 
-                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" 
-                              VerticalAlignment="Center" ResizeDirection="Rows" 
-                              Background="#DDDDDD" ShowsPreview="True"/>
+                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" Background="#DDDDDD" ShowsPreview="True"/>
 
                 <Grid Grid.Row="2" Visibility="{Binding HasGeometry, Converter={StaticResource BoolToVis}}">
                     <Grid.RowDefinitions>
@@ -349,8 +347,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="Interactive Geometry" 
-                               FontSize="16" FontWeight="Bold" Margin="0,5,0,5"/>
+                    <TextBlock Grid.Row="0" Text="Interactive Geometry" FontSize="16" FontWeight="Bold" Margin="0,5,0,5"/>
 
                     <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Background="White" ClipToBounds="True">
                         <Viewbox Stretch="Uniform">
@@ -388,17 +385,26 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Thumb DragDelta="Thumb_DragDelta" Cursor="SizeAll">
+
+                                                <Thumb.ToolTip>
+                                                    <ToolTip>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <math:FormulaControl Formula="{Binding Symbol}" Scale="20" VerticalAlignment="Center"/>
+                                                            <TextBlock Text=": " VerticalAlignment="Center" Margin="2,0"/>
+                                                            <TextBlock Text="{Binding Summary}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </ToolTip>
+                                                </Thumb.ToolTip>
+
                                                 <Thumb.Template>
                                                     <ControlTemplate>
                                                         <Grid>
-                                                            <Ellipse Width="100" Height="100" Fill="Transparent" 
-                                                                     RenderTransformOrigin="0.5,0.5">
+                                                            <Ellipse Width="100" Height="100" Fill="Transparent" RenderTransformOrigin="0.5,0.5">
                                                                 <Ellipse.RenderTransform>
                                                                     <TranslateTransform X="0" Y="0"/>
                                                                 </Ellipse.RenderTransform>
                                                             </Ellipse>
-                                                            <Ellipse Width="50" Height="50" Fill="#D9534F" Stroke="#A94442" StrokeThickness="1"
-                                                                     RenderTransformOrigin="0.5,0.5">
+                                                            <Ellipse Width="50" Height="50" Fill="#D9534F" Stroke="#A94442" StrokeThickness="1" RenderTransformOrigin="0.5,0.5">
                                                                 <Ellipse.RenderTransform>
                                                                     <TranslateTransform X="-50" Y="-50"/>
                                                                 </Ellipse.RenderTransform>
@@ -416,7 +422,6 @@
                     </Border>
                 </Grid>
             </Grid>
-
         </Grid>
     </Grid>
 </Window>
