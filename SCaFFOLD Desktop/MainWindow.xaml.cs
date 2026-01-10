@@ -33,5 +33,15 @@ namespace SCaFFOLD_Desktop
 
             InitializeComponent();
         }
+
+        private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            if (((FrameworkElement)sender).DataContext is GeometryPointViewModel pointVm)
+            {
+                // Add delta to X/Y. The ViewModel Setter handles conversion back to Model units.
+                pointVm.X += e.HorizontalChange;
+                pointVm.Y += e.VerticalChange;
+            }
+        }
     }
 }

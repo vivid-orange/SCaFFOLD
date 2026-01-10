@@ -60,6 +60,13 @@ namespace Scaffold.Calculations
                 // 2. Background: Light Grey
                 canvas.Clear(SKColors.LightGray);
 
+                // --- NEW CODE: Flip the Coordinate System ---
+                // Move the origin (0,0) to the bottom-left corner
+                canvas.Translate(0, height);
+                // Flip the Y-axis scale (multiply Y by -1) so positive goes up
+                canvas.Scale(1, -1);
+                // --------------------------------------------
+
                 using (var paint = new SKPaint())
                 {
                     paint.Color = circleColor; // Default color for all circles
@@ -80,6 +87,7 @@ namespace Scaffold.Calculations
                             float radius = diameter / 2f;
 
                             // Draw this specific circle
+                            // Because of the Translate/Scale above, (x,y) now behaves like a Cartesian graph
                             canvas.DrawCircle(x, y, radius, paint);
                         }
                     }

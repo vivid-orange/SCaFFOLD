@@ -29,7 +29,8 @@ public class Arc : GeometryBase
         {
             startAngle -= 2 * Math.PI;
             endAngle -= 2 * Math.PI;
-        };
+        }
+        ;
     }
 
     double endAngle;
@@ -63,6 +64,7 @@ public class Arc : GeometryBase
         {
             return new Vector2((float)(Centre.X + Radius * Math.Cos(StartAngle)), (float)(Centre.Y + Radius * Math.Sin(StartAngle)));
         }
+        set { }
     }
     public override Vector2 End
     {
@@ -70,6 +72,7 @@ public class Arc : GeometryBase
         {
             return new Vector2((float)(Centre.X + Radius * Math.Cos(EndAngle)), (float)(Centre.Y + Radius * Math.Sin(EndAngle)));
         }
+        set { }
     }
     public override double Length
     {

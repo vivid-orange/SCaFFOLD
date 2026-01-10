@@ -1,12 +1,13 @@
-﻿using Scaffold.Core;
-using Scaffold.Core.Interfaces;
-using Scaffold.Core.CalcValues;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
+using Scaffold.Core;
+using Scaffold.Core.CalcValues;
+using Scaffold.Core.Geometry;
+using Scaffold.Core.Interfaces;
 
 namespace SCaFFOLD_Desktop
 {
@@ -22,6 +23,14 @@ namespace SCaFFOLD_Desktop
 
         public string CurrentTitle => _currentCalculation?.TypeName;
         public ICommand NavigateUpCommand { get; }
+
+        private InteractiveGeometryViewModel _geometryVm;
+        public InteractiveGeometryViewModel Geometry
+        {
+            get => _geometryVm;
+            set { _geometryVm = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasGeometry)); }
+        }
+        public bool HasGeometry => Geometry != null;
 
         public CalculationViewModel(ICalculation rootCalculation)
         {
@@ -86,42 +95,43 @@ namespace SCaFFOLD_Desktop
             Inputs.Clear();
             Outputs.Clear();
             CalculationDetails.Clear();
+            Geometry = null;
 
             if (_currentCalculation == null) return;
 
+            // 1. Inputs (Keep existing logic)
             foreach (var input in _currentCalculation.GetInputs())
             {
+                // ... (Keep reflection/replace logic)
                 Type declaredType = GetDeclaredTypeForInput(_currentCalculation, input);
-                Inputs.Add(new CalcValueViewModel(
-                    input,
-                    OnCalculationUpdate,
-                    (complex) => NavigateTo(complex),
-                    declaredType,
-                    ReplaceInput
-                ));
+                Inputs.Add(new CalcValueViewModel(input, OnCalculationUpdate, (complex) => NavigateTo(complex), declaredType, ReplaceInput));
             }
 
+            // 2. Outputs (Keep existing logic)
             foreach (var output in _currentCalculation.GetOutputs())
             {
                 Outputs.Add(new CalcValueViewModel(output, null, null));
             }
 
+            // 3. Details (Keep existing logic)
             RebuildCalculationDetails();
-        }
 
+            // 4. NEW: Initialize Interactive Geometry if supported
+            if (_currentCalculation is IInteractiveGeometry interactiveCalc)
+            {
+                // Pass OnCalculationUpdate so dragging points triggers recalc
+                Geometry = new InteractiveGeometryViewModel(interactiveCalc, OnCalculationUpdate);
+            }
+        }
         private void OnCalculationUpdate()
         {
-            // 1. Run the calculation (Renamed from Update per requirements)
+            // 1. Run the calculation
             _currentCalculation.Calculate();
 
             // 2. Refresh Inputs 
-            // We assume input instances are stable (unless explicitly replaced), 
-            // so we just refresh the text/units in case formatting changed.
             foreach (var input in Inputs) input.Refresh();
 
             // 3. Regenerate Outputs
-            // Since output objects can be completely new instances, we must clear 
-            // the old wrappers and fetch the fresh list from the calculation.
             Outputs.Clear();
             foreach (var output in _currentCalculation.GetOutputs())
             {
@@ -130,6 +140,10 @@ namespace SCaFFOLD_Desktop
 
             // 4. Rebuild Details
             RebuildCalculationDetails();
+
+            // 5. NEW: Refresh Geometry
+            // This reloads the lines from the updated calculation model
+            Geometry?.Refresh();
         }
 
         private void RebuildCalculationDetails()

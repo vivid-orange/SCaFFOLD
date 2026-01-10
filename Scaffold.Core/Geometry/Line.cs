@@ -9,9 +9,29 @@ namespace Scaffold.Core.Geometry;
 public class Line : GeometryBase
 {
     Vector2 _start;
-    public override Vector2 Start { get => _start; }
+    public override Vector2 Start
+    {
+        get
+        {
+            return _start;
+        }
+        set
+        {
+            _start= value;
+        }
+    }
     Vector2 _end;
-    public override Vector2 End { get => _end; }
+    public override Vector2 End
+    {
+        get
+        {
+            return _end;
+        }
+        set
+        {
+            _end = value;
+        }
+    }
     public override double Length
     {
         get

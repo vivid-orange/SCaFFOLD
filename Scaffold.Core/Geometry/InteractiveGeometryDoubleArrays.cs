@@ -12,7 +12,7 @@ namespace Scaffold.Core.Geometry
 {
     public class InteractiveGeometryDoubleArrays : IInteractiveGeometryItem
     {
-        ICalcListOfDoubleArrays _quantity;
+        double[] _quantity;
 
         double[] _position = [0, 0, 0];
         int[] _constraints = [1, 1, 0];
@@ -20,22 +20,19 @@ namespace Scaffold.Core.Geometry
         {
             get
             {
-                _position[0] = _quantity.Value[0][0];
-                _position[1] = _quantity.Value[0][1];
-                return _position;
+                return _quantity;
+
             }
             set
             {
-                _quantity.Value[0][0] = value[0];
-                _quantity.Value[1][0] = value[1];
 
             }
         }
         public int[] Constraints => _constraints;
 
-        public InteractiveGeometryDoubleArrays(ICalcListOfDoubleArrays listofdoublearrays)
+        public InteractiveGeometryDoubleArrays(double[] doubleArray)
         {
-            _quantity = listofdoublearrays;
+            _quantity = doubleArray;
         }
     }
 }

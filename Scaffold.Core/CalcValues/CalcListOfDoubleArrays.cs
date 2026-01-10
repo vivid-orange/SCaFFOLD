@@ -18,7 +18,7 @@ public class CalcListOfDoubleArrays : ICalcListOfDoubleArrays
     public CalcListOfDoubleArrays(string name, string symbol, List<double[]> multiDimensionalArray)
     {
         Value = multiDimensionalArray ?? [];
-        InstanceName = name;
+        TypeName = name;
         Symbol = symbol;
     }
 

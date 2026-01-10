@@ -1,4 +1,5 @@
 using Scaffold.Core.CalcValues;
+using Scaffold.Core.Geometry;
 
 namespace Scaffold.Core.Interfaces;
 
