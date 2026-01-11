@@ -353,7 +353,7 @@
                         <Viewbox Stretch="Uniform">
                             <Canvas Width="1000" Height="1000" Background="Transparent">
 
-                                <ItemsControl ItemsSource="{Binding Geometry.Lines}">
+                                <!--<ItemsControl ItemsSource="{Binding Geometry.Lines}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <Canvas/>
@@ -366,6 +366,38 @@
                                                   Stroke="#333333" StrokeThickness="2"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
+                                </ItemsControl>-->
+
+                                <ItemsControl ItemsSource="{Binding Geometry.StaticGeometry}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.Resources>
+                                        <DataTemplate DataType="{x:Type local:GeometryLineViewModel}">
+                                            <Line X1="{Binding X1}" Y1="{Binding Y1}" 
+                                                  X2="{Binding X2}" Y2="{Binding Y2}" 
+                                                  Stroke="#333333" StrokeThickness="2"/>
+                                        </DataTemplate>
+
+                                        <DataTemplate DataType="{x:Type local:GeometryArcViewModel}">
+                                            <Path Stroke="#333333" StrokeThickness="2">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathFigure StartPoint="{Binding StartPoint}">
+                                                            <ArcSegment Point="{Binding EndPoint}" 
+                                                                        Size="{Binding Size}" 
+                                                                        RotationAngle="{Binding RotationAngle}"
+                                                                        IsLargeArc="{Binding IsLargeArc}"
+                                                                        SweepDirection="{Binding SweepDirection}"/>
+                                                        </PathFigure>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                        </DataTemplate>
+                                    </ItemsControl.Resources>
                                 </ItemsControl>
 
                                 <ItemsControl ItemsSource="{Binding Geometry.Points}">

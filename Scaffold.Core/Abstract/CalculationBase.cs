@@ -19,7 +19,7 @@ namespace Scaffold.Core.Abstract
                 return GetType().Name;
             }
         }
-        public abstract string InstanceName { get; set; }
+        public virtual string InstanceName { get; set; }
 
         public CalcStatus Status { get; }
 

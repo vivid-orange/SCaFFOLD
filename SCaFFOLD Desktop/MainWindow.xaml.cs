@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Scaffold.Calculations.Eurocode.Steel;
+using Scaffold.Calculations.Eurocode.Concrete.PunchingShear;
 
 namespace SCaFFOLD_Desktop
 {
@@ -24,7 +25,7 @@ namespace SCaFFOLD_Desktop
         public MainWindow()
         {
             //ICalculation calc = new SteelMaterialProperties();
-            ICalculation calc = new TestCalc();
+            ICalculation calc = new PunchingShear();
 
             calc.Calculate();
 

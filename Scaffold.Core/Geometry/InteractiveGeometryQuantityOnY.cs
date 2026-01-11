@@ -13,6 +13,7 @@ namespace Scaffold.Core.Geometry
     public class InteractiveGeometryQuantityOnY : IInteractiveGeometryItem
     {
         ICalcSIQuantity _quantity;
+        bool _centred = false;
         double _xCoordinate = 0;
 
         int[] _constraints = [0, 1, 0];
@@ -33,11 +34,17 @@ namespace Scaffold.Core.Geometry
         {
             get
             {
-                return _quantity.Value;
+                if (_centred)
+                { return _quantity.Value / 2; }
+                else
+                { return _quantity.Value; }
             }
             set
             {
-                _quantity.Value = value;
+                if (_centred)
+                { _quantity.Value = value * 2; }
+                else
+                { _quantity.Value = value; }
             }
         }
         public int[] Constraints => _constraints;
@@ -49,6 +56,13 @@ namespace Scaffold.Core.Geometry
         {
             _quantity = quantity;
             _xCoordinate = xCoordinate;
+        }
+
+        public InteractiveGeometryQuantityOnY(double xCoordinate, ICalcSIQuantity quantity, bool centred)
+        {
+            _quantity = quantity;
+            _xCoordinate = xCoordinate;
+            _centred = centred;
         }
     }
 }
