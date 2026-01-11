@@ -25,7 +25,10 @@ public class PolyLine : GeometryBase
         {
             return _segments.First().Start;
         }
-        set { } //TODO
+        set
+        {
+            _segments.First().Start = value;
+        }
     }
 
     public override Vector2 End
@@ -34,7 +37,10 @@ public class PolyLine : GeometryBase
         {
             return _segments.Last().End;
         }
-        set { } //TODO
+        set
+        {
+            _segments.Last().End = value;
+        }
     }
 
     public override double Length
