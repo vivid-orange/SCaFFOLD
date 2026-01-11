@@ -54,12 +54,13 @@ namespace Scaffold.Calculations.Eurocode.Concrete.PunchingShear
 
         public override void Calculate()
         {
+
             _geometryItems.Clear();
             double cx = ColumnADimension.Value / 2;
             double cy = ColumnBDimension.Value / 2;
             _geometryItems.AddRange(CreateContinuousPath(new List<(double x, double y)> { (-cx, -cy), (-cx, cy), (cx, cy), (cx, -cy), (-cx, -cy) }));
 
-            PolyLine controlPerimeter = GeneratePerimeter.generatePerimeter(ColumnADimension.Value, ColumnBDimension.Value, 200, ColumnCondition.Value);
+            PolyLine controlPerimeter = GeneratePerimeter.generatePerimeter(ColumnADimension.Value, ColumnBDimension.Value, 2 * EffectiveDepthCalc.D_average.Value, ColumnCondition.Value);
 
             _geometryItems.Add(controlPerimeter);
 

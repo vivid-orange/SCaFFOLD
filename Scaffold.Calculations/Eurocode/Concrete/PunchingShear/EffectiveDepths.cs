@@ -41,7 +41,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete.PunchingShear
         {
             EffectiveDepthY.Quantity = Height.Quantity - OffsetY.Quantity;
             EffectiveDepthZ.Quantity = Height.Quantity - OffsetZ.Quantity;
-            D_average.Quantity = (EffectiveDepthY.Quantity - EffectiveDepthZ.Quantity) / 2.0;
+            D_average.Quantity = (EffectiveDepthY.Quantity + EffectiveDepthZ.Quantity) / 2.0;
         }
         public override List<IOutputItem> GetFormulae()
         {
