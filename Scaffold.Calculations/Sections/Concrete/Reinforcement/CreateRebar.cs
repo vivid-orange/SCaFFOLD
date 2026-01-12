@@ -1,12 +1,12 @@
-﻿using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Sections.Reinforcement;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
-using Scaffold.Calculations.CalculationUtility;
+﻿using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcObjects.Sections.Reinforcement;
 using Scaffold.Core.CalcValues;
 using UnitsNet;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Sections.Reinforcement;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Sections.Concrete.Reinforcement;
 public class CreateRebar : CalcObjectInput<CalcRebar>

@@ -1,9 +1,9 @@
-﻿using MagmaWorks.Taxonomy.Materials;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Standards;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
-using Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
+﻿using Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
 using Scaffold.Core.Enums;
+using VividOrange.Taxonomy.Materials;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Standards;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Tests.UnitTests.CalcObjects
 {

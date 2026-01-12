@@ -1,8 +1,8 @@
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Serialization;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Serialization;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
 public sealed class CalcEnSteelMaterial : EnSteelMaterial, ICalcValue

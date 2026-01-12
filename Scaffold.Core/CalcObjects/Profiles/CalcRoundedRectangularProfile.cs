@@ -1,8 +1,8 @@
-using MagmaWorks.Taxonomy.Profiles;
-using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
 using Scaffold.Core.Utility;
+using VividOrange.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
 public sealed class CalcRoundedRectangularProfile : RoundedRectangle, ICalcProfile<CalcRoundedRectangularProfile>, ICalcValue

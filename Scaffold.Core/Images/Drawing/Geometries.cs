@@ -1,5 +1,5 @@
-﻿using MagmaWorks.Geometry;
-using SkiaSharp;
+﻿using SkiaSharp;
+using VividOrange.Geometry;
 
 namespace Scaffold.Core.Images.Drawing
 {

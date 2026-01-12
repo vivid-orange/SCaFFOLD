@@ -1,8 +1,8 @@
-using MagmaWorks.Taxonomy.Sections;
-using MagmaWorks.Taxonomy.Sections.SectionProperties;
-using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Sections;
+using VividOrange.Taxonomy.Sections.SectionProperties;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Sections;
 public sealed class CalcConcreteSectionProperties : ConcreteSectionProperties, ICalcValue

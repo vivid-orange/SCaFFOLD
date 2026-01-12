@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MagmaWorks.Taxonomy.Materials;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
@@ -12,6 +9,9 @@ using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
 using UnitsNet;
 using UnitsNet.Units;
+using VividOrange.Taxonomy.Materials;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Eurocode.Steel
 {

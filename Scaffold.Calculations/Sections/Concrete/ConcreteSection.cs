@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Sections;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Calculations.Sections.Concrete.Reinforcement;
 using Scaffold.Core.Abstract;
@@ -20,6 +17,9 @@ using Scaffold.Core.Models;
 using SkiaSharp;
 using UnitsNet;
 using UnitsNet.Units;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Sections;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Sections.Concrete;
 public class ConcreteSection : CalcObjectInput<CalcConcreteSection>

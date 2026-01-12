@@ -1,7 +1,7 @@
-﻿using MagmaWorks.Taxonomy.Standards;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
-using Scaffold.Core.CalcObjects;
+﻿using Scaffold.Core.CalcObjects;
 using Scaffold.Core.Enums;
+using VividOrange.Taxonomy.Standards;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Tests.UnitTests.CalcObjects
 {
@@ -15,9 +15,9 @@ namespace Scaffold.Tests.UnitTests.CalcObjects
             string fromJson = standard.ValueAsString();
             string json =
                 "{\"$type\": \"Scaffold.Core.CalcObjects.CalcObjectWrapper`1[[" +
-                "MagmaWorks.Taxonomy.Standards.Eurocode.En1992, MagmaWorks.Taxonomy.Standards]], " +
+                "VividOrange.Taxonomy.Standards.Eurocode.En1992, VividOrange.Taxonomy.Standards]], " +
                 "Scaffold.Core\", \"DisplayName\": \"DS EN 1992-1-1\", \"Symbol\": \"EN2\", \"Status\": \"Fail\"," +
-                "\"Value\": {\"$type\": \"MagmaWorks.Taxonomy.Standards.Eurocode.En1992, MagmaWorks.Taxonomy.Standards\"," +
+                "\"Value\": {\"$type\": \"VividOrange.Taxonomy.Standards.Eurocode.En1992, VividOrange.Taxonomy.Standards\"," +
                 "\"Body\": \"EN\", \"Part\": \"Part1_2\", \"NationalAnnex\": \"Denmark\"}}";
 
             // Act & Assert

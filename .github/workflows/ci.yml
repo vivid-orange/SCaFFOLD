@@ -13,3 +13,5 @@ jobs:
   ci:
     uses: vivid-orange/Actions/.github/workflows/ci-dotnet.yml@main
     secrets: inherit
+    with:
+      lint: false   

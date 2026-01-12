@@ -1,7 +1,7 @@
-using MagmaWorks.Taxonomy.Loads.Combinations;
-using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Loads.Combinations;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Combinations;
 public sealed class CalcFrequentCombination : FrequentCombination, ICalcValue

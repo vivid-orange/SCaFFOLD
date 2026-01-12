@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Profiles;
-using MagmaWorks.Taxonomy.Sections.SectionProperties;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcQuantities;
@@ -11,6 +8,9 @@ using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
 using UnitsNet;
 using UnitsNet.Units;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Sections.SectionProperties;
 
 namespace Scaffold.Calculations.Eurocode.Concrete;
 public class Creep : ICalculation

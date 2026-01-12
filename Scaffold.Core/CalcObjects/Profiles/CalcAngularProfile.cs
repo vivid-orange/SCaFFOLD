@@ -1,9 +1,9 @@
-using MagmaWorks.Taxonomy.Profiles;
-using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
 using Scaffold.Core.Utility;
-using Angle = MagmaWorks.Taxonomy.Profiles.Angle;
+using VividOrange.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Serialization;
+using Angle = VividOrange.Taxonomy.Profiles.Angle;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
 public sealed class CalcAngularProfile : Angle, ICalcProfile<CalcAngularProfile>, ICalcValue

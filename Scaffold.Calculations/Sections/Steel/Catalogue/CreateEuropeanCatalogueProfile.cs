@@ -1,8 +1,8 @@
-﻿using MagmaWorks.Taxonomy.Profiles;
-using Scaffold.Calculations.CalculationUtility;
+﻿using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcObjects;
+using VividOrange.Taxonomy.Profiles;
 
 namespace Scaffold.Calculations.Sections.Steel.Catalogue;
 public class CreateEuropeanCatalogueProfile : CalcObjectInput<CalcObjectWrapper<IEuropeanCatalogue>>

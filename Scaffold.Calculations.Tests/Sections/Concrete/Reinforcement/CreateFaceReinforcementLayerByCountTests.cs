@@ -1,7 +1,7 @@
-﻿using MagmaWorks.Taxonomy.Sections;
-using MagmaWorks.Taxonomy.Sections.Reinforcement;
-using Scaffold.Core.CalcObjects.Sections.Reinforcement;
+﻿using Scaffold.Core.CalcObjects.Sections.Reinforcement;
 using Scaffold.Core.CalcQuantities;
+using VividOrange.Taxonomy.Sections;
+using VividOrange.Taxonomy.Sections.Reinforcement;
 
 namespace Scaffold.Calculations.Sections.Concrete.Reinforcement;
 

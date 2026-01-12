@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MagmaWorks.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Profiles;
 
 namespace Scaffold.Calculations.CalculationUtility
 {

@@ -1,7 +1,7 @@
-using MagmaWorks.Taxonomy.Loads.Cases;
-using MagmaWorks.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Loads.Cases;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Cases;
 public sealed class CalcPermanentCase : PermanentCase, ICalcValue
