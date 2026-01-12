@@ -1,4 +1,4 @@
-﻿using MagmaWorks.Taxonomy.Profiles;
+﻿using VividOrange.Taxonomy.Profiles;
 using SkiaSharp;
 
 namespace Scaffold.Core.Images.Drawing

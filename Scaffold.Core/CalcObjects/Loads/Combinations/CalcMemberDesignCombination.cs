@@ -1,5 +1,5 @@
-using MagmaWorks.Taxonomy.Loads.Combinations;
-using MagmaWorks.Taxonomy.Serialization;
+using VividOrange.Taxonomy.Loads.Combinations;
+using VividOrange.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
 

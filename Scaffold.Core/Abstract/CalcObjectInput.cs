@@ -1,4 +1,4 @@
-﻿using MagmaWorks.Taxonomy.Serialization;
+﻿using VividOrange.Taxonomy.Serialization;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.Extensions;
 

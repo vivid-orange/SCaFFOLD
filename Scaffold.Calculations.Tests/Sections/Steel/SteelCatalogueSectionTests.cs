@@ -1,4 +1,4 @@
-using MagmaWorks.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Profiles;
 using Scaffold.Calculations.CalculationUtility;
 
 namespace Scaffold.Calculations.Sections.Steel.Catalogue;

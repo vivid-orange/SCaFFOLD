@@ -7,16 +7,5 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="MagmaWorks.Taxonomy.Cases" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Loads" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Materials" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles.Catalogue" Version="0.1.10" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles.Perimeter" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Sections" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Sections.SectionProperties" Version="0.1.1" />
-  </ItemGroup>
 
 </Project>

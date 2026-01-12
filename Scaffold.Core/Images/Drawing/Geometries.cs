@@ -1,4 +1,4 @@
-﻿using MagmaWorks.Geometry;
+﻿using VividOrange.Geometry;
 using SkiaSharp;
 
 namespace Scaffold.Core.Images.Drawing

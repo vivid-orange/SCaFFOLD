@@ -1,7 +1,7 @@
-﻿using MagmaWorks.Taxonomy.Materials;
-using MagmaWorks.Taxonomy.Profiles;
-using MagmaWorks.Taxonomy.Sections;
-using MagmaWorks.Taxonomy.Sections.Reinforcement;
+﻿using VividOrange.Taxonomy.Materials;
+using VividOrange.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Sections;
+using VividOrange.Taxonomy.Sections.Reinforcement;
 using SkiaSharp;
 
 namespace Scaffold.Core.Images.Drawing

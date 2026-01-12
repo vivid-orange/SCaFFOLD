@@ -1,6 +1,6 @@
-using MagmaWorks.Taxonomy.Sections;
-using MagmaWorks.Taxonomy.Sections.SectionProperties;
-using MagmaWorks.Taxonomy.Serialization;
+using VividOrange.Taxonomy.Sections;
+using VividOrange.Taxonomy.Sections.SectionProperties;
+using VividOrange.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
 

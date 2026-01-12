@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Standards.Eurocode;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;

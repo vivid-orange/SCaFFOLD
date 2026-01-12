@@ -1,6 +1,6 @@
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Serialization;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Serialization;
+using VividOrange.Taxonomy.Standards.Eurocode;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
 

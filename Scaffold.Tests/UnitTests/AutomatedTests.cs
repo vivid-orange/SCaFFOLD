@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using MagmaWorks.Geometry;
-using MagmaWorks.Taxonomy.Materials;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Profiles;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
+using VividOrange.Geometry;
+using VividOrange.Taxonomy.Materials;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Standards.Eurocode;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Interfaces;
 using UnitsNet;
@@ -285,7 +285,7 @@ namespace Scaffold.Tests.UnitTests
 
             foreach (Assembly assembly in assemblies)
             {
-                if (!assembly.FullName.StartsWith("MagmaWorks."))
+                if (!assembly.FullName.StartsWith("VividOrange."))
                 {
                     continue;
                 }

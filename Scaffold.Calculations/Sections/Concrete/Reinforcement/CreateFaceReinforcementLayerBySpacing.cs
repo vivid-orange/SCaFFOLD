@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using MagmaWorks.Taxonomy.Sections;
+using VividOrange.Taxonomy.Sections;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;

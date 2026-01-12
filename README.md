@@ -1,8 +1,8 @@
 # SCaFFOLD
 *Structural Calculations Framework*
 
-![GitHub Actions Workflow Status](https://github.com/MagmaWorks/SCaFFOLD/actions/workflows/on-merge-to-main.yml/badge.svg)
-[![codecov](https://codecov.io/gh/MagmaWorks/SCaFFOLD/graph/badge.svg)](https://codecov.io/gh/MagmaWorks/SCaFFOLD)
+![GitHub Actions Workflow Status](https://github.com/VividOrange/SCaFFOLD/actions/workflows/on-merge-to-main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/VividOrange/SCaFFOLD/graph/badge.svg)](https://codecov.io/gh/VividOrange/SCaFFOLD)
 
 Free, Open and Lightweight Design
 
@@ -20,13 +20,13 @@ RunInConsole - console app client for CalcCore.
 TestCalcs - various calcuations written for the framework.
 
 ## Latest release
-[![Releasestatus](https://github.com/MagmaWorks/SCaFFOLD/actions/workflows/on-release.yml/badge.svg)](https://github.com/MagmaWorks/SCaFFOLD/releases)
-[![NuGet Version](https://img.shields.io/nuget/v/MagmaWorks.SCaFFOLD.Profiles)](https://www.nuget.org/packages?q=Magmaworks.SCaFFOLD)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/MagmaWorks/SCaFFOLD)
-![GitHub Release Date](https://img.shields.io/github/release-date/MagmaWorks/SCaFFOLD)
+[![Releasestatus](https://github.com/VividOrange/SCaFFOLD/actions/workflows/on-release.yml/badge.svg)](https://github.com/VividOrange/SCaFFOLD/releases)
+[![NuGet Version](https://img.shields.io/nuget/v/VividOrange.SCaFFOLD.Profiles)](https://www.nuget.org/packages?q=Magmaworks.SCaFFOLD)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/VividOrange/SCaFFOLD)
+![GitHub Release Date](https://img.shields.io/github/release-date/VividOrange/SCaFFOLD)
 
 
 ## Contributing 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/MagmaWorks/SCaFFOLD/issues)
-![GitHub contributors](https://img.shields.io/github/contributors/MagmaWorks/SCaFFOLD)
-![GitHub top language](https://img.shields.io/github/languages/top/MagmaWorks/SCaFFOLD)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/VividOrange/SCaFFOLD/issues)
+![GitHub contributors](https://img.shields.io/github/contributors/VividOrange/SCaFFOLD)
+![GitHub top language](https://img.shields.io/github/languages/top/VividOrange/SCaFFOLD)

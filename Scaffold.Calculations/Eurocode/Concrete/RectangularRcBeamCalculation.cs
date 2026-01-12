@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MagmaWorks.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Profiles;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcObjects.Profiles;
 using Scaffold.Core.CalcValues;

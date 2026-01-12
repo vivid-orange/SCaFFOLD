@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <MinVerMinimumMajorMinor>0.12</MinVerMinimumMajorMinor>
@@ -18,8 +18,8 @@
     <Company>Whitby Wood</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/MagmaWorks/SCaFFOLD/</RepositoryUrl>
-    <PackageIcon>MagmaWorks.png</PackageIcon>
+    <RepositoryUrl>https://github.com/VividOrange/SCaFFOLD/</RepositoryUrl>
+    <PackageIcon>VividOrange.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -27,15 +27,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MagmaWorks.Taxonomy.Cases" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Loads" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Materials" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles.Perimeter" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Profiles.Catalogue" Version="0.1.10" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Sections" Version="0.1.11" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Sections.SectionProperties" Version="0.1.1" />
-    <PackageReference Include="MagmaWorks.Taxonomy.Serialization" Version="0.1.11" />
     <PackageReference Include="MinVer" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -51,7 +42,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\MagmaWorks.png">
+    <None Include="..\VividOrange.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
@@ -63,8 +54,17 @@
 
   <ItemGroup>
     <PackageReference Include="UnitsNet" Version="5.75.0" />
-    <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    <PackageReference Include="SkiaSharp" Version="3.119.1" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Cases" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Loads" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Materials" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Profiles" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Profiles.Catalogue" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Profiles.Perimeter" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Sections" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Sections.SectionProperties" Version="0.2.0" />
+    <PackageReference Include="VividOrange.Taxonomy.Serialization" Version="0.2.0" />
   </ItemGroup>
 
 </Project>

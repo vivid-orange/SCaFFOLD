@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Profiles;
-using MagmaWorks.Taxonomy.Sections.SectionProperties;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Sections.SectionProperties;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcQuantities;

@@ -1,5 +1,5 @@
-﻿using MagmaWorks.Taxonomy.Sections;
-using MagmaWorks.Taxonomy.Sections.Reinforcement;
+﻿using VividOrange.Taxonomy.Sections;
+using VividOrange.Taxonomy.Sections.Reinforcement;
 using Scaffold.Core.CalcObjects.Sections.Reinforcement;
 using Scaffold.Core.CalcQuantities;
 

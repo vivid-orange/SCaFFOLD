@@ -1,4 +1,4 @@
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
 using Scaffold.Core.CalcQuantities;
 
 namespace Scaffold.Calculations.Eurocode.Steel;
