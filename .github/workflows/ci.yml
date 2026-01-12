@@ -14,4 +14,4 @@ jobs:
     uses: vivid-orange/Actions/.github/workflows/ci-dotnet.yml@main
     secrets: inherit
     with:
-      dotnet: '8.0.x'
+      dotnet: '9.0.x'
