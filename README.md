@@ -21,7 +21,7 @@ TestCalcs - various calcuations written for the framework.
 
 ## Latest release
 [![Releasestatus](https://github.com/VividOrange/SCaFFOLD/actions/workflows/on-release.yml/badge.svg)](https://github.com/VividOrange/SCaFFOLD/releases)
-[![NuGet Version](https://img.shields.io/nuget/v/VividOrange.SCaFFOLD.Profiles)](https://www.nuget.org/packages?q=Magmaworks.SCaFFOLD)
+[![NuGet Version](https://img.shields.io/nuget/v/VividOrange.SCaFFOLD.Profiles)](https://www.nuget.org/packages?q=VividOrange.SCaFFOLD)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/VividOrange/SCaFFOLD)
 ![GitHub Release Date](https://img.shields.io/github/release-date/VividOrange/SCaFFOLD)
 
