@@ -1,6 +1,6 @@
-﻿using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+﻿using Scaffold.Core.CalcObjects.Sections.Reinforcement;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
 using VividOrange.Taxonomy.Sections.Reinforcement;
-using Scaffold.Core.CalcObjects.Sections.Reinforcement;
 
 namespace Scaffold.Calculations.Sections.Concrete.Reinforcement;
 

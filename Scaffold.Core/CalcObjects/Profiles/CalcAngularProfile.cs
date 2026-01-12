@@ -1,8 +1,8 @@
-using VividOrange.Taxonomy.Profiles;
-using VividOrange.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
 using Scaffold.Core.Utility;
+using VividOrange.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Serialization;
 using Angle = VividOrange.Taxonomy.Profiles.Angle;
 
 namespace Scaffold.Core.CalcObjects.Profiles;

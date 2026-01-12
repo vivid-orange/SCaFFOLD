@@ -1,7 +1,7 @@
-using VividOrange.Taxonomy.Sections.Reinforcement;
-using VividOrange.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Sections.Reinforcement;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Sections.Reinforcement;
 public sealed class CalcReinforcementLayoutByCount : ReinforcementLayoutByCount, ICalcValue

@@ -1,8 +1,8 @@
-﻿using VividOrange.Taxonomy.Materials;
+﻿using SkiaSharp;
+using VividOrange.Taxonomy.Materials;
 using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Sections;
 using VividOrange.Taxonomy.Sections.Reinforcement;
-using SkiaSharp;
 
 namespace Scaffold.Core.Images.Drawing
 {

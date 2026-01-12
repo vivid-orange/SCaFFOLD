@@ -1,7 +1,7 @@
-using VividOrange.Taxonomy.Materials;
-using VividOrange.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Materials;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Materials;
 public sealed class CalcParabolaRectangleMaterial : ParabolaRectangleMaterial, ICalcValue

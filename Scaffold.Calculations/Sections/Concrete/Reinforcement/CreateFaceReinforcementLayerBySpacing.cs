@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using VividOrange.Taxonomy.Sections;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;
@@ -7,6 +6,7 @@ using Scaffold.Core.CalcObjects.Sections.Reinforcement;
 using Scaffold.Core.CalcQuantities;
 using Scaffold.Core.CalcValues;
 using UnitsNet.Units;
+using VividOrange.Taxonomy.Sections;
 
 namespace Scaffold.Calculations.Sections.Concrete.Reinforcement;
 public class CreateFaceReinforcementLayerBySpacing : CalcObjectInput<CalcFaceReinforcementLayer>

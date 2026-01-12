@@ -29,7 +29,8 @@ public class Arc : GeometryBase
         {
             startAngle -= 2 * Math.PI;
             endAngle -= 2 * Math.PI;
-        };
+        }
+        ;
     }
 
     double endAngle;

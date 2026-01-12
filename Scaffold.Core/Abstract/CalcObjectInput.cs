@@ -1,6 +1,6 @@
-﻿using VividOrange.Taxonomy.Serialization;
-using Scaffold.Core.Attributes;
+﻿using Scaffold.Core.Attributes;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.Abstract;
 

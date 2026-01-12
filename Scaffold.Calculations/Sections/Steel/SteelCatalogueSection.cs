@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using VividOrange.Taxonomy.Materials.StandardMaterials.En;
-using VividOrange.Taxonomy.Standards.Eurocode;
 using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Calculations.Sections.Steel.Catalogue;
 using Scaffold.Core.Abstract;
@@ -14,6 +12,8 @@ using Scaffold.Core.Images.Drawing;
 using Scaffold.Core.Interfaces;
 using Scaffold.Core.Models;
 using SkiaSharp;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Sections.Steel;
 public class SteelCatalogueSection : CalcObjectInput<CalcSection>

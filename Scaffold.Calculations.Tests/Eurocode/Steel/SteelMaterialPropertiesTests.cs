@@ -1,5 +1,5 @@
-using VividOrange.Taxonomy.Materials.StandardMaterials.En;
 using Scaffold.Core.CalcQuantities;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
 
 namespace Scaffold.Calculations.Eurocode.Steel;
 

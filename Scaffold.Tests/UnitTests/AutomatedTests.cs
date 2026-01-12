@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Scaffold.Core.CalcValues;
+using Scaffold.Core.Interfaces;
+using UnitsNet;
+using UnitsNet.Units;
 using VividOrange.Geometry;
 using VividOrange.Taxonomy.Materials;
 using VividOrange.Taxonomy.Materials.StandardMaterials.En;
 using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Standards.Eurocode;
-using Scaffold.Core.CalcValues;
-using Scaffold.Core.Interfaces;
-using UnitsNet;
-using UnitsNet.Units;
 
 namespace Scaffold.Tests.UnitTests
 {

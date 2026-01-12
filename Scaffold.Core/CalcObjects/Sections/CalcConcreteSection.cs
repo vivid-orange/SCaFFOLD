@@ -1,10 +1,10 @@
+using Newtonsoft.Json;
+using Scaffold.Core.Extensions;
 using VividOrange.Taxonomy.Materials;
 using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Sections;
 using VividOrange.Taxonomy.Sections.Reinforcement;
 using VividOrange.Taxonomy.Serialization;
-using Newtonsoft.Json;
-using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Sections;
 public sealed class CalcConcreteSection : ConcreteSection, ICalcValue

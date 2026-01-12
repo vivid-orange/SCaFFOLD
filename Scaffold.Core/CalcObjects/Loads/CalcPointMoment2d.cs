@@ -1,7 +1,7 @@
-using VividOrange.Taxonomy.Loads;
-using VividOrange.Taxonomy.Serialization;
 using Newtonsoft.Json;
 using Scaffold.Core.Extensions;
+using VividOrange.Taxonomy.Loads;
+using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
 public sealed class CalcPointMoment2d : PointMoment2d, ICalcValue

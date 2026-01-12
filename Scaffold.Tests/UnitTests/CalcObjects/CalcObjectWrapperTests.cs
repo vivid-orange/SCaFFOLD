@@ -1,7 +1,7 @@
-﻿using VividOrange.Taxonomy.Standards;
-using VividOrange.Taxonomy.Standards.Eurocode;
-using Scaffold.Core.CalcObjects;
+﻿using Scaffold.Core.CalcObjects;
 using Scaffold.Core.Enums;
+using VividOrange.Taxonomy.Standards;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Tests.UnitTests.CalcObjects
 {

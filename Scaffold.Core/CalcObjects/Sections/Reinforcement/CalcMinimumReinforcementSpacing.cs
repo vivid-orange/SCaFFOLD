@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
+using Scaffold.Core.Extensions;
 using VividOrange.Taxonomy.Sections.Reinforcement;
 using VividOrange.Taxonomy.Serialization;
 using VividOrange.Taxonomy.Standards.Eurocode;
-using Newtonsoft.Json;
-using Scaffold.Core.Extensions;
 
 namespace Scaffold.Core.CalcObjects.Sections.Reinforcement;
 public sealed class CalcMinimumReinforcementSpacing : MinimumReinforcementSpacing, ICalcValue

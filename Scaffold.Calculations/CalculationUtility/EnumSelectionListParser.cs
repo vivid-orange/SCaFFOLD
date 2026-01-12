@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Scaffold.Core.CalcValues;
 using VividOrange.Taxonomy.Materials.StandardMaterials.En;
 using VividOrange.Taxonomy.Sections;
 using VividOrange.Taxonomy.Sections.Reinforcement;
 using VividOrange.Taxonomy.Standards.Eurocode;
-using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Calculations.CalculationUtility
 {
