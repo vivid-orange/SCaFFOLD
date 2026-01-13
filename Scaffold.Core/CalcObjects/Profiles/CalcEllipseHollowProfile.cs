@@ -5,6 +5,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
+
 public sealed class CalcEllipseHollowProfile : EllipseHollow, ICalcProfile<CalcEllipseHollowProfile>, ICalcValue, IParsable<CalcEllipseHollowProfile>
 {
     public string DisplayName { get; set; } = string.Empty;

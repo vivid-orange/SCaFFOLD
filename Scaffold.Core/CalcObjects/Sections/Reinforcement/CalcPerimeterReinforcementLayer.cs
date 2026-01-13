@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Sections.Reinforcement;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Sections.Reinforcement;
+
 public sealed class CalcPerimeterReinforcementLayer : PerimeterReinforcementLayer, ICalcValue, IParsable<CalcPerimeterReinforcementLayer>
 {
     public string DisplayName { get; set; } = string.Empty;

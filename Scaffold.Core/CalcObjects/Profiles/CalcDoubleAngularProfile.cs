@@ -5,6 +5,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
+
 public sealed class CalcDoubleAngularProfile : DoubleAngle, ICalcProfile<CalcDoubleAngularProfile>, ICalcValue, IParsable<CalcDoubleAngularProfile>
 {
     public string DisplayName { get; set; } = string.Empty;

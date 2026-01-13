@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Materials;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Materials;
+
 public sealed class CalcParabolaRectangleMaterial : ParabolaRectangleMaterial, ICalcValue, IParsable<CalcParabolaRectangleMaterial>
 {
     public string DisplayName { get; set; } = string.Empty;

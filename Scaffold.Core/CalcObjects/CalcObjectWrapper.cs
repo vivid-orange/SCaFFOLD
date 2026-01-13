@@ -1,6 +1,7 @@
 ﻿using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects;
+
 public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable,
     IParsable<CalcObjectWrapper<T>>
 {

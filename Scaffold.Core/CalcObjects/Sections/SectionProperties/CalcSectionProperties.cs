@@ -6,6 +6,7 @@ using VividOrange.Taxonomy.Sections.SectionProperties;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Sections;
+
 public sealed class CalcSectionProperties : SectionProperties, ICalcValue, IParsable<CalcSectionProperties>
 {
     public string DisplayName { get; set; } = string.Empty;

@@ -16,6 +16,7 @@ using VividOrange.Taxonomy.Materials.StandardMaterials.En;
 using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Sections.Steel;
+
 public class SteelCatalogueSection : CalcObjectInput<CalcSection>
 {
     public override string CalculationName { get; set; } = "Steel Catalogue Section";

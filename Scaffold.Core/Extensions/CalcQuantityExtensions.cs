@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 
 namespace Scaffold.Core.CalcQuantities;
+
 public static class CalcQuantityExtensions
 {
     public static T Sum<T>(this IEnumerable<T> source)

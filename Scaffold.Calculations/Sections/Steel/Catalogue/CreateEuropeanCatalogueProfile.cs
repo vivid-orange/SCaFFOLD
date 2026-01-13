@@ -5,6 +5,7 @@ using Scaffold.Core.CalcObjects;
 using VividOrange.Taxonomy.Profiles;
 
 namespace Scaffold.Calculations.Sections.Steel.Catalogue;
+
 public class CreateEuropeanCatalogueProfile : CalcObjectInput<CalcObjectWrapper<IEuropeanCatalogue>>
 {
     public override string CalculationName { get; set; } = "European Catalogue Profile";

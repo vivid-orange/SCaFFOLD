@@ -1,4 +1,5 @@
 ﻿namespace Scaffold.Core.Exceptions;
+
 public class ScaffoldException : Exception
 {
     /// <exception cref="ScaffoldException">

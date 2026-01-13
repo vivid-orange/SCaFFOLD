@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads.Combinations;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Combinations;
+
 public sealed class CalcAccidentalCombination : AccidentalCombination, ICalcValue, IParsable<CalcAccidentalCombination>
 {
     public string DisplayName { get; set; } = string.Empty;

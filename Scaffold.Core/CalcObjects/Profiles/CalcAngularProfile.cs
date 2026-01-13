@@ -6,6 +6,7 @@ using VividOrange.Taxonomy.Serialization;
 using Angle = VividOrange.Taxonomy.Profiles.Angle;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
+
 public sealed class CalcAngularProfile : Angle, ICalcProfile<CalcAngularProfile>, ICalcValue, IParsable<CalcAngularProfile>
 {
     public string DisplayName { get; set; } = string.Empty;

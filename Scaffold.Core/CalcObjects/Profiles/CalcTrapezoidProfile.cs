@@ -5,6 +5,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
+
 public sealed class CalcTrapezoidProfile : Trapezoid, ICalcProfile<CalcTrapezoidProfile>, ICalcValue, IParsable<CalcTrapezoidProfile>
 {
     public string DisplayName { get; set; } = string.Empty;

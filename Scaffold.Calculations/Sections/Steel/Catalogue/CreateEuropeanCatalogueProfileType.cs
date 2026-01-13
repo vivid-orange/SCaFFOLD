@@ -4,6 +4,7 @@ using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Calculations.Sections.Steel.Catalogue;
+
 public class CreateEuropeanCatalogueProfileType : CalcObjectInput<CalcSelectionList>
 {
     public override string CalculationName { get; set; } = "European Catalogue Profile Type";

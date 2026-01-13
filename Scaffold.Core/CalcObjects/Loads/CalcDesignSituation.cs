@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
+
 public sealed class CalcDesignSituation : DesignSituation, ICalcValue, IParsable<CalcDesignSituation>
 {
     public string DisplayName { get; set; } = string.Empty;

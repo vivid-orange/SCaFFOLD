@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
+
 public sealed class CalcPointForce : PointForce, ICalcValue, IParsable<CalcPointForce>
 {
     public string DisplayName { get; set; } = string.Empty;

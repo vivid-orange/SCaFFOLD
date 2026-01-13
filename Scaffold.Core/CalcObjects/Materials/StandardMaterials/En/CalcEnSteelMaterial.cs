@@ -5,6 +5,7 @@ using VividOrange.Taxonomy.Serialization;
 using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
+
 public sealed class CalcEnSteelMaterial : EnSteelMaterial, ICalcValue, IParsable<CalcEnSteelMaterial>
 {
     public string DisplayName { get; set; } = string.Empty;

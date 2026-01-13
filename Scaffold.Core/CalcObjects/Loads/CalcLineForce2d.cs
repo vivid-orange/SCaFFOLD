@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
+
 public sealed class CalcLineForce2d : LineForce2d, ICalcValue, IParsable<CalcLineForce2d>
 {
     public string DisplayName { get; set; } = string.Empty;

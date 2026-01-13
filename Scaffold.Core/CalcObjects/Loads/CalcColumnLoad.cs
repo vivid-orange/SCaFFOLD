@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
+
 public sealed class CalcColumnLoad : ColumnLoad, ICalcValue, IParsable<CalcColumnLoad>
 {
     public string DisplayName { get; set; } = string.Empty;

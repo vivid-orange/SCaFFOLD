@@ -5,6 +5,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
+
 public sealed class CalcCProfile : C, ICalcProfile<CalcCProfile>, ICalcValue, IParsable<CalcCProfile>
 {
     public string DisplayName { get; set; } = string.Empty;

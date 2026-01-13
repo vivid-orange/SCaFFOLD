@@ -13,6 +13,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Sections.SectionProperties;
 
 namespace Scaffold.Calculations.Eurocode.Concrete;
+
 public class Creep : ICalculation
 {
     public string ReferenceName { get; set; }

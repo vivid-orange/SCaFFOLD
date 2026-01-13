@@ -9,6 +9,7 @@ using UnitsNet;
 using UnitsNet.Units;
 
 namespace Scaffold.Calculations;
+
 public class SectionPropertiesCalculation : ICalculation
 {
     public string ReferenceName { get; set; }

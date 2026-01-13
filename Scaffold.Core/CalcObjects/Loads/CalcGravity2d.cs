@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
+
 public sealed class CalcGravity2d : Gravity2d, ICalcValue, IParsable<CalcGravity2d>
 {
     public string DisplayName { get; set; } = string.Empty;

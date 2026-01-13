@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads.Combinations;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Combinations;
+
 public sealed class CalcEquilibriumCombination : EquilibriumCombination, ICalcValue, IParsable<CalcEquilibriumCombination>
 {
     public string DisplayName { get; set; } = string.Empty;

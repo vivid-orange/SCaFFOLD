@@ -4,6 +4,7 @@ using VividOrange.Taxonomy.Loads.Cases;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Cases;
+
 public sealed class CalcPermanentCase : PermanentCase, ICalcValue, IParsable<CalcPermanentCase>
 {
     public string DisplayName { get; set; } = string.Empty;
