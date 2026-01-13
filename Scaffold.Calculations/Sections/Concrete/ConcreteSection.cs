@@ -22,7 +22,6 @@ using VividOrange.Taxonomy.Sections;
 using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Sections.Concrete;
-
 public class ConcreteSection : CalcObjectInput<CalcConcreteSection>
 {
     public override string CalculationName { get; set; } = "Concrete Section";
