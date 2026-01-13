@@ -17,5 +17,5 @@ public static class CalcQuantityExtensions
             (acc, item) => (value: item + acc.value, count: acc.count + 1));
 
         return result.value / result.count;
-     }
+    }
 }
