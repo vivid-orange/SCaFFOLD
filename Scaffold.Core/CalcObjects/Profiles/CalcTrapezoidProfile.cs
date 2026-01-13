@@ -5,10 +5,8 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
-public sealed class CalcTrapezoidProfile : Trapezoid, ICalcProfile<CalcTrapezoidProfile>, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcTrapezoidProfile>
-#endif
+
+public sealed class CalcTrapezoidProfile : Trapezoid, ICalcProfile<CalcTrapezoidProfile>, ICalcValue, IParsable<CalcTrapezoidProfile>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

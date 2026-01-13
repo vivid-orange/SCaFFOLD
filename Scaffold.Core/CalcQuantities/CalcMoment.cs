@@ -1,28 +1,24 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcMoment : CalcQuantity<Moment>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcMoment>
-    , IAdditionOperators<CalcMoment, CalcMoment, CalcMoment>
-    , IAdditionOperators<CalcMoment, double, CalcMoment>
-    , IAdditiveIdentity<CalcMoment, CalcMoment>
-    , ISubtractionOperators<CalcMoment, CalcMoment, CalcMoment>
-    , ISubtractionOperators<CalcMoment, double, CalcMoment>
-    , IMultiplyOperators<CalcMoment, double, CalcMoment>
-    , IDivisionOperators<CalcMoment, CalcLength, CalcForce>
-    , IDivisionOperators<CalcMoment, CalcForce, CalcLength>
-    , IDivisionOperators<CalcMoment, double, CalcMoment>
-    , IDivisionOperators<CalcMoment, CalcMoment, CalcDouble>
-    , IUnaryNegationOperators<CalcMoment, CalcMoment>
-    , IComparisonOperators<CalcMoment, CalcMoment, bool>
-#endif
+public sealed class CalcMoment : CalcQuantity<Moment>,
+    IParsable<CalcMoment>,
+    IAdditionOperators<CalcMoment, CalcMoment, CalcMoment>,
+    IAdditionOperators<CalcMoment, double, CalcMoment>,
+    IAdditiveIdentity<CalcMoment, CalcMoment>,
+    ISubtractionOperators<CalcMoment, CalcMoment, CalcMoment>,
+    ISubtractionOperators<CalcMoment, double, CalcMoment>,
+    IMultiplyOperators<CalcMoment, double, CalcMoment>,
+    IDivisionOperators<CalcMoment, CalcLength, CalcForce>,
+    IDivisionOperators<CalcMoment, CalcForce, CalcLength>,
+    IDivisionOperators<CalcMoment, double, CalcMoment>,
+    IDivisionOperators<CalcMoment, CalcMoment, CalcDouble>,
+    IUnaryNegationOperators<CalcMoment, CalcMoment>,
+    IComparisonOperators<CalcMoment, CalcMoment, bool>
 {
     public CalcMoment(Moment moment, string name, string symbol = "")
         : base(moment, name, symbol) { }

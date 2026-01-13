@@ -1,29 +1,25 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcArea : CalcQuantity<Area>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcArea>
-    , IAdditionOperators<CalcArea, CalcArea, CalcArea>
-    , IAdditionOperators<CalcArea, double, CalcArea>
-    , IAdditiveIdentity<CalcArea, CalcArea>
-    , ISubtractionOperators<CalcArea, CalcArea, CalcArea>
-    , ISubtractionOperators<CalcArea, double, CalcArea>
-    , IMultiplyOperators<CalcArea, CalcLength, CalcVolume>
-    , IMultiplyOperators<CalcArea, CalcArea, CalcInertia>
-    , IMultiplyOperators<CalcArea, double, CalcArea>
-    , IDivisionOperators<CalcArea, CalcLength, CalcLength>
-    , IDivisionOperators<CalcArea, double, CalcArea>
-    , IDivisionOperators<CalcArea, CalcArea, CalcDouble>
-    , IUnaryNegationOperators<CalcArea, CalcArea>
-    , IComparisonOperators<CalcArea, CalcArea, bool>
-#endif
+public sealed class CalcArea : CalcQuantity<Area>,
+    IParsable<CalcArea>,
+    IAdditionOperators<CalcArea, CalcArea, CalcArea>,
+    IAdditionOperators<CalcArea, double, CalcArea>,
+    IAdditiveIdentity<CalcArea, CalcArea>,
+    ISubtractionOperators<CalcArea, CalcArea, CalcArea>,
+    ISubtractionOperators<CalcArea, double, CalcArea>,
+    IMultiplyOperators<CalcArea, CalcLength, CalcVolume>,
+    IMultiplyOperators<CalcArea, CalcArea, CalcInertia>,
+    IMultiplyOperators<CalcArea, double, CalcArea>,
+    IDivisionOperators<CalcArea, CalcLength, CalcLength>,
+    IDivisionOperators<CalcArea, double, CalcArea>,
+    IDivisionOperators<CalcArea, CalcArea, CalcDouble>,
+    IUnaryNegationOperators<CalcArea, CalcArea>,
+    IComparisonOperators<CalcArea, CalcArea, bool>
 {
     public CalcArea(Area area, string name, string symbol = "")
         : base(area, name, symbol) { }

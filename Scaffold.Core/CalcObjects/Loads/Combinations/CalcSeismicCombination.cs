@@ -4,10 +4,8 @@ using VividOrange.Taxonomy.Loads.Combinations;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Combinations;
-public sealed class CalcSeismicCombination : SeismicCombination, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcSeismicCombination>
-#endif
+
+public sealed class CalcSeismicCombination : SeismicCombination, ICalcValue, IParsable<CalcSeismicCombination>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

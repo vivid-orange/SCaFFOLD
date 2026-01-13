@@ -1,27 +1,23 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcLinearMoment : CalcQuantity<MomentPerLength>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcLinearMoment>
-    , IAdditionOperators<CalcLinearMoment, CalcLinearMoment, CalcLinearMoment>
-    , IAdditionOperators<CalcLinearMoment, double, CalcLinearMoment>
-    , IAdditiveIdentity<CalcLinearMoment, CalcLinearMoment>
-    , ISubtractionOperators<CalcLinearMoment, CalcLinearMoment, CalcLinearMoment>
-    , ISubtractionOperators<CalcLinearMoment, double, CalcLinearMoment>
-    , IMultiplyOperators<CalcLinearMoment, CalcLength, CalcMoment>
-    , IMultiplyOperators<CalcLinearMoment, double, CalcLinearMoment>
-    , IDivisionOperators<CalcLinearMoment, double, CalcLinearMoment>
-    , IDivisionOperators<CalcLinearMoment, CalcLinearMoment, CalcDouble>
-    , IUnaryNegationOperators<CalcLinearMoment, CalcLinearMoment>
-    , IComparisonOperators<CalcLinearMoment, CalcLinearMoment, bool>
-#endif
+public sealed class CalcLinearMoment : CalcQuantity<MomentPerLength>,
+    IParsable<CalcLinearMoment>,
+    IAdditionOperators<CalcLinearMoment, CalcLinearMoment, CalcLinearMoment>,
+    IAdditionOperators<CalcLinearMoment, double, CalcLinearMoment>,
+    IAdditiveIdentity<CalcLinearMoment, CalcLinearMoment>,
+    ISubtractionOperators<CalcLinearMoment, CalcLinearMoment, CalcLinearMoment>,
+    ISubtractionOperators<CalcLinearMoment, double, CalcLinearMoment>,
+    IMultiplyOperators<CalcLinearMoment, CalcLength, CalcMoment>,
+    IMultiplyOperators<CalcLinearMoment, double, CalcLinearMoment>,
+    IDivisionOperators<CalcLinearMoment, double, CalcLinearMoment>,
+    IDivisionOperators<CalcLinearMoment, CalcLinearMoment, CalcDouble>,
+    IUnaryNegationOperators<CalcLinearMoment, CalcLinearMoment>,
+    IComparisonOperators<CalcLinearMoment, CalcLinearMoment, bool>
 {
     public CalcLinearMoment(MomentPerLength linearMoment, string name, string symbol = "")
         : base(linearMoment, name, symbol) { }

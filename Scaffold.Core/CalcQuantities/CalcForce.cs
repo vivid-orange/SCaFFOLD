@@ -1,29 +1,25 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcForce : CalcQuantity<Force>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcForce>
-    , IAdditionOperators<CalcForce, CalcForce, CalcForce>
-    , IAdditionOperators<CalcForce, double, CalcForce>
-    , IAdditiveIdentity<CalcForce, CalcForce>
-    , ISubtractionOperators<CalcForce, CalcForce, CalcForce>
-    , ISubtractionOperators<CalcForce, double, CalcForce>
-    , IMultiplyOperators<CalcForce, CalcLength, CalcMoment>
-    , IMultiplyOperators<CalcForce, double, CalcForce>
-    , IDivisionOperators<CalcForce, CalcLength, CalcLinearForce>
-    , IDivisionOperators<CalcForce, CalcArea, CalcStress>
-    , IDivisionOperators<CalcForce, double, CalcForce>
-    , IDivisionOperators<CalcForce, CalcForce, CalcDouble>
-    , IUnaryNegationOperators<CalcForce, CalcForce>
-    , IComparisonOperators<CalcForce, CalcForce, bool>
-#endif
+public sealed class CalcForce : CalcQuantity<Force>,
+    IParsable<CalcForce>,
+    IAdditionOperators<CalcForce, CalcForce, CalcForce>,
+    IAdditionOperators<CalcForce, double, CalcForce>,
+    IAdditiveIdentity<CalcForce, CalcForce>,
+    ISubtractionOperators<CalcForce, CalcForce, CalcForce>,
+    ISubtractionOperators<CalcForce, double, CalcForce>,
+    IMultiplyOperators<CalcForce, CalcLength, CalcMoment>,
+    IMultiplyOperators<CalcForce, double, CalcForce>,
+    IDivisionOperators<CalcForce, CalcLength, CalcLinearForce>,
+    IDivisionOperators<CalcForce, CalcArea, CalcStress>,
+    IDivisionOperators<CalcForce, double, CalcForce>,
+    IDivisionOperators<CalcForce, CalcForce, CalcDouble>,
+    IUnaryNegationOperators<CalcForce, CalcForce>,
+    IComparisonOperators<CalcForce, CalcForce, bool>
 {
     public CalcForce(Force force, string name, string symbol = "")
         : base(force, name, symbol) { }

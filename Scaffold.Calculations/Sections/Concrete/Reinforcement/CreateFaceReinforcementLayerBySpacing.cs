@@ -9,6 +9,7 @@ using UnitsNet.Units;
 using VividOrange.Taxonomy.Sections;
 
 namespace Scaffold.Calculations.Sections.Concrete.Reinforcement;
+
 public class CreateFaceReinforcementLayerBySpacing : CalcObjectInput<CalcFaceReinforcementLayer>
 {
     public override string CalculationName { get; set; } = "Create Face Reinforcement Layer By Spacing";

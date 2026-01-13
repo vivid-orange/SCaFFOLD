@@ -1,28 +1,24 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcStress : CalcQuantity<Stress>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcStress>
-    , IAdditionOperators<CalcStress, CalcStress, CalcStress>
-    , IAdditionOperators<CalcStress, double, CalcStress>
-    , IAdditiveIdentity<CalcStress, CalcStress>
-    , ISubtractionOperators<CalcStress, CalcStress, CalcStress>
-    , ISubtractionOperators<CalcStress, double, CalcStress>
-    , IMultiplyOperators<CalcStress, CalcLength, CalcLinearForce>
-    , IMultiplyOperators<CalcStress, CalcArea, CalcForce>
-    , IMultiplyOperators<CalcStress, double, CalcStress>
-    , IDivisionOperators<CalcStress, double, CalcStress>
-    , IDivisionOperators<CalcStress, CalcStress, CalcDouble>
-    , IUnaryNegationOperators<CalcStress, CalcStress>
-    , IComparisonOperators<CalcStress, CalcStress, bool>
-#endif
+public sealed class CalcStress : CalcQuantity<Stress>,
+    IParsable<CalcStress>,
+    IAdditionOperators<CalcStress, CalcStress, CalcStress>,
+    IAdditionOperators<CalcStress, double, CalcStress>,
+    IAdditiveIdentity<CalcStress, CalcStress>,
+    ISubtractionOperators<CalcStress, CalcStress, CalcStress>,
+    ISubtractionOperators<CalcStress, double, CalcStress>,
+    IMultiplyOperators<CalcStress, CalcLength, CalcLinearForce>,
+    IMultiplyOperators<CalcStress, CalcArea, CalcForce>,
+    IMultiplyOperators<CalcStress, double, CalcStress>,
+    IDivisionOperators<CalcStress, double, CalcStress>,
+    IDivisionOperators<CalcStress, CalcStress, CalcDouble>,
+    IUnaryNegationOperators<CalcStress, CalcStress>,
+    IComparisonOperators<CalcStress, CalcStress, bool>
 {
     public CalcStress(Stress stress, string name, string symbol = "")
         : base(stress, name, symbol) { }

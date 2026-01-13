@@ -1,25 +1,21 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcStrain : CalcQuantity<Strain>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcStrain>
-    , IAdditionOperators<CalcStrain, CalcStrain, CalcStrain>
-    , IAdditionOperators<CalcStrain, double, CalcStrain>
-    , IAdditiveIdentity<CalcStrain, CalcStrain>
-    , ISubtractionOperators<CalcStrain, CalcStrain, CalcStrain>
-    , ISubtractionOperators<CalcStrain, double, CalcStrain>
-    , IMultiplyOperators<CalcStrain, double, CalcStrain>
-    , IDivisionOperators<CalcStrain, double, CalcStrain>
-    , IDivisionOperators<CalcStrain, CalcStrain, CalcDouble>
-    , IUnaryNegationOperators<CalcStrain, CalcStrain>
-    , IComparisonOperators<CalcStrain, CalcStrain, bool>
-#endif
+public sealed class CalcStrain : CalcQuantity<Strain>,
+    IParsable<CalcStrain>,
+    IAdditionOperators<CalcStrain, CalcStrain, CalcStrain>,
+    IAdditionOperators<CalcStrain, double, CalcStrain>,
+    IAdditiveIdentity<CalcStrain, CalcStrain>,
+    ISubtractionOperators<CalcStrain, CalcStrain, CalcStrain>,
+    ISubtractionOperators<CalcStrain, double, CalcStrain>,
+    IMultiplyOperators<CalcStrain, double, CalcStrain>,
+    IDivisionOperators<CalcStrain, double, CalcStrain>,
+    IDivisionOperators<CalcStrain, CalcStrain, CalcDouble>,
+    IUnaryNegationOperators<CalcStrain, CalcStrain>,
+    IComparisonOperators<CalcStrain, CalcStrain, bool>
 {
     public CalcStrain(Strain strain, string name, string symbol = "")
         : base(strain, name, symbol) { }

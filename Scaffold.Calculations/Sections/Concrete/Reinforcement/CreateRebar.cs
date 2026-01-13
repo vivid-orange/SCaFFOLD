@@ -9,6 +9,7 @@ using VividOrange.Taxonomy.Sections.Reinforcement;
 using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Sections.Concrete.Reinforcement;
+
 public class CreateRebar : CalcObjectInput<CalcRebar>
 {
     public override string CalculationName { get; set; } = "Create Rebar";

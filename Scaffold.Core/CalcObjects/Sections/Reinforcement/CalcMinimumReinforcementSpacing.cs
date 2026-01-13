@@ -5,10 +5,8 @@ using VividOrange.Taxonomy.Serialization;
 using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Core.CalcObjects.Sections.Reinforcement;
-public sealed class CalcMinimumReinforcementSpacing : MinimumReinforcementSpacing, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcMinimumReinforcementSpacing>
-#endif
+
+public sealed class CalcMinimumReinforcementSpacing : MinimumReinforcementSpacing, ICalcValue, IParsable<CalcMinimumReinforcementSpacing>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

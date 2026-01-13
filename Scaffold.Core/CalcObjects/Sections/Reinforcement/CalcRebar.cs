@@ -5,10 +5,8 @@ using VividOrange.Taxonomy.Sections.Reinforcement;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Sections.Reinforcement;
-public sealed class CalcRebar : Rebar, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcRebar>
-#endif
+
+public sealed class CalcRebar : Rebar, ICalcValue, IParsable<CalcRebar>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

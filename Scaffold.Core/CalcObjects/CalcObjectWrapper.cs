@@ -1,10 +1,9 @@
 ﻿using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects;
-public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable
-#if NET7_0_OR_GREATER
-    , IParsable<CalcObjectWrapper<T>>
-#endif
+
+public class CalcObjectWrapper<T> : ICalcValue, ITaxonomySerializable,
+    IParsable<CalcObjectWrapper<T>>
 {
     public string DisplayName { get; set; }
     public string Symbol { get; set; }

@@ -112,10 +112,7 @@ namespace TaxonomyObjectCodeGenerator
             var sb = new StringBuilder();
             sb.AppendLine($@"
 namespace {nameSpace};
-public sealed class Calc{name} : {inheritName}, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<Calc{name}>
-#endif
+public sealed class Calc{name} : {inheritName}, ICalcValue, IParsable<Calc{name}>
 {{
     public string DisplayName {{ get; set; }} = string.Empty;
     public string Symbol {{ get; set; }} = string.Empty;

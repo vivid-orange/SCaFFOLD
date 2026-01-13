@@ -1,28 +1,24 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcLength : CalcQuantity<Length>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcLength>
-    , IAdditionOperators<CalcLength, CalcLength, CalcLength>
-    , IAdditionOperators<CalcLength, double, CalcLength>
-    , IAdditiveIdentity<CalcLength, CalcLength>
-    , ISubtractionOperators<CalcLength, CalcLength, CalcLength>
-    , ISubtractionOperators<CalcLength, double, CalcLength>
-    , IMultiplyOperators<CalcLength, CalcLength, CalcArea>
-    , IMultiplyOperators<CalcLength, double, CalcLength>
-    , IMultiplyOperators<CalcLength, CalcArea, CalcVolume>
-    , IMultiplyOperators<CalcLength, CalcVolume, CalcInertia>
-    , IDivisionOperators<CalcLength, CalcLength, CalcStrain>
-    , IDivisionOperators<CalcLength, double, CalcLength>
-    , IUnaryNegationOperators<CalcLength, CalcLength>
-    , IComparisonOperators<CalcLength, CalcLength, bool>
-#endif
+public sealed class CalcLength : CalcQuantity<Length>,
+    IParsable<CalcLength>,
+    IAdditionOperators<CalcLength, CalcLength, CalcLength>,
+    IAdditionOperators<CalcLength, double, CalcLength>,
+    IAdditiveIdentity<CalcLength, CalcLength>,
+    ISubtractionOperators<CalcLength, CalcLength, CalcLength>,
+    ISubtractionOperators<CalcLength, double, CalcLength>,
+    IMultiplyOperators<CalcLength, CalcLength, CalcArea>,
+    IMultiplyOperators<CalcLength, double, CalcLength>,
+    IMultiplyOperators<CalcLength, CalcArea, CalcVolume>,
+    IMultiplyOperators<CalcLength, CalcVolume, CalcInertia>,
+    IDivisionOperators<CalcLength, CalcLength, CalcStrain>,
+    IDivisionOperators<CalcLength, double, CalcLength>,
+    IUnaryNegationOperators<CalcLength, CalcLength>,
+    IComparisonOperators<CalcLength, CalcLength, bool>
 {
     public CalcLength(Length length, string name, string symbol = "")
         : base(length, name, symbol) { }

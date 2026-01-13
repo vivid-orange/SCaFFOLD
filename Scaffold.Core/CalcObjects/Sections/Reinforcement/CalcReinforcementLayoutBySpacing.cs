@@ -4,10 +4,8 @@ using VividOrange.Taxonomy.Sections.Reinforcement;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Sections.Reinforcement;
-public sealed class CalcReinforcementLayoutBySpacing : ReinforcementLayoutBySpacing, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcReinforcementLayoutBySpacing>
-#endif
+
+public sealed class CalcReinforcementLayoutBySpacing : ReinforcementLayoutBySpacing, ICalcValue, IParsable<CalcReinforcementLayoutBySpacing>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;
