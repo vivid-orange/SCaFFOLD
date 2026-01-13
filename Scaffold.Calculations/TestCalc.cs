@@ -28,10 +28,10 @@ namespace Scaffold.Calculations
         public CalcSIQuantity<Force> CompressiveForce { get; } = new("Compression", "F_c", new Force(20, ForceUnit.Kilonewton));
 
         [InputCalcValue]
-        public CalcSIQuantity<Length> ColumnLength { get; } = new("Column Length", "L", new Length(3, LengthUnit.Meter));
+        public CalcLength ColumnLength { get; } = new(100, LengthUnit.Millimeter, "", "");
 
         [InputCalcValue]
-        public CalcSIQuantity<Length> ColumnBaseplate { get; } = new("Column baseplate thickness", "BT", new Length(30, LengthUnit.Millimeter));
+        public CalcLength ColumnBaseplate { get; } = new(50, LengthUnit.Millimeter, "", "");
 
         [OutputCalcValue]
         public CalcSIQuantity<Pressure> CompressiveStress { get; private set; } = new("Compressive stress", @"\sigma_c", new Pressure(20, PressureUnit.NewtonPerSquareMillimeter));
@@ -46,7 +46,7 @@ namespace Scaffold.Calculations
         public CalcListOfDoubleArrays Coords { get; } = new CalcListOfDoubleArrays("Test output", "CC", [[1, 10, 100], [200, 20, 2]]);
 
         [OutputCalcValue]
-        public CalcSIQuantity<Length> NewLength { get; private set; } = new("Calculated length", "L", new Length(0, LengthUnit.Meter));
+        public CalcLength NewLength { get; private set; } = new CalcLength(10, LengthUnit.Millimeter, "", "");
 
 
         List<IInteractiveGeometryItem> geometry = new List<IInteractiveGeometryItem>();
@@ -87,7 +87,8 @@ namespace Scaffold.Calculations
         {
             CompressiveStress.Quantity = CompressiveForce.Quantity / SteelProfile.Area.Quantity;
 
-            NewLength.Quantity = ColumnLength.Quantity + ColumnBaseplate.Quantity;
+            var tempObj = NewLength;
+            NewLength = ColumnLength + ColumnBaseplate;
 
             var lines = new List<Line>();
             lines.Add(new Line(new System.Numerics.Vector2((float)Coordinates.Value[0][0], (float)Coordinates.Value[0][1]),
