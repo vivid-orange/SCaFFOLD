@@ -25,7 +25,7 @@ namespace SCaFFOLD_Desktop
         public MainWindow()
         {
             //ICalculation calc = new SteelMaterialProperties();
-            ICalculation calc = new PunchingShear();
+            ICalculation calc = new TestCalc();
 
             calc.Calculate();
 

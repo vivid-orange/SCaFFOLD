@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.Attributes;
+using Scaffold.Core.CalcQuantities;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Geometry;
 using Scaffold.Core.Geometry.Abstract;
@@ -37,6 +38,15 @@ namespace Scaffold.Calculations.Eurocode.Concrete.PunchingShear
         public CalcSIQuantity<Length> ColumnBDimension { get; } = new("Column B dimension", "B", new Length(400, UnitsNet.Units.LengthUnit.Millimeter));
 
         [InputCalcValue]
+        public CalcSIQuantity<Torque> YMoment { get; } = new CalcSIQuantity<Torque>("Moment about Y axis", "M_y", new Torque(100, UnitsNet.Units.TorqueUnit.KilonewtonMeter));
+        [InputCalcValue]
+        public CalcSIQuantity<Torque> ZMoment { get; } = new CalcSIQuantity<Torque>("Moment about Z axis", "M_z", new Torque(20, UnitsNet.Units.TorqueUnit.KilonewtonMeter));
+        [InputCalcValue]
+        public CalcSIQuantity<Force> PunchingLoad { get; } = new CalcSIQuantity<Force>("Punching Shear Load", "P_z", new Force(300, UnitsNet.Units.ForceUnit.Kilonewton));
+
+
+
+        [InputCalcValue]
         public CalcListOfDoubleArrays Holes { get; } = new CalcListOfDoubleArrays("Hole positions", "", [[200,200], [300, 300]]);
 
         List<IInteractiveGeometryItem> _interactiveGeometryItems = new List<IInteractiveGeometryItem>();
@@ -60,7 +70,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete.PunchingShear
             double cy = ColumnBDimension.Value / 2;
             _geometryItems.AddRange(CreateContinuousPath(new List<(double x, double y)> { (-cx, -cy), (-cx, cy), (cx, cy), (cx, -cy), (-cx, -cy) }));
 
-            PolyLine controlPerimeter = GeneratePerimeter.generatePerimeter(ColumnADimension.Value, ColumnBDimension.Value, 2 * EffectiveDepthCalc.D_average.Value, ColumnCondition.Value);
+            PolyLine controlPerimeter = PunchingUtilities.generatePerimeter(ColumnADimension.Value, ColumnBDimension.Value, 2 * EffectiveDepthCalc.D_average.Value, ColumnCondition.Value);
 
             _geometryItems.Add(controlPerimeter);
 

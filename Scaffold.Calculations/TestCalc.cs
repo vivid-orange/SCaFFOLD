@@ -35,10 +35,10 @@ namespace Scaffold.Calculations
 
         [OutputCalcValue]
         public CalcSIQuantity<Pressure> CompressiveStress { get; private set; } = new("Compressive stress", @"\sigma_c", new Pressure(20, PressureUnit.NewtonPerSquareMillimeter));
-
         [InputCalcValue]
         public ISteelProfile SteelProfile { get; set; } = new SteelProfile();
-
+        [InputCalcValue]
+        public CalcStress newStress { get; } = new CalcStress(0, PressureUnit.NewtonPerSquareMillimeter, "", "");
         [InputCalcValue]
         public CalcListOfDoubleArrays Coordinates { get; } = new("Test List", "C", [[50, 20, 10], [5, 5, 10]]);
 
@@ -88,9 +88,6 @@ namespace Scaffold.Calculations
             CompressiveStress.Quantity = CompressiveForce.Quantity / SteelProfile.Area.Quantity;
 
             NewLength.Quantity = ColumnLength.Quantity + ColumnBaseplate.Quantity;
-
-            CalcForce newForce = new CalcForce(10, "testforce", "F");
-            CalcArea newArea = new CalcArea(100, AreaUnit.SquareMeter, "area", "A");
 
             var lines = new List<Line>();
             lines.Add(new Line(new System.Numerics.Vector2((float)Coordinates.Value[0][0], (float)Coordinates.Value[0][1]),

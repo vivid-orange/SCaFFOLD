@@ -9,7 +9,7 @@ using Scaffold.Core.Geometry.Abstract;
 
 namespace Scaffold.Calculations.Eurocode.Concrete.PunchingShear
 {
-    public static class GeneratePerimeter
+    public static class PunchingUtilities
     {
         public static PolyLine generatePerimeter(double width, double depth, double offset, string colType)
         {
@@ -58,5 +58,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete.PunchingShear
 
             return perimeter2;
         }
+
+
     }
 }
