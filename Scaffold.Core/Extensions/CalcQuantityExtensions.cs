@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Scaffold.Core.CalcQuantities;
 public static class CalcQuantityExtensions
@@ -20,4 +19,3 @@ public static class CalcQuantityExtensions
         return result.value / result.count;
      }
 }
-#endif

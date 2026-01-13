@@ -5,10 +5,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
-public sealed class CalcDoubleChannelProfile : DoubleChannel, ICalcProfile<CalcDoubleChannelProfile>, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcDoubleChannelProfile>
-#endif
+public sealed class CalcDoubleChannelProfile : DoubleChannel, ICalcProfile<CalcDoubleChannelProfile>, ICalcValue, IParsable<CalcDoubleChannelProfile>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

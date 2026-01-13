@@ -4,10 +4,7 @@ using VividOrange.Taxonomy.Loads.Combinations;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Combinations;
-public sealed class CalcFrequentCombination : FrequentCombination, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcFrequentCombination>
-#endif
+public sealed class CalcFrequentCombination : FrequentCombination, ICalcValue, IParsable<CalcFrequentCombination>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

@@ -4,10 +4,7 @@ using VividOrange.Taxonomy.Loads.Cases;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Cases;
-public sealed class CalcVariableCase : VariableCase, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcVariableCase>
-#endif
+public sealed class CalcVariableCase : VariableCase, ICalcValue, IParsable<CalcVariableCase>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

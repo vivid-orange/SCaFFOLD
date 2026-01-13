@@ -1,29 +1,25 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcVolume : CalcQuantity<Volume>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcVolume>
-    , IAdditionOperators<CalcVolume, CalcVolume, CalcVolume>
-    , IAdditionOperators<CalcVolume, double, CalcVolume>
-    , IAdditiveIdentity<CalcVolume, CalcVolume>
-    , ISubtractionOperators<CalcVolume, CalcVolume, CalcVolume>
-    , ISubtractionOperators<CalcVolume, double, CalcVolume>
-    , IMultiplyOperators<CalcVolume, CalcLength, CalcInertia>
-    , IMultiplyOperators<CalcVolume, double, CalcVolume>
-    , IDivisionOperators<CalcVolume, CalcLength, CalcArea>
-    , IDivisionOperators<CalcVolume, CalcArea, CalcLength>
-    , IDivisionOperators<CalcVolume, double, CalcVolume>
-    , IDivisionOperators<CalcVolume, CalcVolume, CalcDouble>
-    , IUnaryNegationOperators<CalcVolume, CalcVolume>
-    , IComparisonOperators<CalcVolume, CalcVolume, bool>
-#endif
+public sealed class CalcVolume : CalcQuantity<Volume>,
+    IParsable<CalcVolume>,
+    IAdditionOperators<CalcVolume, CalcVolume, CalcVolume>,
+    IAdditionOperators<CalcVolume, double, CalcVolume>,
+    IAdditiveIdentity<CalcVolume, CalcVolume>,
+    ISubtractionOperators<CalcVolume, CalcVolume, CalcVolume>,
+    ISubtractionOperators<CalcVolume, double, CalcVolume>,
+    IMultiplyOperators<CalcVolume, CalcLength, CalcInertia>,
+    IMultiplyOperators<CalcVolume, double, CalcVolume>,
+    IDivisionOperators<CalcVolume, CalcLength, CalcArea>,
+    IDivisionOperators<CalcVolume, CalcArea, CalcLength>,
+    IDivisionOperators<CalcVolume, double, CalcVolume>,
+    IDivisionOperators<CalcVolume, CalcVolume, CalcDouble>,
+    IUnaryNegationOperators<CalcVolume, CalcVolume>,
+    IComparisonOperators<CalcVolume, CalcVolume, bool>
 {
     public CalcVolume(Volume volume, string name, string symbol = "")
         : base(volume, name, symbol) { }

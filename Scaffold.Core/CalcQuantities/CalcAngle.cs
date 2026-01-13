@@ -1,25 +1,21 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcAngle : CalcQuantity<Angle>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcAngle>
-    , IAdditionOperators<CalcAngle, CalcAngle, CalcAngle>
-    , IAdditionOperators<CalcAngle, double, CalcAngle>
-    , IAdditiveIdentity<CalcAngle, CalcAngle>
-    , ISubtractionOperators<CalcAngle, CalcAngle, CalcAngle>
-    , ISubtractionOperators<CalcAngle, double, CalcAngle>
-    , IMultiplyOperators<CalcAngle, double, CalcAngle>
-    , IDivisionOperators<CalcAngle, double, CalcAngle>
-    , IDivisionOperators<CalcAngle, CalcAngle, CalcDouble>
-    , IUnaryNegationOperators<CalcAngle, CalcAngle>
-    , IComparisonOperators<CalcAngle, CalcAngle, bool>
-#endif
+public sealed class CalcAngle : CalcQuantity<Angle>,
+    IParsable<CalcAngle>,
+    IAdditionOperators<CalcAngle, CalcAngle, CalcAngle>,
+    IAdditionOperators<CalcAngle, double, CalcAngle>,
+    IAdditiveIdentity<CalcAngle, CalcAngle>,
+    ISubtractionOperators<CalcAngle, CalcAngle, CalcAngle>,
+    ISubtractionOperators<CalcAngle, double, CalcAngle>,
+    IMultiplyOperators<CalcAngle, double, CalcAngle>,
+    IDivisionOperators<CalcAngle, double, CalcAngle>,
+    IDivisionOperators<CalcAngle, CalcAngle, CalcDouble>,
+    IUnaryNegationOperators<CalcAngle, CalcAngle>,
+    IComparisonOperators<CalcAngle, CalcAngle, bool>
 {
     public CalcAngle(Angle length, string name, string symbol = "")
         : base(length, name, symbol) { }

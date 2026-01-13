@@ -1,29 +1,25 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcInertia : CalcQuantity<AreaMomentOfInertia>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcInertia>
-    , IAdditionOperators<CalcInertia, CalcInertia, CalcInertia>
-    , IAdditionOperators<CalcInertia, double, CalcInertia>
-    , IAdditiveIdentity<CalcInertia, CalcInertia>
-    , ISubtractionOperators<CalcInertia, CalcInertia, CalcInertia>
-    , ISubtractionOperators<CalcInertia, double, CalcInertia>
-    , IMultiplyOperators<CalcInertia, double, CalcInertia>
-    , IDivisionOperators<CalcInertia, CalcLength, CalcVolume>
-    , IDivisionOperators<CalcInertia, CalcArea, CalcArea>
-    , IDivisionOperators<CalcInertia, CalcVolume, CalcLength>
-    , IDivisionOperators<CalcInertia, double, CalcInertia>
-    , IDivisionOperators<CalcInertia, CalcInertia, CalcDouble>
-    , IUnaryNegationOperators<CalcInertia, CalcInertia>
-    , IComparisonOperators<CalcInertia, CalcInertia, bool>
-#endif
+public sealed class CalcInertia : CalcQuantity<AreaMomentOfInertia>,
+    IParsable<CalcInertia>,
+    IAdditionOperators<CalcInertia, CalcInertia, CalcInertia>,
+    IAdditionOperators<CalcInertia, double, CalcInertia>,
+    IAdditiveIdentity<CalcInertia, CalcInertia>,
+    ISubtractionOperators<CalcInertia, CalcInertia, CalcInertia>,
+    ISubtractionOperators<CalcInertia, double, CalcInertia>,
+    IMultiplyOperators<CalcInertia, double, CalcInertia>,
+    IDivisionOperators<CalcInertia, CalcLength, CalcVolume>,
+    IDivisionOperators<CalcInertia, CalcArea, CalcArea>,
+    IDivisionOperators<CalcInertia, CalcVolume, CalcLength>,
+    IDivisionOperators<CalcInertia, double, CalcInertia>,
+    IDivisionOperators<CalcInertia, CalcInertia, CalcDouble>,
+    IUnaryNegationOperators<CalcInertia, CalcInertia>,
+    IComparisonOperators<CalcInertia, CalcInertia, bool>
 {
     public CalcInertia(AreaMomentOfInertia areaMomentOfInertia, string name, string symbol = "")
         : base(areaMomentOfInertia, name, symbol) { }

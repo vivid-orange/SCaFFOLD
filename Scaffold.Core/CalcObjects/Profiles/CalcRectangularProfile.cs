@@ -5,10 +5,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
-public sealed class CalcRectangularProfile : Rectangle, ICalcProfile<CalcRectangularProfile>, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcRectangularProfile>
-#endif
+public sealed class CalcRectangularProfile : Rectangle, ICalcProfile<CalcRectangularProfile>, ICalcValue, IParsable<CalcRectangularProfile>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

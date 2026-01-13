@@ -6,10 +6,7 @@ using VividOrange.Taxonomy.Profiles;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Profiles;
-public sealed class CalcPerimeterProfile : Perimeter, ICalcProfile<CalcPerimeterProfile>, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcPerimeterProfile>
-#endif
+public sealed class CalcPerimeterProfile : Perimeter, ICalcProfile<CalcPerimeterProfile>, ICalcValue, IParsable<CalcPerimeterProfile>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

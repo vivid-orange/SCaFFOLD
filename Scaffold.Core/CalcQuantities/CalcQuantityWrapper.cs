@@ -2,19 +2,17 @@
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuantityWrapper<T>>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcQuantityWrapper<T>>
-    , IAdditionOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>
-    , IAdditionOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>
-    //, IAdditiveIdentity<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>
-    , ISubtractionOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>
-    , ISubtractionOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>
-    //, IMultiplyOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>
-    //, IDivisionOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>
-    , IUnaryNegationOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>
-    , IComparisonOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, bool>
-#endif
+public sealed class CalcQuantityWrapper<T> : ICalcQuantity, IEquatable<CalcQuantityWrapper<T>>,
+    IParsable<CalcQuantityWrapper<T>>,
+    IAdditionOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>,
+    IAdditionOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>,
+    //, IAdditiveIdentity<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>,
+    ISubtractionOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>,
+    ISubtractionOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>,
+    //, IMultiplyOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>,
+    //, IDivisionOperators<CalcQuantityWrapper<T>, double, CalcQuantityWrapper<T>>,
+    IUnaryNegationOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>>,
+    IComparisonOperators<CalcQuantityWrapper<T>, CalcQuantityWrapper<T>, bool>
     where T : IQuantity
 {
     public IQuantity Quantity

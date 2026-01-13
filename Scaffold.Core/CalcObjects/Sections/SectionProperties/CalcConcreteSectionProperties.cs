@@ -5,10 +5,7 @@ using VividOrange.Taxonomy.Sections.SectionProperties;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Sections;
-public sealed class CalcConcreteSectionProperties : ConcreteSectionProperties, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcConcreteSectionProperties>
-#endif
+public sealed class CalcConcreteSectionProperties : ConcreteSectionProperties, ICalcValue, IParsable<CalcConcreteSectionProperties>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

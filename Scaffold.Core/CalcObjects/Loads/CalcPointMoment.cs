@@ -4,10 +4,7 @@ using VividOrange.Taxonomy.Loads;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
-public sealed class CalcPointMoment : PointMoment, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcPointMoment>
-#endif
+public sealed class CalcPointMoment : PointMoment, ICalcValue, IParsable<CalcPointMoment>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

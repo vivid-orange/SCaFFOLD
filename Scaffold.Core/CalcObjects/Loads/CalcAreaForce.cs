@@ -4,10 +4,7 @@ using VividOrange.Taxonomy.Loads;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads;
-public sealed class CalcAreaForce : AreaForce, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcAreaForce>
-#endif
+public sealed class CalcAreaForce : AreaForce, ICalcValue, IParsable<CalcAreaForce>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

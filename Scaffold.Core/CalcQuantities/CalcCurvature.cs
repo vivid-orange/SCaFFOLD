@@ -1,27 +1,23 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcCurvature : CalcQuantity<ReciprocalLength>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcCurvature>
-    , IAdditionOperators<CalcCurvature, CalcCurvature, CalcCurvature>
-    , IAdditionOperators<CalcCurvature, double, CalcCurvature>
-    , IAdditiveIdentity<CalcCurvature, CalcCurvature>
-    , ISubtractionOperators<CalcCurvature, CalcCurvature, CalcCurvature>
-    , ISubtractionOperators<CalcCurvature, double, CalcCurvature>
-    , IMultiplyOperators<CalcCurvature, CalcLength, CalcDouble>
-    , IMultiplyOperators<CalcCurvature, double, CalcCurvature>
-    , IDivisionOperators<CalcCurvature, double, CalcCurvature>
-    , IDivisionOperators<CalcCurvature, CalcCurvature, CalcDouble>
-    , IUnaryNegationOperators<CalcCurvature, CalcCurvature>
-    , IComparisonOperators<CalcCurvature, CalcCurvature, bool>
-#endif
+public sealed class CalcCurvature : CalcQuantity<ReciprocalLength>,
+    IParsable<CalcCurvature>,
+    IAdditionOperators<CalcCurvature, CalcCurvature, CalcCurvature>,
+    IAdditionOperators<CalcCurvature, double, CalcCurvature>,
+    IAdditiveIdentity<CalcCurvature, CalcCurvature>,
+    ISubtractionOperators<CalcCurvature, CalcCurvature, CalcCurvature>,
+    ISubtractionOperators<CalcCurvature, double, CalcCurvature>,
+    IMultiplyOperators<CalcCurvature, CalcLength, CalcDouble>,
+    IMultiplyOperators<CalcCurvature, double, CalcCurvature>,
+    IDivisionOperators<CalcCurvature, double, CalcCurvature>,
+    IDivisionOperators<CalcCurvature, CalcCurvature, CalcDouble>,
+    IUnaryNegationOperators<CalcCurvature, CalcCurvature>,
+    IComparisonOperators<CalcCurvature, CalcCurvature, bool>
 {
     public CalcCurvature(ReciprocalLength length, string name, string symbol = "")
         : base(length, name, symbol) { }

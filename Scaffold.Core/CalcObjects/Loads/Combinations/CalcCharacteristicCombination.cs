@@ -4,10 +4,7 @@ using VividOrange.Taxonomy.Loads.Combinations;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Loads.Combinations;
-public sealed class CalcCharacteristicCombination : CharacteristicCombination, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcCharacteristicCombination>
-#endif
+public sealed class CalcCharacteristicCombination : CharacteristicCombination, ICalcValue, IParsable<CalcCharacteristicCombination>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

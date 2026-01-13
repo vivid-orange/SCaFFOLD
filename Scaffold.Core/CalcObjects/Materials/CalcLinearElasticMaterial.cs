@@ -4,10 +4,7 @@ using VividOrange.Taxonomy.Materials;
 using VividOrange.Taxonomy.Serialization;
 
 namespace Scaffold.Core.CalcObjects.Materials;
-public sealed class CalcLinearElasticMaterial : LinearElasticMaterial, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<CalcLinearElasticMaterial>
-#endif
+public sealed class CalcLinearElasticMaterial : LinearElasticMaterial, ICalcValue, IParsable<CalcLinearElasticMaterial>
 {
     public string DisplayName { get; set; } = string.Empty;
     public string Symbol { get; set; } = string.Empty;

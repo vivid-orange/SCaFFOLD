@@ -1,28 +1,24 @@
-﻿#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
+﻿using System.Numerics;
 using Scaffold.Core.Abstract;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Utility;
 
 namespace Scaffold.Core.CalcQuantities;
 
-public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>
-#if NET7_0_OR_GREATER
-    , IParsable<CalcLinearForce>
-    , IAdditionOperators<CalcLinearForce, CalcLinearForce, CalcLinearForce>
-    , IAdditionOperators<CalcLinearForce, double, CalcLinearForce>
-    , IAdditiveIdentity<CalcLinearForce, CalcLinearForce>
-    , ISubtractionOperators<CalcLinearForce, CalcLinearForce, CalcLinearForce>
-    , ISubtractionOperators<CalcLinearForce, double, CalcLinearForce>
-    , IMultiplyOperators<CalcLinearForce, CalcLength, CalcForce>
-    , IMultiplyOperators<CalcLinearForce, double, CalcLinearForce>
-    , IDivisionOperators<CalcLinearForce, CalcLength, CalcStress>
-    , IDivisionOperators<CalcLinearForce, double, CalcLinearForce>
-    , IDivisionOperators<CalcLinearForce, CalcLinearForce, CalcDouble>
-    , IUnaryNegationOperators<CalcLinearForce, CalcLinearForce>
-    , IComparisonOperators<CalcLinearForce, CalcLinearForce, bool>
-#endif
+public sealed class CalcLinearForce : CalcQuantity<ForcePerLength>,
+    IParsable<CalcLinearForce>,
+    IAdditionOperators<CalcLinearForce, CalcLinearForce, CalcLinearForce>,
+    IAdditionOperators<CalcLinearForce, double, CalcLinearForce>,
+    IAdditiveIdentity<CalcLinearForce, CalcLinearForce>,
+    ISubtractionOperators<CalcLinearForce, CalcLinearForce, CalcLinearForce>,
+    ISubtractionOperators<CalcLinearForce, double, CalcLinearForce>,
+    IMultiplyOperators<CalcLinearForce, CalcLength, CalcForce>,
+    IMultiplyOperators<CalcLinearForce, double, CalcLinearForce>,
+    IDivisionOperators<CalcLinearForce, CalcLength, CalcStress>,
+    IDivisionOperators<CalcLinearForce, double, CalcLinearForce>,
+    IDivisionOperators<CalcLinearForce, CalcLinearForce, CalcDouble>,
+    IUnaryNegationOperators<CalcLinearForce, CalcLinearForce>,
+    IComparisonOperators<CalcLinearForce, CalcLinearForce, bool>
 {
     public CalcLinearForce(ForcePerLength linearForce, string name, string symbol = "")
         : base(linearForce, name, symbol) { }
