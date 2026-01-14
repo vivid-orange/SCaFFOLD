@@ -12,7 +12,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
         <DataTemplate x:Key="ArrayCellTemplate">
-            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" 
                      Width="60" Margin="2" Padding="2"/>
         </DataTemplate>
 
@@ -35,7 +35,7 @@
 
                     <Grid Grid.Column="2">
 
-                        <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" 
                          IsReadOnly="{Binding IsComplex}"
                          VerticalContentAlignment="Center" Padding="5">
                             <TextBox.Style>

@@ -8,6 +8,7 @@ using Scaffold.Core;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Geometry;
 using Scaffold.Core.Interfaces;
+using Scaffold.Core.Services;
 
 namespace SCaFFOLD_Desktop
 {
@@ -99,50 +100,62 @@ namespace SCaFFOLD_Desktop
 
             if (_currentCalculation == null) return;
 
-            // 1. Inputs (Keep existing logic)
-            foreach (var input in _currentCalculation.GetInputs())
+            // 1. Inputs - CHANGED: Use CalculationReader
+            var inputValues = CalculationReader.GetInputs(_currentCalculation);
+            foreach (var input in inputValues)
             {
-                // ... (Keep reflection/replace logic)
-                Type declaredType = GetDeclaredTypeForInput(_currentCalculation, input);
-                Inputs.Add(new CalcValueViewModel(input, OnCalculationUpdate, (complex) => NavigateTo(complex), declaredType, ReplaceInput));
+                // We assume Type switching/Replacement logic handles the underlying ICalculation property
+                // For now, we wrap the Reader's result.
+                // Note: The previous "ReplaceInput" logic relied on manual reflection. 
+                // Since Reader binds directly to the property, updates to the VM value write directly to the Model.
+
+                Inputs.Add(new CalcValueViewModel(input, OnCalculationUpdate));
             }
 
-            // 2. Outputs (Keep existing logic)
-            foreach (var output in _currentCalculation.GetOutputs())
+            // 2. Outputs - CHANGED: Use CalculationReader
+            var outputValues = CalculationReader.GetOutputs(_currentCalculation);
+            foreach (var output in outputValues)
             {
-                Outputs.Add(new CalcValueViewModel(output, null, null));
+                Outputs.Add(new CalcValueViewModel(output, null));
             }
 
-            // 3. Details (Keep existing logic)
+            // 3. Details
             RebuildCalculationDetails();
 
-            // 4. NEW: Initialize Interactive Geometry if supported
+            // 4. Geometry
             if (_currentCalculation is IInteractiveGeometry interactiveCalc)
             {
-                // Pass OnCalculationUpdate so dragging points triggers recalc
                 Geometry = new InteractiveGeometryViewModel(interactiveCalc, OnCalculationUpdate);
             }
         }
+
         private void OnCalculationUpdate()
         {
-            // 1. Run the calculation
+            // 1. Run Calculation
             _currentCalculation.Calculate();
 
-            // 2. Refresh Inputs 
+            // 2. Refresh Inputs
             foreach (var input in Inputs) input.Refresh();
 
-            // 3. Regenerate Outputs
+            // 3. Refresh Outputs
+            // The output objects (CalcValues) created by the Reader are bound to the properties.
+            // If the properties are immutable structs that got replaced, we might need to fetch fresh wrappers.
+            // However, usually "Calculate" sets properties on the existing ICalculation instance.
+            // If the Reader bound to property "getters", calling Refresh() on the VM calls the getter again.
+            // So we don't necessarily need to clear/re-add unless the structure changed.
+
+            // Re-fetch to be safe (as requested: "client apps will need a way of gathering fresh values")
             Outputs.Clear();
-            foreach (var output in _currentCalculation.GetOutputs())
+            var outputValues = CalculationReader.GetOutputs(_currentCalculation);
+            foreach (var output in outputValues)
             {
-                Outputs.Add(new CalcValueViewModel(output, null, null));
+                Outputs.Add(new CalcValueViewModel(output, null));
             }
 
-            // 4. Rebuild Details
+            // 4. Details
             RebuildCalculationDetails();
 
-            // 5. NEW: Refresh Geometry
-            // This reloads the lines from the updated calculation model
+            // 5. Geometry
             Geometry?.Refresh();
         }
 

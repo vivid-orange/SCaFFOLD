@@ -16,12 +16,5 @@ namespace Scaffold.Core.Geometry
 
         double PositionY {get; set;}
 
-        int[] Constraints { get;  }
-
-        string Symbol { get; }
-
-        string Summary { get; }
-
-
     }
 }

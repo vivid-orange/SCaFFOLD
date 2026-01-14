@@ -294,8 +294,8 @@ namespace SCaFFOLD_Desktop
             _onMoved = onMoved;
         }
 
-        public string Symbol => _model.Symbol;
-        public string Summary => _model.Summary;
+        //public string Symbol => _model.Symbol;
+        //public string Summary => _model.Summary;
         public double RawX => _model.PositionX;
         public double RawY => _model.PositionY;
 

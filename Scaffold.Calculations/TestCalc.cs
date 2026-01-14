@@ -61,8 +61,8 @@ namespace Scaffold.Calculations
             geometry.Add(start);
             InteractiveGeometryDoubleArrays end = new InteractiveGeometryDoubleArrays(Coordinates.Symbol, Coordinates.Value[1]);
             geometry.Add(end);
-            InteractiveGeometryQuantityOnY forcey = new InteractiveGeometryQuantityOnY(-10, CompressiveForce);
-            geometry.Add(forcey);
+            //InteractiveGeometryQuantityOnY forcey = new InteractiveGeometryQuantityOnY(-10, CompressiveForce);
+            //geometry.Add(forcey);
         }
 
         public override List<IOutputItem> GetFormulae()

@@ -57,8 +57,8 @@ namespace Scaffold.Calculations.Eurocode.Concrete.PunchingShear
 
         public PunchingShear()
         {
-            _interactiveGeometryItems.Add(new InteractiveGeometryQuantityOnX(ColumnADimension, 0, true));
-            _interactiveGeometryItems.Add(new InteractiveGeometryQuantityOnY(0, ColumnBDimension, true));
+            //_interactiveGeometryItems.Add(new InteractiveGeometryQuantityOnX(ColumnADimension, 0, true));
+            //_interactiveGeometryItems.Add(new InteractiveGeometryQuantityOnY(0, ColumnBDimension, true));
             _interactiveGeometryItems.Add(new InteractiveGeometryDoubleArrays("", Holes.Value[0]));
         }
 

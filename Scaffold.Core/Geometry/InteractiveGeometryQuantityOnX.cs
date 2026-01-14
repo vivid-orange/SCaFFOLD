@@ -1,71 +1,62 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Scaffold.Core.CalcValues;
+﻿using System;
+using Scaffold.Core.CalcValues; 
 
 namespace Scaffold.Core.Geometry
 {
-    public  class InteractiveGeometryQuantityOnX : IInteractiveGeometryItem
+    public class InteractiveGeometryQuantityOnX : IInteractiveGeometryItem
     {
-        ICalcSIQuantity _quantity;
-        bool _centred = false;
-        double _yCoordinate = 0;
+        // Instead of holding the object, we hold the accessors
+        private readonly Func<IQuantity> _quantityProvider;
+        private readonly Action<double> _valueUpdater;
 
-        double[] _position = [0, 0, 0];
-        int[] _constraints = [1, 0, 0];
+        private readonly bool _centred = false;
+        private readonly double _yCoordinate = 0;
+        private readonly int[] _constraints = [1, 0, 0];
+
+        // Constructor requires delegates to bridge the "Live Link"
+        public InteractiveGeometryQuantityOnX(
+            Func<IQuantity> quantityProvider,
+            Action<double> valueUpdater,
+            double yCoordinate,
+            bool centred = false)
+        {
+            _quantityProvider = quantityProvider;
+            _valueUpdater = valueUpdater;
+            _yCoordinate = yCoordinate;
+            _centred = centred;
+        }
 
         public double PositionX
         {
             get
             {
+                // 1. Get the LATEST instance from the parent property
+                var currentQuantity = _quantityProvider();
+
                 if (_centred)
-                { return _quantity.Value / 2; }
-                else
-                { return _quantity.Value; }
+                {
+                    return (double)currentQuantity.Value / 2;
+                }
+                return (double)currentQuantity.Value;
             }
             set
             {
-                if (_centred)
-                { _quantity.Value = value * 2; }
-                else
-                { _quantity.Value = value; }
+                // 2. Calculate the new raw value
+                double targetValue = _centred ? value * 2 : value;
+
+                // 3. Invoke the setter delegate to update the parent property
+                // This keeps the "Business Logic" of HOW to create the new object 
+                // inside the parent class, not here.
+                _valueUpdater(targetValue);
             }
         }
 
         public double PositionY
         {
-            get
-            {
-                return _yCoordinate;
-            }
-            set
-            {
-                
-            }
+            get => _yCoordinate;
+            set { /* Implementation for Y if needed */ }
         }
 
         public int[] Constraints => _constraints;
-
-        public string Symbol => _quantity.Symbol;
-
-        public string Summary => _quantity.GetValueAsString();
-
-        public InteractiveGeometryQuantityOnX(ICalcSIQuantity quantity, double ydir)
-        {
-            _quantity = quantity;
-            _yCoordinate = ydir;
-        }
-
-        public InteractiveGeometryQuantityOnX(ICalcSIQuantity quantity, double ydir, bool centred)
-        {
-            _quantity = quantity;
-            _yCoordinate = ydir;
-            _centred = centred;
-        }
     }
 }

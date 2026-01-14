@@ -1,32 +1,73 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Scaffold.Core.CalcValues;
 
 namespace Scaffold.Core.Geometry
 {
     public class InteractiveGeometryQuantityOnY : IInteractiveGeometryItem
     {
-        ICalcSIQuantity _quantity;
-        bool _centred = false;
-        double _xCoordinate = 0;
+        // Instead of holding the object, we hold the accessors
+        private readonly Func<IQuantity> _quantityProviderY;
+        private readonly double _offsetY = 0;
+        private readonly Action<double> _valueUpdater;
+        private readonly Func<IQuantity> _quantityProviderX;
+        private bool _isMovingX = false;
 
-        int[] _constraints = [0, 1, 0];
+        private readonly bool _centred = false;
+        private readonly double _xCoordinate = 0;
+        private readonly int[] _constraints = [0, 1, 0];
+
+        // Constructor requires delegates to bridge the "Live Link"
+        public InteractiveGeometryQuantityOnY(
+            Func<IQuantity> quantityProvider,
+            Action<double> valueUpdater,
+            double xCoordinate,
+            bool centred = false,
+            double offsetY = 0)
+        {
+            _quantityProviderY = quantityProvider;
+            _valueUpdater = valueUpdater;
+            _xCoordinate = xCoordinate;
+            _centred = centred;
+            _offsetY = offsetY;
+        }
+
+        public InteractiveGeometryQuantityOnY(
+            Func<IQuantity> quantityProviderX,
+    Func<IQuantity> quantityProviderY,
+    Action<double> valueUpdater,
+    double xCoordinate,
+    bool centred = false,
+    double offsetY = 0)
+        {
+            _quantityProviderY = quantityProviderY;
+            _quantityProviderX = quantityProviderX;
+            _valueUpdater = valueUpdater;
+            _xCoordinate = xCoordinate;
+            _centred = centred;
+            _isMovingX = true;
+            _offsetY = offsetY;
+        }
 
         public double PositionX
         {
             get
             {
-                return _xCoordinate;
+                // 1. Get the LATEST instance from the parent property
+                if (!_isMovingX) return _xCoordinate;
+                else
+                {
+                    var currentQuantity = _quantityProviderX();
+
+                    if (_centred)
+                    {
+                        return (double)currentQuantity.Value / 2;
+                    }
+                    return (double)currentQuantity.Value;
+                }
             }
             set
             {
-            
+
             }
         }
 
@@ -34,35 +75,28 @@ namespace Scaffold.Core.Geometry
         {
             get
             {
+                // 1. Get the LATEST instance from the parent property
+                var currentQuantity = _quantityProviderY();
+
                 if (_centred)
-                { return _quantity.Value / 2; }
-                else
-                { return _quantity.Value; }
+                {
+                    return _offsetY + (double)currentQuantity.Value / 2;
+                }
+                return _offsetY + (double)currentQuantity.Value;
             }
             set
+
             {
-                if (_centred)
-                { _quantity.Value = value * 2; }
-                else
-                { _quantity.Value = value; }
+                // 2. Calculate the new raw value
+                double targetValue = _centred ? (value - _offsetY) * 2 : (value - _offsetY);
+
+                // 3. Invoke the setter delegate to update the parent property
+                // This keeps the "Business Logic" of HOW to create the new object 
+                // inside the parent class, not here.
+                _valueUpdater(targetValue);
             }
         }
+
         public int[] Constraints => _constraints;
-
-        public string Symbol => _quantity.Symbol;
-
-        public string Summary => _quantity.GetValueAsString();
-        public InteractiveGeometryQuantityOnY(double xCoordinate, ICalcSIQuantity quantity)
-        {
-            _quantity = quantity;
-            _xCoordinate = xCoordinate;
-        }
-
-        public InteractiveGeometryQuantityOnY(double xCoordinate, ICalcSIQuantity quantity, bool centred)
-        {
-            _quantity = quantity;
-            _xCoordinate = xCoordinate;
-            _centred = centred;
-        }
     }
 }
