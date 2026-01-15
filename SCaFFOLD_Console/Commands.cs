@@ -50,8 +50,6 @@ namespace SCaFFOLD_Console
 
         internal static Dictionary<string, Action<ICalculation, string>> commands;
 
-        internal static CalculationReader reader = new CalculationReader();
-
         internal static Dictionary<string, Action<ICalculation, string>> getCommands()
         {
             if (commands != null)
