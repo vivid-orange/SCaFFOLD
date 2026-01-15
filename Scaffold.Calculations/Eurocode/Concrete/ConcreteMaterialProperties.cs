@@ -1,104 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
-using MagmaWorks.Taxonomy.Materials.StandardMaterials.En;
-using MagmaWorks.Taxonomy.Standards.Eurocode;
-using Scaffold.Calculations.CalculationUtility;
 using Scaffold.Core.Attributes;
-using Scaffold.Core.CalcObjects.Materials.StandardMaterials.En;
-using Scaffold.Core.CalcQuantities;
-using Scaffold.Core.CalcValues;
 using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
 using UnitsNet;
 using UnitsNet.Units;
+using VividOrange.Taxonomy.Materials.StandardMaterials.En;
+using VividOrange.Taxonomy.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Eurocode.Concrete
 {
     public class ConcreteMaterialProperties : ICalculation
     {
-        public string TypeName { get; set; }
-        public string InstanceName { get; set; } = "Concrete Material Properties";
+        public string ReferenceName { get; set; }
+        public string CalculationName { get; set; } = "Concrete Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue("Grd", "Grade")]
-        public CalcSelectionList ConcreteGrade { get; set; }
-            = new CalcSelectionList("Concrete Grade", "C30/37", EnumSelectionListParser.ConcreteGrades);
+        public EnConcreteGrade ConcreteGrade { get; set; } = EnConcreteGrade.C30_37;
 
-        [OutputCalcValue]
-        public CalcEnConcreteMaterial Material =>
-            new CalcEnConcreteMaterial(ConcreteGrade.GetEnum<EnConcreteGrade>("/", "_"),
-                                       NationalAnnex.RecommendedValues, "Concrete", "C");
+        [OutputCalcValue("C", "Concrete")]
+        public EnConcreteMaterial Material => new(ConcreteGrade, NationalAnnex.RecommendedValues);
 
-        [OutputCalcValue]
-        public CalcStress fck
-            => new CalcStress(GetStrength(), "Characteristic cylinder strength", "f_{ck}");
+        [OutputCalcValue("f_{ck}", "Characteristic cylinder strength")]
+        public Pressure fck =>
+            new(double.Parse(Material.Grade.ToString().Split('C', '_')[1]), _unit);
 
-        [OutputCalcValue]
-        public CalcStress fckcube => new CalcStress(
-            new Pressure(double.Parse(Material.Grade.ToString().Split('_')[1]), _unit),
-            "Characteristic cube strength", "f_{ck,cube}");
+        [OutputCalcValue("f_{ck,cube}", "Characteristic cube strength")]
+        public Pressure fckcube =>
+            new(double.Parse(Material.Grade.ToString().Split('_')[1]), _unit);
 
-        [OutputCalcValue]
-        public CalcStress fcm => new CalcStress(GetStrength() + new Pressure(8, _unit),
-                "Mean cylinder strength", "f_{cm}");
+        [OutputCalcValue("f_{cm}", "Mean cylinder strength")]
+        public Pressure fcm => fck + new Pressure(8, _unit);
 
-        [OutputCalcValue]
-        public CalcStress fctm => new CalcStress(fck <= 50
-                    ? 0.3 * Math.Pow(fck, 2d / 3d)
-                    : 2.12 * Math.Log(1 + fcm / 10),
-            PressureUnit.Megapascal, "Mean tensile strength", "f_{ctm}");
+        [OutputCalcValue("f_{ctm}", "Mean tensile strength")]
+        public Pressure fctm => new(fck.As(_unit) <= 50
+                    ? 0.3 * Math.Pow(fck.As(_unit), 2d / 3d)
+                    : 2.12 * Math.Log(1 + fcm.As(_unit) / 10),
+                    _unit);
 
-        [OutputCalcValue]
-        public CalcStress fctk005 => new CalcStress(0.7 * fctm,
-            PressureUnit.Megapascal, "Tensile strength 5% fractile", "f_{ctk;0.05}");
+        [OutputCalcValue("f_{ctk;0.05}", "Tensile strength 5% fractile")]
+        public Pressure fctk005 => 0.7 * fctm;
 
-        [OutputCalcValue]
-        public CalcStress fctk095 => new CalcStress(1.3 * fctm,
-            PressureUnit.Megapascal, "Tensile strength 95% fractile", "f_{ctk;0.95}");
+        [OutputCalcValue("f_{ctk;0.95}", "Tensile strength 95% fractile")]
+        public Pressure fctk095 => 1.3 * fctm;
 
-        [OutputCalcValue]
-        public CalcStress Ecm => new CalcStress(22 * Math.Pow(fcm / 10, 0.3),
-            PressureUnit.Gigapascal, "Secant modulus of elasticity", "E_{cm}");
+        [OutputCalcValue("E_{cm}", "Secant modulus of elasticity")]
+        public Pressure Ecm =>
+            new(22 * Math.Pow(fcm.As(_unit) / 10, 0.3), PressureUnit.Gigapascal);
 
-        [OutputCalcValue]
-        public CalcStrain Epsilonc1 => new CalcStrain(Math.Min(2.8, 0.7 * Math.Pow(fcm, 0.31)),
-            RatioUnit.PartPerThousand, "Nominal peak strain", "ε_{c1}");
+        [OutputCalcValue("ε_{c1}", "Nominal peak strain")]
+        public Ratio Epsilonc1 =>
+            new(Math.Min(2.8, 0.7 * Math.Pow(fcm.As(_unit), 0.31)), RatioUnit.PartPerThousand);
 
-        [OutputCalcValue]
-        public CalcStrain Epsiloncu1 => new CalcStrain(fck >= 50
-                    ? 2.8 + 27.0 * Math.Pow((98 - fcm) / 100, 4)
+        [OutputCalcValue("ε_{cu1}", "Nominal ultimate strain")]
+        public Ratio Epsiloncu1 => new(fck.As(_unit) >= 50
+                    ? 2.8 + 27.0 * Math.Pow((98 - fcm.As(_unit)) / 100, 4)
                     : 3.5,
-            RatioUnit.PartPerThousand, "Nominal ultimate strain", "ε_{cu1}");
+                    RatioUnit.PartPerThousand);
 
-        [OutputCalcValue]
-        public CalcStrain Epsilonc2 => new CalcStrain(fck >= 50
-                    ? 2.0 + 0.085 * Math.Pow(fck - 50, 0.53)
+        [OutputCalcValue("ε_{c2}", "Simplified parabola-rectangle peak strain")]
+        public Ratio Epsilonc2 => new(fck.As(_unit) >= 50
+                    ? 2.0 + 0.085 * Math.Pow(fck.As(_unit) - 50, 0.53)
                     : 2.0,
-            RatioUnit.PartPerThousand, "Simplified parabola-rectangle peak strain", "ε_{c2}");
+                    RatioUnit.PartPerThousand);
 
-        [OutputCalcValue]
-        public CalcStrain Epsiloncu2 => new CalcStrain(fck >= 50
-                    ? 2.6 + 35.0 * Math.Pow((90 - fck) / 100, 4)
+        [OutputCalcValue("ε_{cu2}", "Simplified ultimate strain")]
+        public Ratio Epsiloncu2 => new(fck.As(_unit) >= 50
+                    ? 2.6 + 35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
                     : 3.5,
-            RatioUnit.PartPerThousand, "Simplified ultimate strain", "ε_{cu2}");
+                    RatioUnit.PartPerThousand);
 
-        [OutputCalcValue]
-        public CalcDouble n => new CalcDouble(fck >= 50
-                    ? 1.4 + 23.4 * Math.Pow((90 - fck) / 100, 4)
-                    : 2.0,
-             "Exponent", @"\textit{n}");
+        [OutputCalcValue(@"\textit{n}", "Exponent")]
+        public double n => fck.As(_unit) >= 50
+                    ? 1.4 + 23.4 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
+                    : 2.0;
 
-        [OutputCalcValue]
-        public CalcStrain Epsilonc3 => new CalcStrain(fck >= 50
-                    ? 1.75 + 0.55 * ((fck - 50) / 40)
+        [OutputCalcValue("ε_{c3}", "Simplified bi-linear peak strain")]
+        public Ratio Epsilonc3 => new(fck.As(_unit) >= 50
+                    ? 1.75 + 0.55 * ((fck.As(_unit) - 50) / 40)
                     : 1.75,
-            RatioUnit.PartPerThousand, "Simplified bi-linear peak strain", "ε_{c3}");
+            RatioUnit.PartPerThousand);
 
-        [OutputCalcValue]
-        public CalcStrain Epsiloncu3 => new CalcStrain(fck >= 50
-                    ? 2.6 + 35.0 * Math.Pow((90 - fck) / 100, 4)
+        [OutputCalcValue("ε_{cu3}", "Simplified ultimate strain")]
+        public Ratio Epsiloncu3 => new(fck.As(_unit) >= 50
+                    ? 2.6 + 35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
                     : 3.5,
-            RatioUnit.PartPerThousand, "Simplified ultimate strain", "ε_{cu3}");
+            RatioUnit.PartPerThousand);
 
         private static PressureUnit _unit = PressureUnit.Megapascal;
 
@@ -107,22 +95,12 @@ namespace Scaffold.Calculations.Eurocode.Concrete
             Calculate();
         }
 
-        public ConcreteMaterialProperties(EnConcreteGrade grade)
-        {
-            ConcreteGrade.Value = grade.ToString().Replace("_", "/");
-            Calculate();
-        }
 
-        public List<IOutputItem> GetFormulae()
+        public IList<IFormula> GetFormulae()
         {
-            return new List<IOutputItem>();
+            return new List<IFormula>();
         }
 
         public void Calculate() { }
-
-        private Pressure GetStrength() => new Pressure(
-            double.Parse(Material.Grade.ToString().Split('C', '_')[1]), _unit);
-        public List<ICalcValue> GetInputs() => throw new NotImplementedException();
-        public List<ICalcValue> GetOutputs() => throw new NotImplementedException();
     }
 }

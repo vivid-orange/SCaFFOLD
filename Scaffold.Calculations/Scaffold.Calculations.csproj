@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0</TargetFrameworks>
+		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 		<LangVersion>12.0</LangVersion>
 		<Platforms>AnyCPU</Platforms>
 		<RootNamespace>Scaffold.Calculations</RootNamespace>
@@ -17,14 +17,12 @@
 		<Company>Whitby Wood</Company>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryUrl>https://github.com/MagmaWorks/SCaFFOLD/</RepositoryUrl>
-		<PackageIcon>MagmaWorks.png</PackageIcon>
-		<TargetFramework>net8.0</TargetFramework>
+		<RepositoryUrl>https://github.com/VividOrange/SCaFFOLD/</RepositoryUrl>
+		<PackageIcon>VividOrange.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MagmaWorks.Taxonomy.Sections.SectionProperties" Version="0.1.1" />
-		<PackageReference Include="MinVer" Version="6.0.0">
+		<PackageReference Include="MinVer" Version="7.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -39,7 +37,7 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-		<None Include="..\MagmaWorks.png">
+		<None Include="..\VividOrange.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>

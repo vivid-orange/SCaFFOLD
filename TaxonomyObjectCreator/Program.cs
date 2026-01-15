@@ -1,20 +1,20 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using MagmaWorks.Taxonomy.Profiles;
+using VividOrange.Taxonomy.Profiles;
 
 namespace TaxonomyObjectCodeGenerator
 {
     public class Program
     {
         private static readonly List<string> _assemblies = new() {
-            "MagmaWorks.Taxonomy.Profiles",
-            "MagmaWorks.Taxonomy.Materials",
-            "MagmaWorks.Taxonomy.Sections",
-            "MagmaWorks.Taxonomy.Sections.SectionProperties",
-            "MagmaWorks.Taxonomy.Loads",
-            "MagmaWorks.Taxonomy.Cases",
-            "MagmaWorks.Taxonomy.Profiles.Perimeter",
+            "VividOrange.Taxonomy.Profiles",
+            "VividOrange.Taxonomy.Materials",
+            "VividOrange.Taxonomy.Sections",
+            "VividOrange.Taxonomy.Sections.SectionProperties",
+            "VividOrange.Taxonomy.Loads",
+            "VividOrange.Taxonomy.Cases",
+            "VividOrange.Taxonomy.Profiles.Perimeter",
 
         };
 
@@ -28,7 +28,7 @@ namespace TaxonomyObjectCodeGenerator
         };
 
         private static readonly Dictionary<string, string> _renamings = new() {
-            { "Angle", "MagmaWorks.Taxonomy.Profiles.Angle" },
+            { "Angle", "VividOrange.Taxonomy.Profiles.Angle" },
         };
 
         private static readonly Dictionary<string, string> _nameSpaceChange = new() {
@@ -90,7 +90,7 @@ namespace TaxonomyObjectCodeGenerator
 
         private static void WriteClassToFile(Type type, string assemblyName)
         {
-            string assemblyBase = "MagmaWorks.Taxonomy.";
+            string assemblyBase = "VividOrange.Taxonomy.";
             string assembly = type.Namespace.Replace(assemblyBase, string.Empty);
             string filePath = GetPath(assemblyName, assembly);
             string name = type.Name;
@@ -112,10 +112,7 @@ namespace TaxonomyObjectCodeGenerator
             var sb = new StringBuilder();
             sb.AppendLine($@"
 namespace {nameSpace};
-public sealed class Calc{name} : {inheritName}, ICalcValue
-#if NET7_0_OR_GREATER
-    , IParsable<Calc{name}>
-#endif
+public sealed class Calc{name} : {inheritName}, ICalcValue, IParsable<Calc{name}>
 {{
     public string DisplayName {{ get; set; }} = string.Empty;
     public string Symbol {{ get; set; }} = string.Empty;
@@ -264,7 +261,7 @@ $@"    public static bool TryParse(string s, IFormatProvider provider, out Calc{
         {
             var s = new List<string>()
             {
-                "using MagmaWorks.Taxonomy.Serialization;",
+                "using VividOrange.Taxonomy.Serialization;",
                 "using Scaffold.Core.Extensions;",
                 "using Newtonsoft.Json;",
                 $"using {type.Namespace};",

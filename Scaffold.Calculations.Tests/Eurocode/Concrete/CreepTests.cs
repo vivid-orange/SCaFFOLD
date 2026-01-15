@@ -2,62 +2,6 @@ namespace Scaffold.Calculations.Eurocode.Concrete;
 
 public class ConcreteCreepTests
 {
-    private static CalculationReader Reader { get; } = new();
-
-    [Fact]
-    public void CalculationBaseSetupTest()
-    {
-        // Assemble
-        var calc = new Creep();
-
-        // Act
-        CalculationMetadata metadata = Reader.GetMetadata(calc);
-        IReadOnlyList<ICalcValue> inputs = Reader.GetInputs(calc);
-        IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs(calc);
-
-        // Assert
-        Assert.Equal("Creep", calc.ReferenceName);
-        Assert.Equal("Concrete Creep", calc.InstanceName);
-        Assert.Equal(6, inputs.Count);
-        Assert.Equal(5, outputs.Count);
-    }
-
-    [Theory]
-    [InlineData(0, typeof(CalcSelectionList), "Grd", "Grade")]
-    // TO-DO: a concept for organising in/outputs by Group and Position in that group
-    //[InlineData(1, typeof(CalcSelectionList), "Grd", "Grade")] TO-DO add remaining inputs after list[i] is sorted
-    //[InlineData(2, typeof(CalcSelectionList), "Grd", "Grade")]
-    public void CalculationInputTests(int id, Type expectedType, string expectedSymbol, string expectedDisplayName)
-    {
-        // Assemble
-        var calc = new Creep();
-
-        // Act
-        IReadOnlyList<ICalcValue> inputs = Reader.GetInputs(calc);
-
-        // Assert
-        Assert.Equal(expectedType, inputs[id].GetType());
-        Assert.Equal(expectedSymbol, inputs[id].Symbol);
-        Assert.Equal(expectedDisplayName, inputs[id].TypeName);
-    }
-
-    // TO-DO: a concept for organising in/outputs by Group and Position in that group
-    //[Theory]
-    //[InlineData(0, typeof(ConcreteProperties), "CP", "Concrete Properties")]
-    //public void CalculationOutputTests(int id, Type expectedType, string expectedSymbol, string expectedDisplayName)
-    //{
-    //    // Assemble
-    //    var calc = new Creep();
-
-    //    // Act
-    //    IReadOnlyList<ICalcValue> outputs = Reader.GetOutputs(calc);
-
-    //    // Assert
-    //    Assert.Equal(expectedType, outputs[id].GetType());
-    //    Assert.Equal(expectedSymbol, outputs[id].Symbol);
-    //    Assert.Equal(expectedDisplayName, outputs[id].DisplayName);
-    //}
-
     [Theory]
     [InlineData(400, 800, 320000)]
     [InlineData(100, 250, 25000)]
@@ -65,16 +9,15 @@ public class ConcreteCreepTests
         double width, double length, double expArea)
     {
         // Assemble
-        var calc = new Creep();
+        var calc = new CreepCalculation();
 
         // Act
-        calc.Width.Quantity = new Length(width, LengthUnit.Millimeter);
-        calc.Length.Quantity = new Length(length, LengthUnit.Millimeter);
+        calc.Width = new Length(width, LengthUnit.Millimeter);
+        calc.Length = new Length(length, LengthUnit.Millimeter);
         calc.Calculate();
 
         // Assert
-        Assert.Equal(expArea, calc.Area, 0);
-        Assert.Equal("mm²", calc.Area.Unit);
+        Assert.Equal(expArea, calc.Area.SquareMillimeters, 0);
     }
 
     [Theory]
@@ -84,16 +27,15 @@ public class ConcreteCreepTests
         double width, double length, double expPerimeter)
     {
         // Assemble
-        var calc = new Creep();
+        var calc = new CreepCalculation();
 
         // Act
-        calc.Width.Quantity = new Length(width, LengthUnit.Millimeter);
-        calc.Length.Quantity = new Length(length, LengthUnit.Millimeter);
+        calc.Width = new Length(width, LengthUnit.Millimeter);
+        calc.Length = new Length(length, LengthUnit.Millimeter);
         calc.Calculate();
 
         // Assert
-        Assert.Equal(expPerimeter, calc.Perimeter, 0);
-        Assert.Equal("mm", calc.Perimeter.Unit);
+        Assert.Equal(expPerimeter, calc.Perimeter.Millimeters, 0);
     }
 
     [Theory]
@@ -103,16 +45,16 @@ public class ConcreteCreepTests
         double time0, double time, double humidity, double expCoefficient)
     {
         // Assemble
-        var calc = new Creep();
+        var calc = new CreepCalculation();
 
         // Act
-        calc.RelativeHumidity.Quantity =
+        calc.RelativeHumidity =
             new RelativeHumidity(humidity, RelativeHumidityUnit.Percent);
-        calc.Time0.Quantity = new Duration(time0, DurationUnit.Day);
-        calc.Time.Quantity = new Duration(time, DurationUnit.Day);
+        calc.Time0 = new Duration(time0, DurationUnit.Day);
+        calc.Time = new Duration(time, DurationUnit.Day);
         calc.Calculate();
 
         // Assert
-        Assert.Equal(expCoefficient, calc.CreepCoefficient.Value, 3);
+        Assert.Equal(expCoefficient, calc.CreepCoefficient, 3);
     }
 }
