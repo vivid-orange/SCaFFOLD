@@ -20,19 +20,19 @@ public class CreepCalculation : ICalculation
     public ConcreteMaterialProperties Concrete { get; set; } = new();
 
     [InputCalcValue("RH", "Relative humidity")]
-    public RelativeHumidity RelativeHumidity { get; set; } = new (70, RelativeHumidityUnit.Percent);
+    public RelativeHumidity RelativeHumidity { get; set; } = new(70, RelativeHumidityUnit.Percent);
 
     [InputCalcValue(@"t_0\", @"Time load applied")]
-    public Duration Time0 { get; set; } = new (28, DurationUnit.Day);
+    public Duration Time0 { get; set; } = new(28, DurationUnit.Day);
 
     [InputCalcValue("t", "Time")]
-    public Duration Time { get; set; } = new (50, DurationUnit.JulianYear);
+    public Duration Time { get; set; } = new(50, DurationUnit.JulianYear);
 
     [InputCalcValue("L", "Length")]
-    public Length Length { get; set; } = new (500, LengthUnit.Millimeter);
+    public Length Length { get; set; } = new(500, LengthUnit.Millimeter);
 
     [InputCalcValue("W", "Width")]
-    public Length Width { get; set; } = new (500, LengthUnit.Millimeter);
+    public Length Width { get; set; } = new(500, LengthUnit.Millimeter);
 
     [OutputCalcValue("A_c", "Cross section area")]
     public Area Area { get; private set; }

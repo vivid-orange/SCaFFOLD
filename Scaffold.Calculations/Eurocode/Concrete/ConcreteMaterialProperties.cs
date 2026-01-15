@@ -51,22 +51,22 @@ namespace Scaffold.Calculations.Eurocode.Concrete
 
         [OutputCalcValue("ε_{c1}", "Nominal peak strain")]
         public Ratio Epsilonc1 =>
-            new (Math.Min(2.8, 0.7 * Math.Pow(fcm.As(_unit), 0.31)), RatioUnit.PartPerThousand);
+            new(Math.Min(2.8, 0.7 * Math.Pow(fcm.As(_unit), 0.31)), RatioUnit.PartPerThousand);
 
         [OutputCalcValue("ε_{cu1}", "Nominal ultimate strain")]
-        public Ratio Epsiloncu1 => new (fck.As(_unit) >= 50
+        public Ratio Epsiloncu1 => new(fck.As(_unit) >= 50
                     ? 2.8 + 27.0 * Math.Pow((98 - fcm.As(_unit)) / 100, 4)
                     : 3.5,
                     RatioUnit.PartPerThousand);
 
         [OutputCalcValue("ε_{c2}", "Simplified parabola-rectangle peak strain")]
-        public Ratio Epsilonc2 => new (fck.As(_unit) >= 50
+        public Ratio Epsilonc2 => new(fck.As(_unit) >= 50
                     ? 2.0 + 0.085 * Math.Pow(fck.As(_unit) - 50, 0.53)
                     : 2.0,
                     RatioUnit.PartPerThousand);
 
         [OutputCalcValue("ε_{cu2}", "Simplified ultimate strain")]
-        public Ratio Epsiloncu2 => new (fck.As(_unit) >= 50
+        public Ratio Epsiloncu2 => new(fck.As(_unit) >= 50
                     ? 2.6 + 35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
                     : 3.5,
                     RatioUnit.PartPerThousand);
@@ -77,13 +77,13 @@ namespace Scaffold.Calculations.Eurocode.Concrete
                     : 2.0;
 
         [OutputCalcValue("ε_{c3}", "Simplified bi-linear peak strain")]
-        public Ratio Epsilonc3 => new (fck.As(_unit) >= 50
+        public Ratio Epsilonc3 => new(fck.As(_unit) >= 50
                     ? 1.75 + 0.55 * ((fck.As(_unit) - 50) / 40)
                     : 1.75,
             RatioUnit.PartPerThousand);
 
         [OutputCalcValue("ε_{cu3}", "Simplified ultimate strain")]
-        public Ratio Epsiloncu3 => new (fck.As(_unit) >= 50
+        public Ratio Epsiloncu3 => new(fck.As(_unit) >= 50
                     ? 2.6 + 35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
                     : 3.5,
             RatioUnit.PartPerThousand);
