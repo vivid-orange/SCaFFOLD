@@ -5,8 +5,8 @@ using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
 using UnitsNet;
 using UnitsNet.Units;
-using VividOrange.Taxonomy.Profiles;
-using VividOrange.Taxonomy.Sections.SectionProperties;
+using VividOrange.Profiles;
+using VividOrange.Sections.SectionProperties;
 
 namespace Scaffold.Calculations.Eurocode.Concrete;
 

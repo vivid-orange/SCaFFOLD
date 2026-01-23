@@ -1,4 +1,4 @@
-﻿using VividOrange.Taxonomy.Profiles;
+﻿using VividOrange.Profiles;
 
 namespace Scaffold.Core.Interfaces;
 

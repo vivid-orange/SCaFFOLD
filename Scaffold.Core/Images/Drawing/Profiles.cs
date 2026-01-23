@@ -1,5 +1,5 @@
 ﻿using SkiaSharp;
-using VividOrange.Taxonomy.Profiles;
+using VividOrange.Profiles;
 
 namespace Scaffold.Core.Images.Drawing
 {

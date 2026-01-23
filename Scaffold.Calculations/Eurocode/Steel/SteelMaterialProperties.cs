@@ -5,9 +5,9 @@ using Scaffold.Core.Enums;
 using Scaffold.Core.Interfaces;
 using UnitsNet;
 using UnitsNet.Units;
-using VividOrange.Taxonomy.Materials;
-using VividOrange.Taxonomy.Materials.StandardMaterials.En;
-using VividOrange.Taxonomy.Standards.Eurocode;
+using VividOrange.Materials;
+using VividOrange.Materials.StandardMaterials.En;
+using VividOrange.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Eurocode.Steel
 {

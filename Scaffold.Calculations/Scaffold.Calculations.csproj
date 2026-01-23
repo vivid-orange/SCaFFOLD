@@ -26,6 +26,9 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="VividOrange.Materials" Version="0.1.0" />
+		<PackageReference Include="VividOrange.Sections" Version="0.1.0" />
+		<PackageReference Include="VividOrange.Sections.SectionProperties" Version="0.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
