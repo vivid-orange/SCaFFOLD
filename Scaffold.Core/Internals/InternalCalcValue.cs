@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace Scaffold.Core.Internals;
-
 internal sealed class InternalCalcValue : ICalcValue
 {
     private ICalculation Calculation { get; }

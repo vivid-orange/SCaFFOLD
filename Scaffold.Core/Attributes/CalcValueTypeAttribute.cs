@@ -1,6 +1,4 @@
-﻿namespace Scaffold.Core.Attributes;
-
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+﻿[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class CalcValueTypeAttribute : Attribute
 {
     public CalcValueType Type { get; set; }

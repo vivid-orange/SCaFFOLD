@@ -1,6 +1,4 @@
-﻿namespace Scaffold.Core.Internals;
-
-internal static class InternalExtensionMethods
+﻿internal static class InternalExtensionMethods
 {
     private static string UniqueDisplayName(List<ICalcValue> collection, string displayName)
     {

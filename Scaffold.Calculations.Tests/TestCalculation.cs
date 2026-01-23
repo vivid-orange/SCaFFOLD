@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using Scaffold.Core.Attributes;
-using Scaffold.Core.CalcQuantities;
+﻿using Scaffold.Core.Attributes;
 using Scaffold.Core.Enums;
-using Scaffold.Core.Interfaces;
 
 namespace Scaffold.Calculations
 {
@@ -16,7 +13,7 @@ namespace Scaffold.Calculations
         public double Multiplier { get; set; } = 0;
 
         [InputCalcValue(@"F", "Force")]
-        public CalcForce Force { get; set; } = new CalcForce(10, "Force", "F");
+        public Force Force { get; set; } = new Force(10, ForceUnit.Kilonewton);
 
         [OutputCalcValue(@"R", "Result")]
         public double Result { get; private set; } = 0;

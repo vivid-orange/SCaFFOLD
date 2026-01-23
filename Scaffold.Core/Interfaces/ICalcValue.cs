@@ -1,6 +1,4 @@
-﻿namespace Scaffold.Core.Interfaces;
-
-public interface ICalcValue : ICalculationStatus
+﻿public interface ICalcValue : ICalculationStatus
 {
     string DisplayName { get; set; }
     string Symbol { get; set; }

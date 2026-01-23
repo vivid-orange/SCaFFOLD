@@ -1,4 +1,4 @@
-﻿namespace Scaffold.Core.Images.Models;
+﻿namespace Scaffold.Reader;
 
 public class AssemblyImage
 {

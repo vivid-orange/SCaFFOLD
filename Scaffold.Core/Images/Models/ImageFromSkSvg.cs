@@ -3,7 +3,7 @@ using System.Text;
 using SkiaSharp;
 using SKSvg = SkiaSharp.Extended.Svg.SKSvg;
 
-namespace Scaffold.Core.Images.Models;
+namespace Scaffold.Reader;
 
 public class ImageFromSkSvg : ICalcImage
 {

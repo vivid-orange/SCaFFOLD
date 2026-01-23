@@ -1,6 +1,4 @@
-﻿using VividOrange.Taxonomy.Profiles;
-
-namespace Scaffold.Core.Interfaces;
+﻿using VividOrange.Profiles;
 
 public interface ICalcProfile<TSelf> : ICalcProfile where TSelf : ICalcProfile<TSelf>
 {
