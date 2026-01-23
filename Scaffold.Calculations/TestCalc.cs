@@ -73,7 +73,7 @@ namespace Scaffold.Calculations
             outputs.Expressions.Add(new LatexItem(@"M = \frac{wl^2} {8}"));
             outputs.Expressions.Add(new TextItem("and then a bit more text whcih can now be in-line", true));
             outputs.Expressions.Add(new TextItem("and then an image"));
-            outputs.Expressions.Add(new ImageOutputItem(new ImageFromSkBitmap(Utilities.CreateMultiCircleImage(Coordinates.Value, SKColors.Orange)), true));
+            outputs.Expressions.Add(new ImageItem(new ImageFromSkBitmap(Utilities.CreateMultiCircleImage(Coordinates.Value, SKColors.Orange)), true));
             outputs.Expressions.Add(new TextItem("and then another formula", true));
             outputs.Expressions.Add(new LatexItem(@"E = mc^2"));
             outputs.Expressions.Add(new TextItem("all of which can be set to in-line or new line"));

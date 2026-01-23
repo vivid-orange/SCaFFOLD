@@ -50,7 +50,7 @@ namespace Scaffold.Calculations
             var returnList = new List<IOutputItem>();
 
             var outputs = new OutputItem("cl 1.A", "", "OK", new TextItem("Beam profile:"));
-            outputs.Expressions.Add(new ImageOutputItem(new ImageFromSkBitmap(Utilities.CreateDetailedISectionBitmap(Height.Value, Breadth.Value, FlangeThickness.Value, WebThickness.Value, RootRadius.Value, SkiaSharp.SKColors.Gray))));
+            outputs.Expressions.Add(new ImageItem(new ImageFromSkBitmap(Utilities.CreateDetailedISectionBitmap(Height.Value, Breadth.Value, FlangeThickness.Value, WebThickness.Value, RootRadius.Value, SkiaSharp.SKColors.Gray))));
             outputs.Expressions.Add(new LatexItem(@"A = 2(BT) + t(H - 2T)"));
             outputs.Expressions.Add(new LatexItem(@"A = " + Area.Value));
             outputs.Expressions.Add(new TextItem("root radius neglected because i couldn't be arsed"));

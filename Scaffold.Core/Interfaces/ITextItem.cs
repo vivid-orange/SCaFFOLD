@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core
 {
-    public interface ITextOutputItem : IContentItem
+    public interface ITextItem : IContentItem
     {
         string Text { get; }
     }

@@ -20,20 +20,20 @@ namespace SCaFFOLD_Desktop
 
         // --- Layout Flags ---
         // We cast to the abstract base 'Expression' to access IsInLine
-        public bool IsInLine => (_model as Expression)?.IsInLine ?? false;
+        public bool IsInLine => (_model as ContentItem)?.IsInLine ?? false;
 
         // --- Type Flags ---
-        public bool IsText => _model is ITextOutputItem;
-        public bool IsLatex => _model is ILatexOutputItem;
-        public bool IsImage => _model is IImageOutputItem;
+        public bool IsText => _model is ITextItem;
+        public bool IsLatex => _model is ILatexItem;
+        public bool IsImage => _model is IImageItem;
 
         // --- Content Properties ---
         public string Content
         {
             get
             {
-                if (_model is ITextOutputItem textItem) return textItem.Text;
-                if (_model is ILatexOutputItem latexItem) return latexItem.Latex;
+                if (_model is ITextItem textItem) return textItem.Text;
+                if (_model is ILatexItem latexItem) return latexItem.Latex;
                 return string.Empty;
             }
         }
@@ -44,7 +44,7 @@ namespace SCaFFOLD_Desktop
             {
                 if (_cachedImageSource != null) return _cachedImageSource;
 
-                if (_model is IImageOutputItem imageItem && imageItem.Image != null)
+                if (_model is IImageItem imageItem && imageItem.Image != null)
                 {
                     try
                     {

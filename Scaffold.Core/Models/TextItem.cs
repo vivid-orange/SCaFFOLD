@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core
 {
-    public class TextItem : Expression, ITextOutputItem
+    public class TextItem : ContentItem, ITextItem
     {
         public string Text { get; }
 

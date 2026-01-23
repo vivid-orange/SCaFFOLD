@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core
 {
-    public interface ILatexOutputItem : IContentItem
+    public interface ILatexItem : IContentItem
     {
         string Latex { get; }
     }

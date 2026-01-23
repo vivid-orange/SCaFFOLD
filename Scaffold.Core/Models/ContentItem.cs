@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core
 {
-    public abstract class Expression : IContentItem
+    public abstract class ContentItem : IContentItem
     {
         public bool IncludeInSummary { get; } = true;
 
