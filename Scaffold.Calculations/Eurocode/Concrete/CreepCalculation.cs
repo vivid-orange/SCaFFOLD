@@ -6,7 +6,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete;
 public class CreepCalculation : ICalculation
 {
     public string ReferenceName { get; set; }
-    public string CalculationName { get; set; } = "Concrete Creep";
+    public string TypeName { get; set; } = "Concrete Creep";
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
     [InputCalcValue("CMP", "Concrete Material Property")]

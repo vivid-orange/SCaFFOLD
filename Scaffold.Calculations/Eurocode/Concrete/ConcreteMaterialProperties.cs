@@ -6,7 +6,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete
     public class ConcreteMaterialProperties : ICalculation
     {
         public string ReferenceName { get; set; }
-        public string CalculationName { get; set; } = "Concrete Material Properties";
+        public string TypeName { get; set; } = "Concrete Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue("Grd", "Grade")]

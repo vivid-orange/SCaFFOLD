@@ -5,7 +5,7 @@ public interface ICalculation : ICalculationStatus
     /// By default, this will use CalcNameAttribute if it exists, otherwise it will use the value you specify.
     /// If you do not specify a value, the class name will be used.
     /// </summary>
-    public string CalculationName { get; set; }
+    //public string TypeName { get;  } MOVED TO ICALCULATIONSTATUS
 
     /// <summary>
     /// The name of the member this instance covers, e.g. 'Column C3'
