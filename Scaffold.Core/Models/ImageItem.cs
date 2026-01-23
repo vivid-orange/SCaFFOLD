@@ -1,14 +1,14 @@
 ﻿namespace Scaffold.Core
 {
-    public class ImageOutputItem : Expression, IImageOutputItem
+    public class ImageItem : ContentItem, IImageItem
     {
         public ICalcImage Image { get; }
 
-        public ImageOutputItem(ICalcImage image)
+        public ImageItem(ICalcImage image)
         {
             Image = image;
         }
-        public ImageOutputItem(ICalcImage image, bool isInLine)
+        public ImageItem(ICalcImage image, bool isInLine)
         {
             Image = image;
             IsInLine = isInLine;

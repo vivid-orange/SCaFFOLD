@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Scaffold.Core
+
 {
-    public interface ILatexOutputItem : IContentItem
+    public interface IImageItem : IContentItem
     {
-        string Latex { get; }
+        ICalcImage Image { get; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Scaffold.Core
 {
-    public class LatexItem : Expression, ILatexOutputItem
+    public class LatexItem : ContentItem, ILatexItem
     {
         public string Latex { get; }
 
