@@ -1,7 +1,4 @@
-﻿using Scaffold.Core.Attributes;
-using Scaffold.Core.Enums;
-
-namespace Scaffold.Calculations
+﻿namespace Scaffold.Calculations
 {
     public class TestCalculation : ICalculation
     {

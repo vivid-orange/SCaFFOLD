@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Scaffold.Core.Attributes;
-using Scaffold.Core.Enums;
-using Scaffold.Core.Interfaces;
-using UnitsNet;
-using UnitsNet.Units;
-using VividOrange.Profiles;
+﻿using VividOrange.Profiles;
 using VividOrange.Sections.SectionProperties;
 
 namespace Scaffold.Calculations.Eurocode.Concrete;

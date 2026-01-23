@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Scaffold.Core.Attributes;
-using Scaffold.Core.Enums;
-using Scaffold.Core.Interfaces;
-using UnitsNet;
-using UnitsNet.Units;
-using VividOrange.Materials;
+﻿using VividOrange.Materials;
 using VividOrange.Materials.StandardMaterials.En;
 using VividOrange.Standards.Eurocode;
 

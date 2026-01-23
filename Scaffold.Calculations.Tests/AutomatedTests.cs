@@ -2,7 +2,6 @@ using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Scaffold.Calculations.Eurocode.Concrete;
-using Scaffold.Core.Attributes;
 
 namespace Scaffold.Calculations.Tests
 {
