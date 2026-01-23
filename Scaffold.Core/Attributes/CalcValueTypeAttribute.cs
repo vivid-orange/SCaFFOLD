@@ -4,6 +4,7 @@ public class CalcValueTypeAttribute : Attribute
     public CalcValueType Type { get; set; }
     public string Symbol { get; set; }
     public string DisplayName { get; set; }
+    public string[] Headings { get; set; }
 
     protected CalcValueTypeAttribute() { }
 
