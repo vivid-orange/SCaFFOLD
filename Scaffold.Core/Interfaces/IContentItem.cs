@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core
 {
-    public interface IExpression
+    public interface IContentItem
     {
         public bool IncludeInSummary { get; }
         public bool IsInLine { get; }

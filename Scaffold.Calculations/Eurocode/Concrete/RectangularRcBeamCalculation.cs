@@ -171,7 +171,7 @@ public class RectangularRcBeamCalculation : ICalculation
                 Narrative = "Beam calculations to BS EN 1992-1-1 2004. Currently in beta so check thoroughly!",
             }
         };
-        List<IExpression> expression = new();
+        List<IContentItem> expression = new();
 
         charCompStr.Value = getConcreteStrength(Grade.Value);
         meanCompStr.Value = charCompStr.Value + 8;
@@ -193,7 +193,7 @@ public class RectangularRcBeamCalculation : ICalculation
         rebarDesYieldStr.Value = rebarCharYieldStr.Value / rebarPartialFactor.Value;
 
         Expressions.Add(new OutputItem() { Expressions = expression, Reference = "Property calcs", Narrative = "" });
-        expression = new List<IExpression>();
+        expression = new List<IContentItem>();
 
         // Lever arm
         effDepth.Value = Profile.Height.Value - BottomCover.Value - 10 - 16;
@@ -287,7 +287,7 @@ public class RectangularRcBeamCalculation : ICalculation
         });
 
         // Check As_prov exceeds As_min
-        expression = new List<IExpression>();
+        expression = new List<IContentItem>();
         rebarMinArea.Value = Math.Max(0.26 * meanAxialTenStr.Value / rebarCharYieldStr.Value, 0.0013) *
                              Profile.Width.Value * effDepth.Value;
         expression.Add(new LatexItem(string.Format(@"{0}=max(0.26\frac{{{1}}}{{{2}}}, 0.0013)\times {3}\times {4}={5}{6}",
@@ -324,7 +324,7 @@ public class RectangularRcBeamCalculation : ICalculation
         }
 
         // Check As_prov is less than As_max
-        expression = new List<IExpression>();
+        expression = new List<IContentItem>();
         rebarMaxArea.Value = 0.04 * Profile.Width.Value * Profile.Height.Value;
         expression.Add(new LatexItem(string.Format(@"{0}=0.04\times {1}\times {2}={3}{4}",
             rebarMaxArea.Symbol,

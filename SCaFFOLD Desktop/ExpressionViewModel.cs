@@ -10,10 +10,10 @@ namespace SCaFFOLD_Desktop
 {
     public class ExpressionViewModel : ViewModelBase
     {
-        private readonly IExpression _model;
+        private readonly IContentItem _model;
         private ImageSource _cachedImageSource;
 
-        public ExpressionViewModel(IExpression model)
+        public ExpressionViewModel(IContentItem model)
         {
             _model = model;
         }

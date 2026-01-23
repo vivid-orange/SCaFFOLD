@@ -8,7 +8,7 @@ public class OutputItem : IOutputItem
 {
     public OutputItem() { }
 
-    public OutputItem(string reference, string narrative, string conclusion, IExpression expression,
+    public OutputItem(string reference, string narrative, string conclusion, IContentItem expression,
         CalcStatus status = CalcStatus.None)
     {
         Reference = reference;
@@ -19,7 +19,7 @@ public class OutputItem : IOutputItem
     }
 
     public string TypeName { get; } = "";
-    public List<IExpression> Expressions { get; set; } = [];
+    public List<IContentItem> Expressions { get; set; } = [];
     public string Reference { get; set; } = "";
     public string Narrative { get; set; } = "";
     public string Conclusion { get; set; } = "";
@@ -50,13 +50,13 @@ public class OutputItem : IOutputItem
         return this;
     }
 
-    public OutputItem AddExpression(IExpression expression)
+    public OutputItem AddExpression(IContentItem expression)
     {
         Expressions.Add(expression);
         return this;
     }
 
-    public OutputItem AddExpressions(IEnumerable<IExpression> expressions)
+    public OutputItem AddExpressions(IEnumerable<IContentItem> expressions)
     {
         Expressions.AddRange(expressions);
         return this;

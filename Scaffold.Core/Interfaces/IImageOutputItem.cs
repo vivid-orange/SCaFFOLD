@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Scaffold.Core
 
 {
-    public interface IImageOutputItem : IExpression
+    public interface IImageOutputItem : IContentItem
     {
         ICalcImage Image { get; }
     }
