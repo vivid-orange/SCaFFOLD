@@ -1,6 +1,4 @@
-﻿namespace Scaffold.Core.Interfaces;
-
-public interface IFormula : ICalculationStatus
+﻿public interface IFormula : ICalculationStatus
 {
     List<string> Expression { get; }
     string Reference { get; }

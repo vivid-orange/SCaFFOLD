@@ -1,6 +1,6 @@
 ﻿using SkiaSharp;
 
-namespace Scaffold.Core.Images.Models;
+namespace Scaffold.Reader;
 
 public class ImageFromSkBitmap : ICalcImage
 {

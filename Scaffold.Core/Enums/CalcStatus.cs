@@ -1,6 +1,4 @@
-﻿namespace Scaffold.Core.Enums;
-
-public enum CalcStatus
+﻿public enum CalcStatus
 {
     None,
     Pass,

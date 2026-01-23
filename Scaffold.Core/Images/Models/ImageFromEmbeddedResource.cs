@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using SkiaSharp;
 
-namespace Scaffold.Core.Images.Models;
+namespace Scaffold.Reader;
 
 public class ImageFromEmbeddedResource<T> : ICalcImage
     where T : ICalculation

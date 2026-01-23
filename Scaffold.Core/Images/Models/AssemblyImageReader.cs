@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Scaffold.Core.Images.Models;
+namespace Scaffold.Reader;
 
 public class AssemblyImageReader : IAssemblyImageReader
 {

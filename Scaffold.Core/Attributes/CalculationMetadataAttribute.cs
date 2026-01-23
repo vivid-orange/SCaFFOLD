@@ -1,6 +1,4 @@
-﻿namespace Scaffold.Core.Attributes;
-
-[AttributeUsage(AttributeTargets.Class)]
+﻿[AttributeUsage(AttributeTargets.Class)]
 public class CalculationMetadataAttribute : Attribute
 {
     public string CalculationName { get; set; }

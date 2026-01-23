@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <MinVerMinimumMajorMinor>0.12</MinVerMinimumMajorMinor>
@@ -10,7 +10,7 @@
     <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <LangVersion>12.0</LangVersion>
     <Platforms>AnyCPU</Platforms>
-    <RootNamespace>Scaffold.Core</RootNamespace>
+    <RootNamespace>Scaffold</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>

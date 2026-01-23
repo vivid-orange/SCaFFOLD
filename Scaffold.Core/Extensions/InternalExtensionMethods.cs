@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Scaffold.Core.Extensions;
-
 internal static class InternalExtensionMethods
 {
     internal static bool IsAcceptedPrimitive(this Type type)
