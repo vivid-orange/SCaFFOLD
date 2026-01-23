@@ -1,0 +1,27 @@
+﻿public enum EngineeringUnits
+{
+    Angle,
+    Length,
+    Area,
+    Volume,
+    SectionModulus,
+    AreaMomentOfInertia,
+    Force,
+    ForcePerLength,
+    ForcePerArea,
+    Moment,
+    Stress,
+    Strain,
+    RotationalStiffness,
+    Curvature,
+    Mass,
+    Density,
+    LinearDensity,
+    VolumePerLength,
+    Temperature,
+    Velocity,
+    Acceleration,
+    Energy,
+    Ratio,
+    Time
+}
