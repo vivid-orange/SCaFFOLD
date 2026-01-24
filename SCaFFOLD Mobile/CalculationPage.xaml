@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SCaFFOLD_Mobile"
+             x:Class="SCaFFOLD_Mobile.CalculationPage"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="25">
+
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Inputs" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource Primary}"/>
+
+                <StackLayout BindableLayout.ItemsSource="{Binding Inputs}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:CalcValueViewModel">
+                            <Grid ColumnDefinitions="*, 120" Margin="0,5">
+
+                                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                                    <Label Text="{Binding Symbol, StringFormat='Symbol: {0}'}" 
+                                           FontSize="12" 
+                                           TextColor="Gray"/>
+                                </VerticalStackLayout>
+
+                                <Entry Grid.Column="1" 
+                                       Text="{Binding Value, Mode=TwoWay}" 
+                                       Keyboard="Text" 
+                                       HorizontalTextAlignment="End"
+                                       Placeholder="Enter value"/>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </VerticalStackLayout>
+
+            <Button Text="Calculate" 
+                    Command="{Binding CalculateCommand}"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    CornerRadius="8"/>
+
+            <BoxView HeightRequest="1" Color="LightGray"/>
+
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Results" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource Primary}"/>
+
+                <StackLayout BindableLayout.ItemsSource="{Binding Outputs}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:CalcValueViewModel">
+                            <Grid ColumnDefinitions="*, Auto" Margin="0,5">
+
+                                <Label Grid.Column="0" 
+                                       Text="{Binding Name}" 
+                                       VerticalOptions="Center"/>
+
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Value}" 
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="Black"
+                                       HorizontalOptions="End"/>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

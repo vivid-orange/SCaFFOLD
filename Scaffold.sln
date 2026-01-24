@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.9.34728.123
+VisualStudioVersion = 17.14.36705.20
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Core", "Scaffold.Core\Scaffold.Core.csproj", "{BC82F32A-6425-41F7-A938-AF44312ABABF}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxonomyObjectCodeGenerator", "TaxonomyObjectCreator\TaxonomyObjectCodeGenerator.csproj", "{5197FD54-4CDB-4D1E-9E05-E209AB9BF902}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCaFFOLD Desktop", "SCaFFOLD Desktop\SCaFFOLD Desktop.csproj", "{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCaFFOLD Mobile", "SCaFFOLD Mobile\SCaFFOLD Mobile.csproj", "{0E1E6656-2807-4625-B460-03A3429B29EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{878DE753-C7F9-BAEB-E489-30ACA26CDCFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E1E6656-2807-4625-B460-03A3429B29EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E1E6656-2807-4625-B460-03A3429B29EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E1E6656-2807-4625-B460-03A3429B29EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E1E6656-2807-4625-B460-03A3429B29EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
