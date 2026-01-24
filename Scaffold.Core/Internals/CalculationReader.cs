@@ -10,6 +10,7 @@ namespace Scaffold.Core.Services
     public static class CalculationReader
     {
         // Cache to store the definition for each Calculation Type
+        // Reflection only needed once during app life for each calc type (not each instance)
         private static readonly ConcurrentDictionary<Type, CalculationDefinition> _cache
             = new ConcurrentDictionary<Type, CalculationDefinition>();
 

@@ -12,7 +12,6 @@ namespace Scaffold.Core
     {
         private readonly Func<T> _getter;
         private readonly Action<T> _setter;
-
         public string Symbol { get; }
         public string TypeName { get; }
         public List<string> Headings { get; }
@@ -51,8 +50,6 @@ namespace Scaffold.Core
         {
             if (_setter == null) return false;
 
-
-
             // WE NEED TO FIND A MORE GENERIC WAY TO HANDLE CONVERSION FROM STRING / DOUBLE ETC TO UNDERLYING TYPE
             if (Value is IQuantity)
             {
@@ -72,9 +69,6 @@ namespace Scaffold.Core
 
                 return false;
             }
-
-
-
 
             try
             {
