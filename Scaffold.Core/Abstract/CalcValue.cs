@@ -12,6 +12,8 @@ public abstract class CalcValue<T> : ICalcValue, IEquatable<CalcValue<T>>
     public string Unit { get; set; } = string.Empty;
     public string GetValueAsString() => ToString();
 
+    public List<string> Headings => null;
+
     protected CalcValue(T value, string name, string symbol, string unit = "")
     {
         Value = value;

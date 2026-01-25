@@ -8,7 +8,7 @@ using Scaffold.Core.Attributes;
 using Scaffold.Core.CalcValues;
 using Scaffold.Core.Interfaces;
 using Scaffold.Core.Models;
-using CalcValueType = Scaffold.Core.Attributes.CalcValueType;
+using CalcValueType = Scaffold.Core.Enums.CalcValueType;
 
 namespace Scaffold.Core.Services
 {

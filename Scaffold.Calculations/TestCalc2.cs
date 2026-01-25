@@ -34,20 +34,17 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "M", "Moment")]
         public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
 
-
-        [CalcValueType(CalcValueType.Input, "L_1", "Length 1")]
+        [CalcValueType(CalcValueType.Input, "L_1", "Length 1", [ "Geometry", "Length" ])]
         public Length Length { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-
-        [CalcValueType(CalcValueType.Input, "C_x", "Centre X")]
+        [CalcValueType(CalcValueType.Input, "C_x", "Centre X", [ "Geometry", "Centre" ])]
         public Length Offset1 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-
-        [CalcValueType(CalcValueType.Input, "C_y", "Centre Y")]
+        [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", [ "Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
-        [CalcValueType(CalcValueType.Input, "L_2", "Length 2")]
+        [CalcValueType(CalcValueType.Input, "L_2", "Length 2", [ "Geometry", "Length" ])]
         public Length Length2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Input;
 using Scaffold.Core;
 using Scaffold.Core.CalcValues;
@@ -18,8 +17,11 @@ namespace SCaFFOLD_Desktop
         private readonly Stack<ICalculation> _navigationStack = new Stack<ICalculation>();
 
         public ObservableCollection<ICalculation> Breadcrumbs { get; } = [];
-        public ObservableCollection<CalcValueViewModel> Inputs { get; } = [];
-        public ObservableCollection<CalcValueViewModel> Outputs { get; } = [];
+
+        // CHANGED: Now collections of Nodes (Tree Roots)
+        public ObservableCollection<CalcNodeViewModel> Inputs { get; } = [];
+        public ObservableCollection<CalcNodeViewModel> Outputs { get; } = [];
+
         public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
         public string CurrentTitle => _currentCalculation?.TypeName;
@@ -100,24 +102,15 @@ namespace SCaFFOLD_Desktop
 
             if (_currentCalculation == null) return;
 
-            // 1. Inputs - CHANGED: Use CalculationReader
-            var inputValues = CalculationReader.GetInputs(_currentCalculation);
-            foreach (var input in inputValues)
-            {
-                // We assume Type switching/Replacement logic handles the underlying ICalculation property
-                // For now, we wrap the Reader's result.
-                // Note: The previous "ReplaceInput" logic relied on manual reflection. 
-                // Since Reader binds directly to the property, updates to the VM value write directly to the Model.
+            // 1. Inputs - Build Tree
+            var rawInputs = CalculationReader.GetInputs(_currentCalculation);
+            var inputVMs = rawInputs.Select(i => new CalcValueViewModel(i, OnCalculationUpdate)).ToList();
+            BuildTree(Inputs, inputVMs);
 
-                Inputs.Add(new CalcValueViewModel(input, OnCalculationUpdate));
-            }
-
-            // 2. Outputs - CHANGED: Use CalculationReader
-            var outputValues = CalculationReader.GetOutputs(_currentCalculation);
-            foreach (var output in outputValues)
-            {
-                Outputs.Add(new CalcValueViewModel(output, null));
-            }
+            // 2. Outputs - Build Tree
+            var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
+            var outputVMs = rawOutputs.Select(o => new CalcValueViewModel(o, null)).ToList();
+            BuildTree(Outputs, outputVMs);
 
             // 3. Details
             RebuildCalculationDetails();
@@ -129,34 +122,70 @@ namespace SCaFFOLD_Desktop
             }
         }
 
+        // NEW: Tree Building Logic
+        private void BuildTree(ObservableCollection<CalcNodeViewModel> roots, List<CalcValueViewModel> items)
+        {
+            roots.Clear();
+
+            foreach (var item in items)
+            {
+                // Access Headings from the Model (via ICalcValue interface update)
+                var headings = item.Model.Headings;
+
+                ObservableCollection<CalcNodeViewModel> currentLevel = roots;
+
+                // Traverse/Create Groups
+                if (headings != null)
+                {
+                    foreach (var heading in headings)
+                    {
+                        var groupNode = currentLevel.FirstOrDefault(n => n.Name == heading && !n.IsLeaf);
+                        if (groupNode == null)
+                        {
+                            groupNode = new CalcNodeViewModel(heading);
+                            currentLevel.Add(groupNode);
+                        }
+                        currentLevel = groupNode.Children;
+                    }
+                }
+
+                // Add Leaf
+                currentLevel.Add(new CalcNodeViewModel(item));
+            }
+        }
+
         private void OnCalculationUpdate()
         {
-            // 1. Run Calculation
             _currentCalculation.Calculate();
 
-            // 2. Refresh Inputs
-            foreach (var input in Inputs) input.Refresh();
+            // Refresh Inputs (Leaf Nodes only)
+            RefreshLeaves(Inputs);
 
-            // 3. Refresh Outputs
-            // The output objects (CalcValues) created by the Reader are bound to the properties.
-            // If the properties are immutable structs that got replaced, we might need to fetch fresh wrappers.
-            // However, usually "Calculate" sets properties on the existing ICalculation instance.
-            // If the Reader bound to property "getters", calling Refresh() on the VM calls the getter again.
-            // So we don't necessarily need to clear/re-add unless the structure changed.
-
-            // Re-fetch to be safe (as requested: "client apps will need a way of gathering fresh values")
+            // Refresh Outputs (Rebuild Tree as values/structure might change)
+            // Ideally we just refresh values, but if structure is dynamic, we rebuild.
             Outputs.Clear();
-            var outputValues = CalculationReader.GetOutputs(_currentCalculation);
-            foreach (var output in outputValues)
-            {
-                Outputs.Add(new CalcValueViewModel(output, null));
-            }
+            var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
+            var outputVMs = rawOutputs.Select(o => new CalcValueViewModel(o, null)).ToList();
+            BuildTree(Outputs, outputVMs);
 
-            // 4. Details
             RebuildCalculationDetails();
-
-            // 5. Geometry
             Geometry?.Refresh();
+        }
+
+        // Recursive helper to refresh leaf values
+        private void RefreshLeaves(ObservableCollection<CalcNodeViewModel> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.IsLeaf)
+                {
+                    node.Value.Refresh();
+                }
+                else
+                {
+                    RefreshLeaves(node.Children);
+                }
+            }
         }
 
         private void RebuildCalculationDetails()
@@ -170,86 +199,6 @@ namespace SCaFFOLD_Desktop
                     CalculationDetails.Add(new OutputItemViewModel(item));
                 }
             }
-        }
-
-        private Type GetDeclaredTypeForInput(ICalculation calculation, ICalcValue instance)
-        {
-            if (calculation == null || instance == null) return null;
-            var props = calculation.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var prop in props)
-            {
-                if (prop.CanRead)
-                {
-                    try
-                    {
-                        var value = prop.GetValue(calculation);
-                        if (ReferenceEquals(value, instance)) return prop.PropertyType;
-                    }
-                    catch { }
-                }
-            }
-            return null;
-        }
-
-        private void ReplaceInput(ICalcValue oldInput, ICalcValue newInput)
-        {
-            if (_currentCalculation == null) return;
-
-            bool propertyUpdated = false;
-            var props = _currentCalculation.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-            foreach (var prop in props)
-            {
-                if (prop.CanRead)
-                {
-                    try
-                    {
-                        var value = prop.GetValue(_currentCalculation);
-                        if (ReferenceEquals(value, oldInput))
-                        {
-                            if (prop.CanWrite)
-                            {
-                                prop.SetValue(_currentCalculation, newInput);
-                                propertyUpdated = true;
-                            }
-                            else if (prop.GetSetMethod(true) != null)
-                            {
-                                prop.SetValue(_currentCalculation, newInput);
-                                propertyUpdated = true;
-                            }
-
-                            if (propertyUpdated) break;
-                        }
-                    }
-                    catch { }
-                }
-            }
-
-            if (!propertyUpdated) return;
-
-            var existingVM = Inputs.FirstOrDefault(vm => ReferenceEquals(vm.Model, oldInput));
-            if (existingVM != null)
-            {
-                int index = Inputs.IndexOf(existingVM);
-                if (index >= 0)
-                {
-                    var newVM = new CalcValueViewModel(
-                        newInput,
-                        OnCalculationUpdate,
-                        (complex) => NavigateTo(complex),
-                        existingVM.DeclaredType,
-                        ReplaceInput
-                    );
-
-                    Inputs[index] = newVM;
-                }
-            }
-            else
-            {
-                RefreshData();
-            }
-
-            OnCalculationUpdate();
         }
     }
 }

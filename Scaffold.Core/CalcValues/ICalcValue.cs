@@ -5,4 +5,6 @@ public interface ICalcValue : ICalculationStatus
     string Symbol { get;  }
     bool TryParse(string strValue);
     string GetValueAsString();
+
+    List<string> Headings => new List<string>();
 }

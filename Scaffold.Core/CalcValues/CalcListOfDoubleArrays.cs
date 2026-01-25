@@ -21,7 +21,7 @@ public class CalcListOfDoubleArrays : ICalcListOfDoubleArrays
         TypeName = name;
         Symbol = symbol;
     }
-
+    List<string> Headings { get; }
 
     //public override void SetValue(string strValue)
     //{

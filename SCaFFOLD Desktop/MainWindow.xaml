@@ -17,27 +17,21 @@
         </DataTemplate>
 
         <DataTemplate x:Key="InputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
-            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="10">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="250" />
-                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="60" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="20" 
-                                 VerticalAlignment="Top" Margin="0,5,10,0"/>
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
 
-                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" 
-                       VerticalAlignment="Top" Margin="0,5,10,0" TextWrapping="Wrap"/>
-
-                    <Grid Grid.Column="2">
-
-                        <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" 
-                         IsReadOnly="{Binding IsComplex}"
-                         VerticalContentAlignment="Center" Padding="5">
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" IsReadOnly="{Binding IsComplex}">
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -47,128 +41,93 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsComplex}" Value="True">
                                             <Setter Property="Background" Value="#F5F5F5"/>
-                                            <Setter Property="Foreground" Value="#555555"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
-
-                        <ComboBox ItemsSource="{Binding AvailableTypes}" 
-          SelectedItem="{Binding SelectedType}"
-          DisplayMemberPath="Name"
-          Margin="0,0,0,5" Padding="5">
-                            <ComboBox.Style>
-                                <Style TargetType="ComboBox">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsComplex}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding AvailableTypes.Count}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding AvailableTypes.Count}" Value="1">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBox.Style>
-                        </ComboBox>
-
-                        <ComboBox ItemsSource="{Binding SelectionOptions}" 
-                          SelectedIndex="{Binding SelectedIndex}" 
-                          Padding="5">
-                            <ComboBox.Style>
-                                <Style TargetType="ComboBox">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelectionList}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBox.Style>
-                        </ComboBox>
-
-                        <StackPanel>
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDoubleListArray}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
-
-                            <ItemsControl ItemsSource="{Binding TableRows}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <ItemsControl ItemsSource="{Binding Cells}" 
-                                              ItemTemplate="{StaticResource ArrayCellTemplate}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                        </ItemsControl>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <Button Content="+ Add Row" Command="{Binding AddRowCommand}" 
-                            HorizontalAlignment="Left" Margin="0,5,0,0" Padding="5,2"/>
-                        </StackPanel>
+                        <ComboBox ItemsSource="{Binding SelectionOptions}" SelectedIndex="{Binding SelectedIndex}" Visibility="{Binding IsSelectionList, Converter={StaticResource BoolToVis}}"/>
                     </Grid>
 
-                    <TextBlock Grid.Column="3" Text="{Binding Unit}" 
-                       VerticalAlignment="Top" Margin="10,5,10,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="Gray" FontSize="11"/>
 
-                    <Button Grid.Column="4" Content="Edit" Command="{Binding EditCommand}" 
-                    VerticalAlignment="Top" Padding="10,2">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsComplex}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
+                    <Button Grid.Column="4" Content="..." Command="{Binding EditCommand}" Width="25" Visibility="{Binding IsComplex, Converter={StaticResource BoolToVis}}"/>
                 </Grid>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="OutputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
-            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="10" Background="#FAFAFA">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5" Background="#FAFAFA">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="60" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="400" />
-                        <ColumnDefinition Width="80" />
                     </Grid.ColumnDefinitions>
-
-                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="20" 
-                                         VerticalAlignment="Top" Margin="0,5,10,0"/>
-
-                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" 
-                               VerticalAlignment="Top" Margin="0,5,10,0" TextWrapping="Wrap" Foreground="#444"/>
-
-                    <TextBlock Grid.Column="2" Text="{Binding Value}" 
-                               FontWeight="Bold" VerticalAlignment="Top" Margin="0,5,0,0" TextWrapping="Wrap"/>
-
-                    <TextBlock Grid.Column="3" Text="{Binding Unit}" 
-                               VerticalAlignment="Top" Margin="10,5,10,0" Foreground="Gray"/>
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Value}" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Foreground="Gray" FontSize="11"/>
                 </Grid>
             </Border>
         </DataTemplate>
+
+        <HierarchicalDataTemplate x:Key="TreeInputTemplate" DataType="{x:Type local:CalcNodeViewModel}" ItemsSource="{Binding Children}">
+            <ContentControl Content="{Binding}">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,5,0,2" Foreground="#005599"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLeaf}" Value="True">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <ContentControl Content="{Binding Value}" ContentTemplate="{StaticResource InputItemTemplate}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </HierarchicalDataTemplate>
+
+        <HierarchicalDataTemplate x:Key="TreeOutputTemplate" DataType="{x:Type local:CalcNodeViewModel}" ItemsSource="{Binding Children}">
+            <ContentControl Content="{Binding}">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,5,0,2" Foreground="#005599"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLeaf}" Value="True">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <ContentControl Content="{Binding Value}" ContentTemplate="{StaticResource OutputItemTemplate}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </HierarchicalDataTemplate>
+
+
 
         <DataTemplate x:Key="DetailItemTemplate" DataType="{x:Type local:OutputItemViewModel}">
             <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="5,10">
@@ -273,36 +232,40 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-
                     <TextBlock Grid.Row="0" Text="Inputs" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
-
                     <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <ItemsControl ItemsSource="{Binding Inputs}" ItemTemplate="{StaticResource InputItemTemplate}"/>
-                        </ScrollViewer>
+                        <TreeView ItemsSource="{Binding Inputs}" 
+                                  ItemTemplate="{StaticResource TreeInputTemplate}" 
+                                  BorderThickness="0">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
                     </Border>
                 </Grid>
 
-                <GridSplitter Grid.Row="1" 
-                      Height="5" 
-                      HorizontalAlignment="Stretch" 
-                      VerticalAlignment="Center" 
-                      ResizeDirection="Rows" 
-                      Background="#DDDDDD" 
-                      ShowsPreview="True"/>
+                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" Background="#DDDDDD" ShowsPreview="True"/>
 
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-
                     <TextBlock Grid.Row="0" Text="Outputs" FontSize="16" FontWeight="Bold" Margin="0,5,0,5"/>
-
                     <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <ItemsControl ItemsSource="{Binding Outputs}" ItemTemplate="{StaticResource OutputItemTemplate}"/>
-                        </ScrollViewer>
+                        <TreeView ItemsSource="{Binding Outputs}" 
+                                  ItemTemplate="{StaticResource TreeOutputTemplate}" 
+                                  BorderThickness="0">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
                     </Border>
                 </Grid>
             </Grid>
