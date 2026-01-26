@@ -1,4 +1,5 @@
-﻿using VividOrange.Materials;
+﻿using Scaffold.Core;
+using VividOrange.Materials;
 using VividOrange.Materials.StandardMaterials.En;
 using VividOrange.Standards.Eurocode;
 
@@ -6,8 +7,8 @@ namespace Scaffold.Calculations.Eurocode.Steel
 {
     public class SteelMaterialProperties : ICalculation
     {
-        public string ReferenceName { get; set; }
-        public string CalculationName { get; set; } = "Steel Material Properties";
+        public string CalculationTitle { get; set; }
+        public string EntityLabel { get; set; } = "Steel Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue("Grd", "Grade")]
@@ -30,7 +31,7 @@ namespace Scaffold.Calculations.Eurocode.Steel
 
         [OutputCalcValue(@"\alpha_T", "Coefficient of Linear Thermal Expansion")]
         public CoefficientOfThermalExpansion alpha =>
-            new(12 * 10 ^ -6, CoefficientOfThermalExpansionUnit.PerKelvin);
+            new((12 * 10) ^ -6, CoefficientOfThermalExpansionUnit.PerKelvin);
 
         [OutputCalcValue("f_y", "Yield Strength")]
         public Pressure fy => _analysisMaterial.YieldStrength;
@@ -55,9 +56,9 @@ namespace Scaffold.Calculations.Eurocode.Steel
             Calculate();
         }
 
-        public IList<IFormula> GetFormulae()
+        public IList<IContentItem> GetFormulae()
         {
-            return new List<IFormula>();
+            return new List<IContentItem>();
         }
 
         public void Calculate() { }

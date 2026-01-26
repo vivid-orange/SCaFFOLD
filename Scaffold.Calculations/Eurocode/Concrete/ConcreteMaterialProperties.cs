@@ -1,12 +1,13 @@
-﻿using VividOrange.Materials.StandardMaterials.En;
+﻿using Scaffold.Core;
+using VividOrange.Materials.StandardMaterials.En;
 using VividOrange.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Eurocode.Concrete
 {
     public class ConcreteMaterialProperties : ICalculation
     {
-        public string ReferenceName { get; set; }
-        public string CalculationName { get; set; } = "Concrete Material Properties";
+        public string CalculationTitle { get; set; }
+        public string EntityLabel { get; set; } = "Concrete Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue("Grd", "Grade")]
@@ -29,7 +30,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete
         [OutputCalcValue("f_{ctm}", "Mean tensile strength")]
         public Pressure fctm => new(fck.As(_unit) <= 50
                     ? 0.3 * Math.Pow(fck.As(_unit), 2d / 3d)
-                    : 2.12 * Math.Log(1 + fcm.As(_unit) / 10),
+                    : 2.12 * Math.Log(1 + (fcm.As(_unit) / 10)),
                     _unit);
 
         [OutputCalcValue("f_{ctk;0.05}", "Tensile strength 5% fractile")]
@@ -48,36 +49,36 @@ namespace Scaffold.Calculations.Eurocode.Concrete
 
         [OutputCalcValue("ε_{cu1}", "Nominal ultimate strain")]
         public Ratio Epsiloncu1 => new(fck.As(_unit) >= 50
-                    ? 2.8 + 27.0 * Math.Pow((98 - fcm.As(_unit)) / 100, 4)
+                    ? 2.8 + (27.0 * Math.Pow((98 - fcm.As(_unit)) / 100, 4))
                     : 3.5,
                     RatioUnit.PartPerThousand);
 
         [OutputCalcValue("ε_{c2}", "Simplified parabola-rectangle peak strain")]
         public Ratio Epsilonc2 => new(fck.As(_unit) >= 50
-                    ? 2.0 + 0.085 * Math.Pow(fck.As(_unit) - 50, 0.53)
+                    ? 2.0 + (0.085 * Math.Pow(fck.As(_unit) - 50, 0.53))
                     : 2.0,
                     RatioUnit.PartPerThousand);
 
         [OutputCalcValue("ε_{cu2}", "Simplified ultimate strain")]
         public Ratio Epsiloncu2 => new(fck.As(_unit) >= 50
-                    ? 2.6 + 35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
+                    ? 2.6 + (35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4))
                     : 3.5,
                     RatioUnit.PartPerThousand);
 
         [OutputCalcValue(@"\textit{n}", "Exponent")]
         public double n => fck.As(_unit) >= 50
-                    ? 1.4 + 23.4 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
+                    ? 1.4 + (23.4 * Math.Pow((90 - fck.As(_unit)) / 100, 4))
                     : 2.0;
 
         [OutputCalcValue("ε_{c3}", "Simplified bi-linear peak strain")]
         public Ratio Epsilonc3 => new(fck.As(_unit) >= 50
-                    ? 1.75 + 0.55 * ((fck.As(_unit) - 50) / 40)
+                    ? 1.75 + (0.55 * ((fck.As(_unit) - 50) / 40))
                     : 1.75,
             RatioUnit.PartPerThousand);
 
         [OutputCalcValue("ε_{cu3}", "Simplified ultimate strain")]
         public Ratio Epsiloncu3 => new(fck.As(_unit) >= 50
-                    ? 2.6 + 35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4)
+                    ? 2.6 + (35.0 * Math.Pow((90 - fck.As(_unit)) / 100, 4))
                     : 3.5,
             RatioUnit.PartPerThousand);
 
@@ -89,9 +90,9 @@ namespace Scaffold.Calculations.Eurocode.Concrete
         }
 
 
-        public IList<IFormula> GetFormulae()
+        public IList<IContentItem> GetFormulae()
         {
-            return new List<IFormula>();
+            return new List<IContentItem>();
         }
 
         public void Calculate() { }
