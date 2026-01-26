@@ -1,7 +1,7 @@
 ﻿public class ScaffoldSettings
 {
-    public bool ProjectSettings { get; } = true;
-    public string UnitSettings { get; } = "";
+    public ProjectSettings ProjectSettings { get; set; } = new();
+    public UnitSettings UnitSettings { get; set; } = new();
 
     public ScaffoldSettings() { }
 }

@@ -1,6 +1,8 @@
-﻿internal static class UnitSettings
+﻿public class UnitSettings
 {
-    public static int SignificantDigits { get; set; } = 4;
+    public int SignificantDigits { get; set; } = 4;
 
-    public static UnitSystem unitSystem { get; set; } = new UnitSystem();
+    public UnitSystem UnitSystem { get; set; } = new UnitSystem();
+
+    public UnitSettings() { }
 }
