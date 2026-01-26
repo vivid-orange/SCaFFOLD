@@ -26,6 +26,14 @@
     public VolumePerLengthUnit VolumePerLengthUnit { get; }
     public PressureUnit YoungsModulusUnit { get; }
 
+    public CoefficientOfThermalExpansionUnit CoefficientOfThermalExpansionUnit
+    {
+        get
+        {
+            return TemperatureUnit.GetCoefficientOfThermalExpansionUnit();
+        }
+    }
+
     public UnitSystem()
     {
         SectionLengthUnit = DefaultUnits.LengthUnitSection;

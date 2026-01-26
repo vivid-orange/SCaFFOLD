@@ -3,8 +3,6 @@
     public static AccelerationUnit AccelerationUnit { get; set; }
         = AccelerationUnit.MeterPerSecondSquared;
     public static AngleUnit AngleUnit { get; set; } = AngleUnit.Degree;
-    public static CoefficientOfThermalExpansionUnit CoefficientOfThermalExpansionUnit
-        => UnitsHelper.GetCoefficientOfThermalExpansionUnit(DefaultUnits.TemperatureUnit);
     public static ReciprocalLengthUnit CurvatureUnit { get; set; }
         = ReciprocalLengthUnit.InverseMeter;
     public static DensityUnit DensityUnit { get; set; }

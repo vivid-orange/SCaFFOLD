@@ -6,10 +6,9 @@
     public ScaffoldSettings() { }
 }
 
-internal sealed class SettingsSingleton
+public sealed class SettingsSingleton
 {
     public static ScaffoldSettings Instance => lazy.Value;
 
-    private static readonly Lazy<ScaffoldSettings> lazy =
-            new Lazy<ScaffoldSettings>(() => new ScaffoldSettings());
+    private static readonly Lazy<ScaffoldSettings> lazy = new(() => new ScaffoldSettings());
 }
