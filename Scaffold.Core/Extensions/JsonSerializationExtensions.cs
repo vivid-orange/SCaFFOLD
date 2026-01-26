@@ -33,7 +33,14 @@ public static class JsonSerializationExtensions
     public static T? FromJson<T>(this string json, JsonSerializerOptions? options = null)
         where T : IParsable<T>
     {
-        return JsonSerializer.Deserialize<T>(json, options);
+        try
+        {
+            return JsonSerializer.Deserialize<T>(json, options);
+        }
+        catch
+        {
+            return default;
+        }
     }
 
     /// <summary>

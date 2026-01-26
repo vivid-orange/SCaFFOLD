@@ -363,8 +363,11 @@ public class SettingsSingletonTests
         string invalidJson = "{ invalid json }";
 
         // Act
-        Assert.Throws<System.Text.Json.JsonException>(
-            () => ScaffoldSettings.TryParse(invalidJson, null, out ScaffoldSettings parsed));
+        bool success = ScaffoldSettings.TryParse(invalidJson, null, out ScaffoldSettings parsed);
+
+        // Assert
+        Assert.False(success);
+        Assert.Null(parsed);
     }
 
     [Fact]
