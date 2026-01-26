@@ -1,3 +1,5 @@
+using Scaffold.Core;
+
 public interface ICalculation : ICalculationStatus
 {
     /// <summary>
@@ -5,7 +7,7 @@ public interface ICalculation : ICalculationStatus
     /// </summary>
     public string CalculationTitle { get; set; }
 
-    public IList<IFormula> GetFormulae();
+    public IList<IContentItem> GetFormulae();
 
     public void Calculate();
 }
