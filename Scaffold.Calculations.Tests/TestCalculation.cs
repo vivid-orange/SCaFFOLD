@@ -1,4 +1,6 @@
-﻿namespace Scaffold.Calculations
+﻿using Scaffold.Core;
+
+namespace Scaffold.Calculations
 {
     public class TestCalculation : ICalculation
     {
@@ -15,9 +17,9 @@
         [OutputCalcValue(@"R", "Result")]
         public double Result { get; private set; } = 0;
 
-        public IList<IFormula> GetFormulae()
+        public IList<IContentItem> GetFormulae()
         {
-            return new List<IFormula>();
+            return new List<IContentItem>();
         }
 
         public void Calculate()

@@ -1,4 +1,5 @@
-﻿using VividOrange.Profiles;
+﻿using Scaffold.Core;
+using VividOrange.Profiles;
 using VividOrange.Sections.SectionProperties;
 
 namespace Scaffold.Calculations.Eurocode.Concrete;
@@ -42,8 +43,8 @@ public class CreepCalculation : ICalculation
     [OutputCalcValue(@"\varphi_0", "Creep coefficient")]
     public double CreepCoefficient { get; private set; }
 
-    public List<IFormula> Expressions = new List<IFormula>();
-    public IList<IFormula> GetFormulae() => Expressions;
+    public List<IContentItem> Expressions = new List<IContentItem>();
+    public IList<IContentItem> GetFormulae() => Expressions;
 
     public CreepCalculation()
     {
@@ -52,7 +53,7 @@ public class CreepCalculation : ICalculation
 
     public void Calculate()
     {
-        Expressions = new List<IFormula>();
+        Expressions = new List<IContentItem>();
         Pressure fcm = Concrete.fcm;
         IProfile profile = new Rectangle(Width, Length);
         var sectionProperties = new SectionProperties(profile);
@@ -77,7 +78,7 @@ public class CreepCalculation : ICalculation
 
         if (fcm.Megapascals <= 35)
         {
-            factorRH = 1 + (1 - RelativeHumidity.Value / 100) / (0.1 * Math.Pow(h0.Millimeters, 1d / 3d));
+            factorRH = 1 + ((1 - (RelativeHumidity.Value / 100)) / (0.1 * Math.Pow(h0.Millimeters, 1d / 3d)));
             //expressions.Add(
             //    Formula.FormulaWithNarrative("Calculate factor to allow for effect of relative humidity")
             //    .AddRef("B.3a")
@@ -87,7 +88,7 @@ public class CreepCalculation : ICalculation
         }
         else
         {
-            factorRH = (1 + (1 - RelativeHumidity.Value / 100) / (0.1 * Math.Pow(h0.Millimeters, (double)(1d / 3d))) * alpha1) * alpha2;
+            factorRH = (1 + ((1 - (RelativeHumidity.Value / 100)) / (0.1 * Math.Pow(h0.Millimeters, (double)(1d / 3d))) * alpha1)) * alpha2;
             //expressions.Add(
             //    Formula.FormulaWithNarrative("Calculate factor to allow for effect of relative humidity")
             //    .AddRef("B.3b")
@@ -112,7 +113,7 @@ public class CreepCalculation : ICalculation
 
         if (fcm.Megapascals <= 35)
         {
-            betaH = Math.Min(1.5 * (1 + Math.Pow(0.012 * RelativeHumidity.Value, 18)) * h0.Millimeters + 250, 1500);
+            betaH = Math.Min((1.5 * (1 + Math.Pow(0.012 * RelativeHumidity.Value, 18)) * h0.Millimeters) + 250, 1500);
             //expressions.Add(
             //    Formula.FormulaWithNarrative("Calculate coefficient depending on relative humidity and notional member size.")
             //    .AddExpression(meanCompStr.Symbol + @"\leq 35 \Rightarrow")
@@ -122,7 +123,7 @@ public class CreepCalculation : ICalculation
         }
         else
         {
-            betaH = Math.Min(1.5 * (1 + Math.Pow(0.012 * RelativeHumidity.Value, 18)) * h0.Millimeters + 250 * alpha3, 1500 * alpha3);
+            betaH = Math.Min((1.5 * (1 + Math.Pow(0.012 * RelativeHumidity.Value, 18)) * h0.Millimeters) + (250 * alpha3), 1500 * alpha3);
             //expressions.Add(
             //    Formula.FormulaWithNarrative("Calculate coefficient depending on relative humidity and notional member size.")
             //    .AddExpression(meanCompStr.Symbol + @"> 35 \Rightarrow")
