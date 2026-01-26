@@ -36,18 +36,18 @@ internal static class InternalExtensionMethods
         }
     }
 
-    internal static void InsertCalcValue(this List<ICalcValue> collection, ICalcValue calcValue)
-    {
-        calcValue.DisplayName = UniqueDisplayName(collection, calcValue.DisplayName);
-        collection.Add(calcValue);
-    }
+    //internal static void InsertCalcValue(this List<ICalcValue> collection, ICalcValue calcValue)
+    //{
+    //    calcValue.TypeName = UniqueDisplayName(collection, calcValue.TypeName);
+    //    collection.Add(calcValue);
+    //}
 
     private static string UniqueDisplayName(List<ICalcValue> collection, string displayName)
     {
         string rootName = displayName;
         int i = 0;
 
-        while (collection.FirstOrDefault(x => x.DisplayName == displayName) != null)
+        while (collection.FirstOrDefault(x => x.EntityLabel == displayName) != null)
         {
             i++;
             displayName = $"{rootName} ({i})";
