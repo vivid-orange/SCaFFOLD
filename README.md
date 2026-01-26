@@ -20,13 +20,12 @@ RunInConsole - console app client for CalcCore.
 TestCalcs - various calcuations written for the framework.
 
 ## Latest release
-[![Releasestatus](https://github.com/VividOrange/SCaFFOLD/actions/workflows/on-release.yml/badge.svg)](https://github.com/VividOrange/SCaFFOLD/releases)
-[![NuGet Version](https://img.shields.io/nuget/v/VividOrange.SCaFFOLD.Profiles)](https://www.nuget.org/packages?q=VividOrange.SCaFFOLD)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/VividOrange/SCaFFOLD)
-![GitHub Release Date](https://img.shields.io/github/release-date/VividOrange/SCaFFOLD)
+[![NuGet Version](https://img.shields.io/nuget/v/Vivid-orange.SCaFFOLD)](https://www.nuget.org/packages?q=Vivid-orange.SCaFFOLD)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/Vivid-orange/SCaFFOLD)
+![GitHub Release Date](https://img.shields.io/github/release-date/Vivid-orange/SCaFFOLD)
 
 
 ## Contributing 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/VividOrange/SCaFFOLD/issues)
-![GitHub contributors](https://img.shields.io/github/contributors/VividOrange/SCaFFOLD)
-![GitHub top language](https://img.shields.io/github/languages/top/VividOrange/SCaFFOLD)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/vivid-orange/SCaFFOLD/issues)
+![GitHub contributors](https://img.shields.io/github/contributors/vivid-orange/SCaFFOLD)
+![GitHub top language](https://img.shields.io/github/languages/top/vivid-orange/SCaFFOLD)
