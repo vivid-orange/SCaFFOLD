@@ -1,9 +1,11 @@
-﻿namespace Scaffold.Calculations
+﻿using Scaffold.Core;
+
+namespace Scaffold.Calculations
 {
     public class TestCalculation : ICalculation
     {
-        public string ReferenceName { get; set; } = "";
-        public string CalculationName { get; set; } = "Test Calculation";
+        public string CalculationTitle { get; set; } = "";
+        public string EntityLabel { get; set; } = "Test Calculation";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue(@"D", "Multiplier")]
@@ -15,9 +17,9 @@
         [OutputCalcValue(@"R", "Result")]
         public double Result { get; private set; } = 0;
 
-        public IList<IFormula> GetFormulae()
+        public IList<IContentItem> GetFormulae()
         {
-            return new List<IFormula>();
+            return new List<IContentItem>();
         }
 
         public void Calculate()

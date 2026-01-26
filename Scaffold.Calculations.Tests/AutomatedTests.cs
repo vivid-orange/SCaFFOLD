@@ -59,7 +59,7 @@ namespace Scaffold.Calculations.Tests
                 BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
             foreach (PropertyInfo property in propertyInfo)
             {
-                if (property.Name == "ReferenceName" || property.Name == "CalculationName"
+                if (property.Name == "CalculationTitle" || property.Name == "EntityLabel"
                     || property.Name == "Status")
                 {
                     continue;
