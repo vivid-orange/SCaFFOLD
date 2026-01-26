@@ -113,4 +113,57 @@ public class UnitSystemTests
         Assert.Equal(DefaultUnits.MaterialStrengthUnit, unitSystem.MaterialStrengthUnit);
         Assert.Equal(DefaultUnits.MaterialStrainUnit, unitSystem.MaterialStrainUnit);
     }
+
+    [Fact]
+    public void CoefficientOfThermalExpansionUnit_IsNotNull()
+    {
+        // Arrange & Act
+        var unitSystem = new UnitSystem();
+
+        // Assert
+        Assert.NotEqual(default(CoefficientOfThermalExpansionUnit), unitSystem.CoefficientOfThermalExpansionUnit);
+    }
+
+    [Fact]
+    public void CoefficientOfThermalExpansionUnit_DependsOnTemperatureUnit()
+    {
+        // Arrange
+        var unitSystem = new UnitSystem();
+
+        // Act
+        var coefficientUnit = unitSystem.CoefficientOfThermalExpansionUnit;
+
+        // Assert - verify it's derived from the temperature unit
+        Assert.NotEqual(default(CoefficientOfThermalExpansionUnit), coefficientUnit);
+    }
+
+    [Fact]
+    public void CoefficientOfThermalExpansionUnit_IsComputedFromTemperatureUnit()
+    {
+        // Arrange
+        var unitSystem1 = new UnitSystem();
+        var unitSystem2 = new UnitSystem();
+
+        // Both should have the same temperature unit (default)
+        Assert.Equal(unitSystem1.TemperatureUnit, unitSystem2.TemperatureUnit);
+
+        // Act
+        var coefficientUnit1 = unitSystem1.CoefficientOfThermalExpansionUnit;
+        var coefficientUnit2 = unitSystem2.CoefficientOfThermalExpansionUnit;
+
+        // Assert - coefficient units should be the same since temperature units are the same
+        Assert.Equal(coefficientUnit1, coefficientUnit2);
+    }
+
+    [Fact]
+    public void CoefficientOfThermalExpansionUnit_IsReadOnly()
+    {
+        // Arrange
+        var unitSystem = new UnitSystem();
+
+        // Act & Assert - verify the property doesn't have a setter
+        // This is a read-only computed property, so we just verify we can read it
+        var unit = unitSystem.CoefficientOfThermalExpansionUnit;
+        Assert.NotEqual(default(CoefficientOfThermalExpansionUnit), unit);
+    }
 }

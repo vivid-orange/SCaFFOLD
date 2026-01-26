@@ -1,30 +1,30 @@
 ﻿public class UnitSystem
 {
-    public AccelerationUnit AccelerationUnit { get; set; }
-    public ReciprocalLengthUnit CurvatureUnit { get; }
-    public DensityUnit DensityUnit { get; }
-    public EnergyUnit EnergyUnit { get; }
-    public PressureUnit ForcePerAreaUnit { get; }
-    public ForcePerLengthUnit ForcePerLengthUnit { get; }
-    public ForceUnit ForceUnit { get; }
-    public LengthUnit GeometryLengthUnit { get; }
-    public LengthUnit DisplacementLengthUnit { get; }
-    public LinearDensityUnit LinearDensityUnit { get; }
-    public MassUnit MassUnit { get; }
-    public RatioUnit MaterialStrainUnit { get; }
-    public PressureUnit MaterialStrengthUnit { get; }
-    public TorqueUnit MomentUnit { get; }
-    public AreaMomentOfInertiaUnit SectionAreaMomentOfInertiaUnit { get; }
-    public AreaUnit SectionAreaUnit { get; }
-    public LengthUnit SectionLengthUnit { get; }
-    public VolumeUnit SectionModulusUnit { get; }
-    public VolumeUnit SectionVolumeUnit { get; }
-    public RatioUnit StrainUnit { get; }
-    public PressureUnit StressUnit { get; }
-    public TemperatureUnit TemperatureUnit { get; }
-    public SpeedUnit VelocityUnit { get; }
-    public VolumePerLengthUnit VolumePerLengthUnit { get; }
-    public PressureUnit YoungsModulusUnit { get; }
+    public AccelerationUnit AccelerationUnit { get; set; } = DefaultUnits.AccelerationUnit;
+    public ReciprocalLengthUnit CurvatureUnit { get; set; } = DefaultUnits.CurvatureUnit;
+    public DensityUnit DensityUnit { get; set; } = DefaultUnits.DensityUnit;
+    public EnergyUnit EnergyUnit { get; set; } = DefaultUnits.EnergyUnit;
+    public PressureUnit ForcePerAreaUnit { get; set; } = DefaultUnits.ForcePerAreaUnit;
+    public ForcePerLengthUnit ForcePerLengthUnit { get; set; } = DefaultUnits.ForcePerLengthUnit;
+    public ForceUnit ForceUnit { get; set; } = DefaultUnits.ForceUnit;
+    public LengthUnit GeometryLengthUnit { get; set; } = DefaultUnits.LengthUnitGeometry;
+    public LengthUnit DisplacementLengthUnit { get; set; } = DefaultUnits.DisplacementLengthUnit;
+    public LinearDensityUnit LinearDensityUnit { get; set; } = DefaultUnits.LinearDensityUnit;
+    public MassUnit MassUnit { get; set; } = DefaultUnits.MassUnit;
+    public RatioUnit MaterialStrainUnit { get; set; } = DefaultUnits.MaterialStrainUnit;
+    public PressureUnit MaterialStrengthUnit { get; set; } = DefaultUnits.MaterialStrengthUnit;
+    public TorqueUnit MomentUnit { get; set; } = DefaultUnits.MomentUnit;
+    public AreaMomentOfInertiaUnit SectionAreaMomentOfInertiaUnit { get; set; } = DefaultUnits.SectionAreaMomentOfInertiaUnit;
+    public AreaUnit SectionAreaUnit { get; set; } = DefaultUnits.SectionAreaUnit;
+    public LengthUnit SectionLengthUnit { get; set; } = DefaultUnits.LengthUnitSection;
+    public VolumeUnit SectionModulusUnit { get; set; } = DefaultUnits.SectionModulusUnit;
+    public VolumeUnit SectionVolumeUnit { get; set; } = DefaultUnits.SectionVolumeUnit;
+    public RatioUnit StrainUnit { get; set; } = DefaultUnits.StrainUnit;
+    public PressureUnit StressUnit { get; set; } = DefaultUnits.StressUnit;
+    public TemperatureUnit TemperatureUnit { get; set; } = DefaultUnits.TemperatureUnit;
+    public SpeedUnit VelocityUnit { get; set; } = DefaultUnits.VelocityUnit;
+    public VolumePerLengthUnit VolumePerLengthUnit { get; set; } = DefaultUnits.VolumePerLengthUnit;
+    public PressureUnit YoungsModulusUnit { get; set; } = DefaultUnits.YoungsModulusUnit;
 
     public CoefficientOfThermalExpansionUnit CoefficientOfThermalExpansionUnit
     {
@@ -32,34 +32,5 @@
         {
             return TemperatureUnit.GetCoefficientOfThermalExpansionUnit();
         }
-    }
-
-    public UnitSystem()
-    {
-        SectionLengthUnit = DefaultUnits.LengthUnitSection;
-        SectionAreaUnit = DefaultUnits.SectionAreaUnit;
-        SectionVolumeUnit = DefaultUnits.SectionVolumeUnit;
-        SectionAreaMomentOfInertiaUnit = DefaultUnits.SectionAreaMomentOfInertiaUnit;
-        MassUnit = DefaultUnits.MassUnit;
-        DensityUnit = DefaultUnits.DensityUnit;
-        LinearDensityUnit = DefaultUnits.LinearDensityUnit;
-        VolumePerLengthUnit = DefaultUnits.VolumePerLengthUnit;
-        MaterialStrengthUnit = DefaultUnits.MaterialStrengthUnit;
-        MaterialStrainUnit = DefaultUnits.MaterialStrainUnit;
-        YoungsModulusUnit = DefaultUnits.YoungsModulusUnit;
-        GeometryLengthUnit = DefaultUnits.LengthUnitGeometry;
-        ForceUnit = DefaultUnits.ForceUnit;
-        ForcePerLengthUnit = DefaultUnits.ForcePerLengthUnit;
-        ForcePerAreaUnit = DefaultUnits.ForcePerAreaUnit;
-        MomentUnit = DefaultUnits.MomentUnit;
-        TemperatureUnit = DefaultUnits.TemperatureUnit;
-        DisplacementLengthUnit = DefaultUnits.DisplacementLengthUnit;
-        StressUnit = DefaultUnits.StressUnit;
-        StrainUnit = DefaultUnits.StrainUnit;
-        VelocityUnit = DefaultUnits.VelocityUnit;
-        AccelerationUnit = DefaultUnits.AccelerationUnit;
-        EnergyUnit = DefaultUnits.EnergyUnit;
-        CurvatureUnit = DefaultUnits.CurvatureUnit;
-        SectionModulusUnit = DefaultUnits.SectionModulusUnit;
     }
 }
