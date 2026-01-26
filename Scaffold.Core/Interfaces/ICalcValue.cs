@@ -1,7 +1,7 @@
 ﻿public interface ICalcValue : ICalculationStatus
 {
-    string DisplayName { get; set; }
-    string Symbol { get; set; }
+    string Symbol { get; }
     bool TryParse(string strValue);
     string ValueAsString();
+    List<string> Headings => new List<string>();
 }

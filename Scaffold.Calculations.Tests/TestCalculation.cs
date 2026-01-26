@@ -2,8 +2,8 @@
 {
     public class TestCalculation : ICalculation
     {
-        public string ReferenceName { get; set; } = "";
-        public string CalculationName { get; set; } = "Test Calculation";
+        public string CalculationTitle { get; set; } = "";
+        public string EntityLabel { get; set; } = "Test Calculation";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue(@"D", "Multiplier")]
