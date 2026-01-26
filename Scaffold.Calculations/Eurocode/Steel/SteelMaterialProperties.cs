@@ -6,8 +6,8 @@ namespace Scaffold.Calculations.Eurocode.Steel
 {
     public class SteelMaterialProperties : ICalculation
     {
-        public string ReferenceName { get; set; }
-        public string TypeName { get; set; } = "Steel Material Properties";
+        public string CalculationTitle { get; set; }
+        public string EntityLabel { get; set; } = "Steel Material Properties";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
         [InputCalcValue("Grd", "Grade")]

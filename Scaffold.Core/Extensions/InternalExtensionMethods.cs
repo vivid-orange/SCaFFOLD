@@ -47,7 +47,7 @@ internal static class InternalExtensionMethods
         string rootName = displayName;
         int i = 0;
 
-        while (collection.FirstOrDefault(x => x.TypeName == displayName) != null)
+        while (collection.FirstOrDefault(x => x.EntityLabel == displayName) != null)
         {
             i++;
             displayName = $"{rootName} ({i})";

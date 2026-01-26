@@ -13,7 +13,7 @@ namespace Scaffold.Core
         private readonly Func<T> _getter;
         private readonly Action<T> _setter;
         public string Symbol { get; }
-        public string TypeName { get; }
+        public string EntityLabel { get; }
         public List<string> Headings { get; }
 
         public CalcStatus Status { get; set; } = CalcStatus.None;
@@ -28,7 +28,7 @@ namespace Scaffold.Core
             _getter = getter;
             _setter = setter;
             Symbol = symbol;
-            TypeName = displayName ?? typeof(T).Name;
+            EntityLabel = displayName ?? typeof(T).Name;
             Headings = headings != null ? new List<string>(headings) : new List<string>();
         }
 

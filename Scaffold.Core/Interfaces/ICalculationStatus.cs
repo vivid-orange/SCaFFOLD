@@ -1,8 +1,8 @@
 ﻿public interface ICalculationStatus
 {
     /// <summary>
-    /// The general name of the calculation or calcvalue this class sets out to cover, e.g. 'Punching Shear to EC2'.
+    /// The name of the member this instance covers, e.g. 'Column C3'
     /// </summary>
-    public string TypeName { get; }
+    public string EntityLabel { get; }
     CalcStatus Status { get; }
 }
