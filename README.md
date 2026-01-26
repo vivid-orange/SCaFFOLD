@@ -1,8 +1,8 @@
 # SCaFFOLD
 *Structural Calculations Framework*
 
-![GitHub Actions Workflow Status](https://github.com/VividOrange/SCaFFOLD/actions/workflows/on-merge-to-main.yml/badge.svg)
-[![codecov](https://codecov.io/gh/VividOrange/SCaFFOLD/graph/badge.svg)](https://codecov.io/gh/VividOrange/SCaFFOLD)
+![GitHub Actions Workflow Status](https://github.com/vivid-orange/SCaFFOLD/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/vivid-orange/SCaFFOLD/branch/main/graph/badge.svg)](https://codecov.io/gh/vivid-orange/SCaFFOLD)
 
 Free, Open and Lightweight Design
 
