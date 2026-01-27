@@ -19,13 +19,15 @@ namespace Scaffold.Calculations
     public class TestCalc2 : ICalculation, IInteractiveGeometry
     {
 
-        public new string EntityLabel{ get; } = "Test calc";
+        public string EntityLabel{ get; } = "Test calc";
         public string CalculationTitle { get; set; } = "This is my test calc";
 
 
         [CalcValueType(CalcValueType.Input, "I", "Multiplier")]
         public double Multiplier { get; set; }
 
+        [CalcValueType(CalcValueType.Input, "S", "Selection list!")]
+        public CalcSelectionList Options { get; set; } = new CalcSelectionList(1, ["one", "two"]);
 
         [CalcValueType(CalcValueType.Input, "M", "Moment")]
         public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);

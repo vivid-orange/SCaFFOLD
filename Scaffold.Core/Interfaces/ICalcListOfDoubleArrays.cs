@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core
 {
-    public interface ICalcListOfDoubleArrays : ICalcValue
+    public interface ICalcListOfDoubleArrays
     {
         List<double[]> Value { get; }
     }

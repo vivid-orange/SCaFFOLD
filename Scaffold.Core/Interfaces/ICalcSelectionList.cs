@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scaffold.Core
 {
-    public interface ICalcSelectionList : ICalcValue
+    public interface ICalcSelectionList
     {
         List<string> Selections { get; }
 

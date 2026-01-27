@@ -1,33 +1,33 @@
 ﻿using System.Collections.Generic;
 using System;
 
-namespace Scaffold.Core.CalcValues;
+namespace Scaffold.Core;
 
-public class CalcSelectionList : CalcValue<string>, ICalcSelectionList
+public class CalcSelectionList : ICalcSelectionList
 {
     public List<string> Selections { get; private set; }
 
     public int SelectedItemIndex { get; set; }
 
-    public override string Value
+    public string Value
     {
         get { return Selections[SelectedItemIndex]; }
         set { TryParse(value); }
     }
 
-    public CalcSelectionList(string name, int selectedItemIndex, IEnumerable<string> values)
-        : base(name, string.Empty, string.Empty)
+    public CalcSelectionList(int selectedItemIndex, IEnumerable<string> values)
     {
+        SelectedItemIndex = selectedItemIndex;
         Selections = values.ToList();
     }
-    public CalcSelectionList(string name, string selectedItem, IEnumerable<string> values)
-    : base(name, string.Empty, string.Empty)
-    {
-        Selections = values.ToList();
-        TryParse(selectedItem);
-    }
+    //public CalcSelectionList(string name, string selectedItem, IEnumerable<string> values)
+    //: base(name, string.Empty, string.Empty)
+    //{
+    //    Selections = values.ToList();
+    //    TryParse(selectedItem);
+    //}
 
-    public override bool TryParse(string strValue)
+    public bool TryParse(string strValue)
     {
         int i = Selections.IndexOf(strValue);
 

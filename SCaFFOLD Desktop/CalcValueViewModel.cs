@@ -116,15 +116,15 @@ namespace SCaFFOLD_Desktop
 
         public bool IsStandard => !IsSelectionList && !IsDoubleListArray;
         public bool IsComplex => _model is ICalculation && _onNavigateRequest != null;
-        public bool IsSelectionList => _model is ICalcSelectionList;
+        public bool IsSelectionList => _model is DelegateCalcValue<CalcSelectionList>;
         public bool IsDoubleListArray => _model is ICalcListOfDoubleArrays;
 
         public IEnumerable<string> SelectionOptions =>
-            (_model as ICalcSelectionList)?.Selections ?? (IEnumerable<string>)[];
+            (_model as DelegateCalcValue<CalcSelectionList>)?.Value.Selections ?? (IEnumerable<string>)[];
 
         public int SelectedIndex
         {
-            get => (_model as ICalcSelectionList)?.SelectedItemIndex ?? -1;
+            get => (_model as DelegateCalcValue<CalcSelectionList>)?.Value.SelectedItemIndex ?? -1;
             set
             {
                 if (_model is ICalcSelectionList listModel && listModel.SelectedItemIndex != value)
