@@ -1,0 +1,196 @@
+﻿
+
+namespace Scaffold.Tests.Extensions;
+
+public class UnitsNetExtensionsTests
+{
+    [Theory]
+    [InlineData(AreaMomentOfInertiaUnit.MillimeterToTheFourth, LengthUnit.Millimeter)]
+    [InlineData(AreaMomentOfInertiaUnit.CentimeterToTheFourth, LengthUnit.Centimeter)]
+    [InlineData(AreaMomentOfInertiaUnit.MeterToTheFourth, LengthUnit.Meter)]
+    [InlineData(AreaMomentOfInertiaUnit.FootToTheFourth, LengthUnit.Foot)]
+    [InlineData(AreaMomentOfInertiaUnit.InchToTheFourth, LengthUnit.Inch)]
+    [InlineData(AreaMomentOfInertiaUnit.InchToTheFourth, LengthUnit.Kiloyard)]
+    public void GetAreaMomentOfInertiaUnitTest(AreaMomentOfInertiaUnit expected, LengthUnit lengthUnit)
+    {
+        // Assert
+        if (lengthUnit == LengthUnit.Kiloyard)
+        {
+            Assert.Throws<ArgumentException>(() => lengthUnit.GetAreaMomentOfInertiaUnit());
+        }
+        else
+        {
+            AreaMomentOfInertiaUnit unit = lengthUnit.GetAreaMomentOfInertiaUnit();
+            Assert.Equal(expected, unit);
+        }
+    }
+
+    [Theory]
+    [InlineData(AreaUnit.SquareMillimeter, LengthUnit.Millimeter)]
+    [InlineData(AreaUnit.SquareCentimeter, LengthUnit.Centimeter)]
+    [InlineData(AreaUnit.SquareMeter, LengthUnit.Meter)]
+    [InlineData(AreaUnit.SquareFoot, LengthUnit.Foot)]
+    [InlineData(AreaUnit.SquareInch, LengthUnit.Inch)]
+    [InlineData(AreaUnit.SquareKilometer, LengthUnit.Kilometer)]
+    public void GetAreaUnitTest(AreaUnit expected, LengthUnit lengthUnit)
+    {
+        // Act
+        AreaUnit unit = lengthUnit.GetAreaUnit();
+
+        // Assert
+        Assert.Equal(expected, unit);
+    }
+
+    [Theory]
+    [InlineData(CoefficientOfThermalExpansionUnit.PerKelvin, TemperatureUnit.Kelvin)]
+    [InlineData(CoefficientOfThermalExpansionUnit.PerDegreeFahrenheit, TemperatureUnit.DegreeFahrenheit)]
+    [InlineData(CoefficientOfThermalExpansionUnit.PerDegreeCelsius, TemperatureUnit.DegreeCelsius)]
+    public void GetCoefficientOfThermalExpansionUnitTest(CoefficientOfThermalExpansionUnit expected, TemperatureUnit temperatureUnit)
+    {
+        // Act
+        CoefficientOfThermalExpansionUnit unit = temperatureUnit.GetCoefficientOfThermalExpansionUnit();
+
+        // Assert
+        Assert.Equal(expected, unit);
+    }
+
+    [Theory]
+    [InlineData(DensityUnit.GramPerCubicMillimeter, MassUnit.Gram, LengthUnit.Millimeter)]
+    [InlineData(DensityUnit.GramPerCubicCentimeter, MassUnit.Gram, LengthUnit.Centimeter)]
+    [InlineData(DensityUnit.GramPerCubicMeter, MassUnit.Gram, LengthUnit.Meter)]
+    [InlineData(DensityUnit.KilogramPerCubicMillimeter, MassUnit.Kilogram, LengthUnit.Millimeter)]
+    [InlineData(DensityUnit.KilogramPerCubicCentimeter, MassUnit.Kilogram, LengthUnit.Centimeter)]
+    [InlineData(DensityUnit.KilogramPerCubicMeter, MassUnit.Kilogram, LengthUnit.Meter)]
+    [InlineData(DensityUnit.TonnePerCubicMillimeter, MassUnit.Tonne, LengthUnit.Millimeter)]
+    [InlineData(DensityUnit.TonnePerCubicCentimeter, MassUnit.Tonne, LengthUnit.Centimeter)]
+    [InlineData(DensityUnit.TonnePerCubicMeter, MassUnit.Tonne, LengthUnit.Meter)]
+    [InlineData(DensityUnit.PoundPerCubicFoot, MassUnit.Pound, LengthUnit.Foot)]
+    [InlineData(DensityUnit.PoundPerCubicInch, MassUnit.Pound, LengthUnit.Inch)]
+    [InlineData(DensityUnit.KilopoundPerCubicFoot, MassUnit.Kilopound, LengthUnit.Foot)]
+    [InlineData(DensityUnit.KilopoundPerCubicInch, MassUnit.Kilopound, LengthUnit.Inch)]
+    [InlineData(DensityUnit.SlugPerCubicFoot, MassUnit.Slug, LengthUnit.Foot)]
+    public void GetDensityUnitTest(DensityUnit expected, MassUnit massUnit, LengthUnit lengthUnit)
+    {
+        // Act
+        DensityUnit unit = massUnit.GetDensityUnit(lengthUnit);
+
+        // Assert
+        Assert.Equal(expected, unit);
+    }
+
+    [Theory]
+    [InlineData(PressureUnit.NewtonPerSquareMillimeter, ForceUnit.Newton, LengthUnit.Millimeter)]
+    [InlineData(PressureUnit.NewtonPerSquareCentimeter, ForceUnit.Newton, LengthUnit.Centimeter)]
+    [InlineData(PressureUnit.NewtonPerSquareMeter, ForceUnit.Newton, LengthUnit.Meter)]
+    [InlineData(PressureUnit.NewtonPerSquareMeter, ForceUnit.Newton, LengthUnit.Kilometer)]
+    [InlineData(PressureUnit.KilonewtonPerSquareMillimeter, ForceUnit.Kilonewton, LengthUnit.Millimeter)]
+    [InlineData(PressureUnit.KilonewtonPerSquareCentimeter, ForceUnit.Kilonewton, LengthUnit.Centimeter)]
+    [InlineData(PressureUnit.KilonewtonPerSquareMeter, ForceUnit.Kilonewton, LengthUnit.Meter)]
+    [InlineData(PressureUnit.MeganewtonPerSquareMeter, ForceUnit.Meganewton, LengthUnit.Meter)]
+    [InlineData(PressureUnit.KilopoundForcePerSquareInch, ForceUnit.KilopoundForce, LengthUnit.Inch)]
+    [InlineData(PressureUnit.KilopoundForcePerSquareFoot, ForceUnit.KilopoundForce, LengthUnit.Foot)]
+    [InlineData(PressureUnit.PoundForcePerSquareInch, ForceUnit.PoundForce, LengthUnit.Inch)]
+    [InlineData(PressureUnit.PoundForcePerSquareFoot, ForceUnit.PoundForce, LengthUnit.Foot)]
+    public void GetForcePerAreaUnitTest(PressureUnit expected, ForceUnit forceUnit, LengthUnit lengthUnit)
+    {
+        if (lengthUnit == LengthUnit.Kilometer && forceUnit == ForceUnit.Newton)
+        {
+            Assert.Throws<ArgumentException>(() => forceUnit.GetForcePerAreaUnit(lengthUnit));
+        }
+        else
+        {
+            PressureUnit unit = forceUnit.GetForcePerAreaUnit(lengthUnit);
+            Assert.Equal(expected, unit);
+        }
+    }
+
+    [Theory]
+    [InlineData(ForcePerLengthUnit.NewtonPerMillimeter, ForceUnit.Newton, LengthUnit.Millimeter)]
+    [InlineData(ForcePerLengthUnit.NewtonPerCentimeter, ForceUnit.Newton, LengthUnit.Centimeter)]
+    [InlineData(ForcePerLengthUnit.NewtonPerMeter, ForceUnit.Newton, LengthUnit.Meter)]
+    [InlineData(ForcePerLengthUnit.KilonewtonPerMillimeter, ForceUnit.Kilonewton, LengthUnit.Millimeter)]
+    [InlineData(ForcePerLengthUnit.KilonewtonPerCentimeter, ForceUnit.Kilonewton, LengthUnit.Centimeter)]
+    [InlineData(ForcePerLengthUnit.KilonewtonPerMeter, ForceUnit.Kilonewton, LengthUnit.Meter)]
+    [InlineData(ForcePerLengthUnit.MeganewtonPerMillimeter, ForceUnit.Meganewton, LengthUnit.Millimeter)]
+    [InlineData(ForcePerLengthUnit.MeganewtonPerCentimeter, ForceUnit.Meganewton, LengthUnit.Centimeter)]
+    [InlineData(ForcePerLengthUnit.MeganewtonPerMeter, ForceUnit.Meganewton, LengthUnit.Meter)]
+    [InlineData(ForcePerLengthUnit.KilopoundForcePerInch, ForceUnit.KilopoundForce, LengthUnit.Inch)]
+    [InlineData(ForcePerLengthUnit.KilopoundForcePerFoot, ForceUnit.KilopoundForce, LengthUnit.Foot)]
+    [InlineData(ForcePerLengthUnit.PoundForcePerInch, ForceUnit.PoundForce, LengthUnit.Inch)]
+    [InlineData(ForcePerLengthUnit.PoundForcePerFoot, ForceUnit.PoundForce, LengthUnit.Foot)]
+    public void GetForcePerLengthUnitTest(ForcePerLengthUnit expected, ForceUnit forceUnit, LengthUnit lengthUnit)
+    {
+        // Act
+        ForcePerLengthUnit unit = forceUnit.GetForcePerLengthUnit(lengthUnit);
+
+        // Assert
+        Assert.Equal(expected, unit);
+    }
+
+    [Theory]
+    [InlineData(LinearDensityUnit.KilogramPerMillimeter, MassUnit.Kilogram, LengthUnit.Millimeter)]
+    [InlineData(LinearDensityUnit.KilogramPerCentimeter, MassUnit.Kilogram, LengthUnit.Centimeter)]
+    [InlineData(LinearDensityUnit.KilogramPerMeter, MassUnit.Kilogram, LengthUnit.Meter)]
+    [InlineData(LinearDensityUnit.KilogramPerMeter, MassUnit.Kilogram, LengthUnit.Kilometer)]
+    [InlineData(LinearDensityUnit.PoundPerFoot, MassUnit.Pound, LengthUnit.Foot)]
+    [InlineData(LinearDensityUnit.PoundPerInch, MassUnit.Pound, LengthUnit.Inch)]
+    public void GetLinearDensityUnitTest(LinearDensityUnit expected, MassUnit massUnit, LengthUnit lengthUnit)
+    {
+        if (lengthUnit == LengthUnit.Kilometer && massUnit == MassUnit.Kilogram)
+        {
+            Assert.Throws<ArgumentException>(() => massUnit.GetLinearDensityUnit(lengthUnit));
+        }
+        else
+        {
+            LinearDensityUnit unit = massUnit.GetLinearDensityUnit(lengthUnit);
+            Assert.Equal(expected, unit);
+        }
+    }
+
+    [Theory]
+    [InlineData(MomentUnit.NewtonMillimeter, ForceUnit.Newton, LengthUnit.Kilometer)]
+    [InlineData(MomentUnit.NewtonMillimeter, ForceUnit.Newton, LengthUnit.Millimeter)]
+    [InlineData(MomentUnit.NewtonCentimeter, ForceUnit.Newton, LengthUnit.Centimeter)]
+    [InlineData(MomentUnit.NewtonMeter, ForceUnit.Newton, LengthUnit.Meter)]
+    [InlineData(MomentUnit.KilonewtonMillimeter, ForceUnit.Kilonewton, LengthUnit.Millimeter)]
+    [InlineData(MomentUnit.KilonewtonCentimeter, ForceUnit.Kilonewton, LengthUnit.Centimeter)]
+    [InlineData(MomentUnit.KilonewtonMeter, ForceUnit.Kilonewton, LengthUnit.Meter)]
+    [InlineData(MomentUnit.MeganewtonMillimeter, ForceUnit.Meganewton, LengthUnit.Millimeter)]
+    [InlineData(MomentUnit.MeganewtonCentimeter, ForceUnit.Meganewton, LengthUnit.Centimeter)]
+    [InlineData(MomentUnit.MeganewtonMeter, ForceUnit.Meganewton, LengthUnit.Meter)]
+    [InlineData(MomentUnit.KilopoundForceInch, ForceUnit.KilopoundForce, LengthUnit.Inch)]
+    [InlineData(MomentUnit.KilopoundForceFoot, ForceUnit.KilopoundForce, LengthUnit.Foot)]
+    [InlineData(MomentUnit.PoundForceInch, ForceUnit.PoundForce, LengthUnit.Inch)]
+    [InlineData(MomentUnit.PoundForceFoot, ForceUnit.PoundForce, LengthUnit.Foot)]
+    public void GetMomentUnitTest(MomentUnit expected, ForceUnit forceUnit, LengthUnit lengthUnit)
+    {
+        if (lengthUnit == LengthUnit.Kilometer && forceUnit == ForceUnit.Newton)
+        {
+            Assert.Throws<ArgumentException>(() => forceUnit.GetMomentUnit(lengthUnit));
+        }
+        else
+        {
+            MomentUnit unit = forceUnit.GetMomentUnit(lengthUnit);
+            Assert.Equal(expected, unit);
+        }
+    }
+
+    [Theory]
+    [InlineData(VolumeUnit.CubicMillimeter, LengthUnit.Millimeter)]
+    [InlineData(VolumeUnit.CubicCentimeter, LengthUnit.Centimeter)]
+    [InlineData(VolumeUnit.CubicMeter, LengthUnit.Meter)]
+    [InlineData(VolumeUnit.CubicFoot, LengthUnit.Foot)]
+    [InlineData(VolumeUnit.CubicInch, LengthUnit.Inch)]
+    public void GetVolumeUnitTest(VolumeUnit expected, LengthUnit lengthUnit)
+    {
+        if (lengthUnit == LengthUnit.Kilometer)
+        {
+            Assert.Throws<ArgumentException>(() => lengthUnit.GetVolumeUnit());
+        }
+        else
+        {
+            VolumeUnit unit = lengthUnit.GetVolumeUnit();
+            Assert.Equal(expected, unit);
+        }
+    }
+}
