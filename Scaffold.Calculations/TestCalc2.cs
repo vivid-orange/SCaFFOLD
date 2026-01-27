@@ -19,8 +19,8 @@ namespace Scaffold.Calculations
     public class TestCalc2 : ICalculation, IInteractiveGeometry
     {
 
-        public new string CalculationTitle { get; } = "Test calc";
-        public string EntityLabel { get; set; } = "This is my test calc";
+        public new string EntityLabel{ get; } = "Test calc";
+        public string CalculationTitle { get; set; } = "This is my test calc";
 
 
         [CalcValueType(CalcValueType.Input, "I", "Multiplier")]
@@ -116,7 +116,7 @@ namespace Scaffold.Calculations
             _geometryBases.AddRange(lines);
 
         }
-        public List<IOutputItem> GetFormulae()
+        public IList<IOutputItem> GetFormulae()
         {
             var returnList = new List<IOutputItem>();
 
