@@ -17,7 +17,7 @@ namespace Scaffold.Calculations.Eurocode.Steel
         public Length Thickness { get; set; } = new(40, LengthUnit.Millimeter);
 
         [OutputCalcValue("S", "Steel Material")]
-        public EnSteelMaterial Material => new(Grade, Project.NationalAnnex);
+        public EnSteelMaterial Material => new(Grade, NationalAnnex);
 
         [OutputCalcValue("E", "Modulus of Elasticity")]
         public Pressure E => new(210000, _unit);
