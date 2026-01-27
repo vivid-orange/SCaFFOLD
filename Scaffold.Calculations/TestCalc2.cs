@@ -8,12 +8,8 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Scaffold.Core;
-using Scaffold.Core.Attributes;
-using Scaffold.Core.Enums;
 using Scaffold.Core.Geometry;
 using Scaffold.Core.Geometry.Abstract;
-using Scaffold.Core.Images.Models;
-using Scaffold.Core.Interfaces;
 using SkiaSharp;
 using UnitsNet;
 using UnitsNet.Units;
@@ -23,8 +19,8 @@ namespace Scaffold.Calculations
     public class TestCalc2 : ICalculation, IInteractiveGeometry
     {
 
-        public new string TypeName { get; } = "Test calc";
-        public string InstanceName { get; set; } = "This is my test calc";
+        public new string CalculationTitle { get; } = "Test calc";
+        public string EntityLabel { get; set; } = "This is my test calc";
 
 
         [CalcValueType(CalcValueType.Input, "I", "Multiplier")]
