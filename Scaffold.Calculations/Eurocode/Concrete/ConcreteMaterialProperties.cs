@@ -1,6 +1,5 @@
 ﻿using Scaffold.Core;
 using VividOrange.Materials.StandardMaterials.En;
-using VividOrange.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Eurocode.Concrete
 {
@@ -14,7 +13,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete
         public EnConcreteGrade ConcreteGrade { get; set; } = EnConcreteGrade.C30_37;
 
         [OutputCalcValue("C", "Concrete")]
-        public EnConcreteMaterial Material => new(ConcreteGrade, NationalAnnex.RecommendedValues);
+        public EnConcreteMaterial Material => new(ConcreteGrade, Project.NationalAnnex);
 
         [OutputCalcValue("f_{ck}", "Characteristic cylinder strength")]
         public Pressure fck =>
