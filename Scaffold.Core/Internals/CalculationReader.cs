@@ -2,39 +2,71 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Scaffold.Core.Services
 {
     public static class CalculationReader
     {
-        // Cache to store the definition for each Calculation Type
-        // Reflection only needed once during app life for each calc type (not each instance)
-        private static readonly ConcurrentDictionary<Type, CalculationDefinition> _cache
+        // 1. Type-Level Cache: Stores the structural definition (Reflection/Expressions)
+        // Calculated once per Class Type.
+        private static readonly ConcurrentDictionary<Type, CalculationDefinition> _typeCache
             = new ConcurrentDictionary<Type, CalculationDefinition>();
+
+        // 2. Instance-Level Cache: Stores the actual wrapper lists for specific instances.
+        // ConditionalWeakTable ensures we don't cause memory leaks; if the ICalculation 
+        // is garbage collected, these cached lists go with it.
+        private static readonly ConditionalWeakTable<ICalculation, InstanceCache> _instanceCache
+            = new ConditionalWeakTable<ICalculation, InstanceCache>();
 
         public static List<ICalcValue> GetInputs(ICalculation calculation)
         {
             if (calculation == null) return new List<ICalcValue>();
-            var definition = GetDefinition(calculation.GetType());
-            return definition.CreateInputs(calculation);
+
+            // Get or create the cache container for this specific instance
+            var instanceData = _instanceCache.GetOrCreateValue(calculation);
+
+            // If we haven't created the Input wrappers for this instance yet, do so now
+            if (instanceData.Inputs == null)
+            {
+                var definition = GetDefinition(calculation.GetType());
+                instanceData.Inputs = definition.CreateInputs(calculation);
+            }
+
+            return instanceData.Inputs;
         }
 
         public static List<ICalcValue> GetOutputs(ICalculation calculation)
         {
             if (calculation == null) return new List<ICalcValue>();
-            var definition = GetDefinition(calculation.GetType());
-            return definition.CreateOutputs(calculation);
+
+            var instanceData = _instanceCache.GetOrCreateValue(calculation);
+
+            if (instanceData.Outputs == null)
+            {
+                var definition = GetDefinition(calculation.GetType());
+                instanceData.Outputs = definition.CreateOutputs(calculation);
+            }
+
+            return instanceData.Outputs;
         }
 
         private static CalculationDefinition GetDefinition(Type type)
         {
-            return _cache.GetOrAdd(type, t => new CalculationDefinition(t));
+            return _typeCache.GetOrAdd(type, t => new CalculationDefinition(t));
         }
 
-        // --- Internal Helper Classes to map the Type ---
+        // --- Internal Helper Classes ---
 
+        // Holds the cached lists for a specific ICalculation instance
+        private class InstanceCache
+        {
+            public List<ICalcValue> Inputs { get; set; }
+            public List<ICalcValue> Outputs { get; set; }
+        }
+
+        // Holds the structural map for a Calculation Type (e.g., BeamCalc)
         private class CalculationDefinition
         {
             private readonly List<IPropertyAdapter> _inputAdapters = new List<IPropertyAdapter>();
@@ -64,7 +96,6 @@ namespace Scaffold.Core.Services
 
             private IPropertyAdapter CreateAdapter(Type modelType, PropertyInfo prop, CalcValueTypeAttribute attr)
             {
-                // Create generic PropertyAdapter<TModel, TProp> via reflection
                 var adapterType = typeof(PropertyAdapter<,>).MakeGenericType(modelType, prop.PropertyType);
                 return (IPropertyAdapter)Activator.CreateInstance(adapterType, prop, attr);
             }
@@ -86,15 +117,15 @@ namespace Scaffold.Core.Services
             public PropertyAdapter(PropertyInfo prop, CalcValueTypeAttribute attr)
             {
                 _symbol = attr.Symbol;
-                _displayName = attr.DisplayName ?? prop.Name; // Default to Prop Name if null
+                _displayName = attr.DisplayName ?? prop.Name;
                 _headings = attr.Headings;
 
-                // 1. Compile Getter: (TModel m) => m.Prop
+                // Compile Getter
                 var param = System.Linq.Expressions.Expression.Parameter(typeof(TModel), "m");
                 var access = System.Linq.Expressions.Expression.Property(param, prop);
                 _getter = System.Linq.Expressions.Expression.Lambda<Func<TModel, TProp>>(access, param).Compile();
 
-                // 2. Compile Setter: (TModel m, TProp v) => m.Prop = v
+                // Compile Setter
                 if (prop.CanWrite && prop.GetSetMethod() != null)
                 {
                     var valueParam = System.Linq.Expressions.Expression.Parameter(typeof(TProp), "v");
@@ -107,7 +138,7 @@ namespace Scaffold.Core.Services
             {
                 TModel model = (TModel)instance;
 
-                // Create closures around the instance
+                // Create closures around the specific instance
                 Func<TProp> boundGetter = () => _getter(model);
                 Action<TProp> boundSetter = _setter == null ? null : (v) => _setter(model, v);
 
