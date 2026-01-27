@@ -89,7 +89,7 @@ namespace SCaFFOLD_Desktop
         }
 
         // --- Standard Properties ---
-        public string DisplayName => _model.TypeName;
+        public string DisplayName => _model.EntityLabel;
         public string Symbol => _model.Symbol;
 
         public string Value
@@ -98,11 +98,11 @@ namespace SCaFFOLD_Desktop
             {
                 if (_model is ICalcListOfDoubleArrays arrayModel)
                     return FormatArrayOutput(arrayModel.Value);
-                return _model.GetValueAsString();
+                return _model.ValueAsString();
             }
             set
             {
-                if (IsStandard && _model.GetValueAsString() != value)
+                if (IsStandard && _model.ValueAsString() != value)
                 {
                     _model.TryParse(value);
                     Refresh();

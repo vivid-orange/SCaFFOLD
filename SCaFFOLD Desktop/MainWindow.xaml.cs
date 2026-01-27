@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Scaffold.Calculations.Eurocode.Steel;
+using Scaffold.Calculations;
 
 namespace SCaFFOLD_Desktop
 {

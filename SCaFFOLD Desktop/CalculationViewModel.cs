@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Scaffold.Core;
-using Scaffold.Core.CalcValues;
 using Scaffold.Core.Geometry;
 using Scaffold.Core.Services;
 
@@ -23,7 +22,7 @@ namespace SCaFFOLD_Desktop
 
         public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
-        public string CurrentTitle => _currentCalculation?.TypeName;
+        public string CurrentTitle => _currentCalculation?.CalculationTitle;
         public ICommand NavigateUpCommand { get; }
 
         private InteractiveGeometryViewModel _geometryVm;

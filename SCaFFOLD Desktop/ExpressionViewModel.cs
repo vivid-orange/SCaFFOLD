@@ -1,6 +1,4 @@
 ﻿using Scaffold.Core;
-using Scaffold.Core;
-using Scaffold.Core; // Added for 'Expression' cast
 using SkiaSharp;
 using System.IO;
 using System.Windows.Media;
