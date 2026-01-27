@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.2.11408.102 d18.0
+VisualStudioVersion = 18.2.11408.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Core", "Scaffold.Core\Scaffold.Core.csproj", "{BC82F32A-6425-41F7-A938-AF44312ABABF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Calculations", "Scaffold.Calculations\Scaffold.Calculations.csproj", "{A0271CB4-B2DC-4377-A628-C6D443E88D31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Tests", "Scaffold.Tests\Scaffold.Tests.csproj", "{F7EDF5A4-1652-4064-A4DC-C5B5D2CA0E9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Core.Tests", "Scaffold.Tests\Scaffold.Core.Tests.csproj", "{F7EDF5A4-1652-4064-A4DC-C5B5D2CA0E9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Calculations.Tests", "Scaffold.Calculations.Tests\Scaffold.Calculations.Tests.csproj", "{36AE8C4E-43A0-4213-9DE5-B1242E25A455}"
 EndProject

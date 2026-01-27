@@ -1,7 +1,6 @@
 ﻿using Scaffold.Core;
 using VividOrange.Materials;
 using VividOrange.Materials.StandardMaterials.En;
-using VividOrange.Standards.Eurocode;
 
 namespace Scaffold.Calculations.Eurocode.Steel
 {
@@ -18,7 +17,7 @@ namespace Scaffold.Calculations.Eurocode.Steel
         public Length Thickness { get; set; } = new(40, LengthUnit.Millimeter);
 
         [OutputCalcValue("S", "Steel Material")]
-        public EnSteelMaterial Material => new(Grade, NationalAnnex.RecommendedValues);
+        public EnSteelMaterial Material => new(Grade, NationalAnnex);
 
         [OutputCalcValue("E", "Modulus of Elasticity")]
         public Pressure E => new(210000, _unit);
