@@ -1,5 +1,5 @@
-using Xunit;
 using VividOrange.Standards.Eurocode;
+using Xunit;
 
 namespace Scaffold.Tests.Settings;
 
