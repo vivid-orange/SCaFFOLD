@@ -8,6 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Scaffold.Core;
+using Scaffold.Report;
 
 namespace Scaffold.Calculations
 {

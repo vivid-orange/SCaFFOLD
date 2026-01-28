@@ -1,12 +1,14 @@
-﻿using Scaffold.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reflection;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Scaffold;
+using Scaffold.Core;
+using Scaffold.Desktop;
 
-namespace SCaFFOLD_Desktop
+namespace Scaffold.Desktop
 {
     public class CalcValueViewModel : ViewModelBase
     {
@@ -46,7 +48,7 @@ namespace SCaFFOLD_Desktop
             }
         }
 
-        public string Unit => (_model as ICalcQuantity)?.Unit ?? "";
+        //public string Unit => (_model as ICalcQuantity)?.Unit ?? "";
 
         // Structure Flags
         // The View binds to 'IsComplex' to show the "..." button.
@@ -83,7 +85,7 @@ namespace SCaFFOLD_Desktop
         public void Refresh()
         {
             OnPropertyChanged(nameof(Value));
-            OnPropertyChanged(nameof(Unit));
+            //OnPropertyChanged(nameof(Unit));
             OnPropertyChanged(nameof(Symbol));
         }
     }
