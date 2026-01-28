@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using Scaffold.Core.Geometry.Enums;
 
-namespace Scaffold.Core.Geometry;
+namespace Scaffold.Geometry;
 
 [ExcludeFromCodeCoverage] // because we will be using Kris' libs for this from v1.
 public class IntersectionResult

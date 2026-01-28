@@ -1,4 +1,6 @@
-﻿public static class DefaultUnits
+﻿namespace Scaffold.Settings.Units;
+
+public static class DefaultUnits
 {
     public static AccelerationUnit AccelerationUnit { get; set; }
         = AccelerationUnit.MeterPerSecondSquared;

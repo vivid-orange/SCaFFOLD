@@ -1,35 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Scaffold.Desktop;
 
-namespace SCaFFOLD_Desktop
+public class ArrayCellViewModel : ViewModelBase
 {
-    public class ArrayCellViewModel : ViewModelBase
+    private readonly double[] _sourceArray;
+    private readonly int _index;
+    private readonly Action _onValueChanged;
+
+    public ArrayCellViewModel(double[] sourceArray, int index, Action onValueChanged)
     {
-        private readonly double[] _sourceArray;
-        private readonly int _index;
-        private readonly Action _onValueChanged;
+        _sourceArray = sourceArray;
+        _index = index;
+        _onValueChanged = onValueChanged;
+    }
 
-        public ArrayCellViewModel(double[] sourceArray, int index, Action onValueChanged)
+    public double Value
+    {
+        get => _sourceArray[_index];
+        set
         {
-            _sourceArray = sourceArray;
-            _index = index;
-            _onValueChanged = onValueChanged;
-        }
-
-        public double Value
-        {
-            get => _sourceArray[_index];
-            set
+            if (Math.Abs(_sourceArray[_index] - value) > 0.0001)
             {
-                if (Math.Abs(_sourceArray[_index] - value) > 0.0001)
-                {
-                    _sourceArray[_index] = value;
-                    OnPropertyChanged();
-                    _onValueChanged?.Invoke();
-                }
+                _sourceArray[_index] = value;
+                OnPropertyChanged();
+                _onValueChanged?.Invoke();
             }
         }
     }

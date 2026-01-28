@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
-namespace SCaFFOLD_Desktop
+namespace Scaffold.Desktop;
+
+public class ArrayRowViewModel : ViewModelBase
 {
-    public class ArrayRowViewModel : ViewModelBase
-    {
-        public ObservableCollection<ArrayCellViewModel> Cells { get; } = [];
+    public ObservableCollection<ArrayCellViewModel> Cells { get; } = [];
 
-        public ArrayRowViewModel(double[] rowData, Action onValueChanged)
+    public ArrayRowViewModel(double[] rowData, Action onValueChanged)
+    {
+        for (int i = 0; i < rowData.Length; i++)
         {
-            for (int i = 0; i < rowData.Length; i++)
-            {
-                Cells.Add(new ArrayCellViewModel(rowData, i, onValueChanged));
-            }
+            Cells.Add(new ArrayCellViewModel(rowData, i, onValueChanged));
         }
     }
 }

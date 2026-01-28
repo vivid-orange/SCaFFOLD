@@ -1,7 +1,9 @@
-﻿public class ScaffoldSettings : IFormattable, IParsable<ScaffoldSettings>
+﻿namespace Scaffold.Settings;
+
+public class ScaffoldSettings : IFormattable, IParsable<ScaffoldSettings>
 {
-    public ProjectSettings ProjectSettings { get; set; } = new();
-    public UnitSettings UnitSettings { get; set; } = new();
+    public ProjectSettings Project { get; set; } = new();
+    public UnitSettings Units { get; set; } = new();
 
     public ScaffoldSettings() { }
 

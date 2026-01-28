@@ -1,0 +1,18 @@
+﻿namespace Scaffold.Report
+{
+    public class LatexItem : ContentItem, ILatexItem
+    {
+        public string Latex { get; }
+
+        public LatexItem(string latex)
+        {
+            Latex = latex;
+        }
+
+        public LatexItem(string latex, bool isInLine)
+        {
+            Latex = latex;
+            IsInLine = isInLine;
+        }
+    }
+}

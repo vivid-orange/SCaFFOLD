@@ -1,52 +1,48 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Media;
-using Scaffold.Core;
-using SCaFFOLD_Desktop;
+using Scaffold.Report;
 
-namespace SCaFFOLD_Desktop
+namespace Scaffold.Desktop;
+
+// New helper class for the View
+public class ExpressionRowViewModel : ViewModelBase
 {
-    // New helper class for the View
-    public class ExpressionRowViewModel : ViewModelBase
-    {
-        public ObservableCollection<SCaFFOLD_Desktop.ExpressionViewModel> Items { get; }
-            = [];
-    }
+    public ObservableCollection<ExpressionViewModel> Items { get; }
+        = [];
+}
 
-    public class OutputItemViewModel : ViewModelBase
-    {
-        private readonly IOutputItem _model;
+public class OutputItemViewModel : ViewModelBase
+{
+    private readonly IOutputItem _model;
 
-        public OutputItemViewModel(IOutputItem model)
+    public OutputItemViewModel(IOutputItem model)
+    {
+        _model = model;
+
+        if (_model.Expressions != null)
         {
-            _model = model;
-
-            if (_model.Expressions != null)
+            foreach (IContentItem? expr in _model.Expressions)
             {
-                foreach (var expr in _model.Expressions)
-                {
-                    var vm = new SCaFFOLD_Desktop.ExpressionViewModel(expr);
+                var vm = new ExpressionViewModel(expr);
 
-                    // Logic: If item is NOT inline, OR if we have no rows yet, start a new row.
-                    // Otherwise, add to the existing row (inline flow).
-                    if (!vm.IsInLine || Rows.Count == 0)
-                    {
-                        var newRow = new ExpressionRowViewModel();
-                        newRow.Items.Add(vm);
-                        Rows.Add(newRow);
-                    }
-                    else
-                    {
-                        Rows.Last().Items.Add(vm);
-                    }
+                // Logic: If item is NOT inline, OR if we have no rows yet, start a new row.
+                // Otherwise, add to the existing row (inline flow).
+                if (!vm.IsInLine || Rows.Count == 0)
+                {
+                    var newRow = new ExpressionRowViewModel();
+                    newRow.Items.Add(vm);
+                    Rows.Add(newRow);
+                }
+                else
+                {
+                    Rows.Last().Items.Add(vm);
                 }
             }
         }
-
-        public string Conclusion => _model.Conclusion;
-
-        // We now expose a list of ROWS, not a flat list of expressions
-        public ObservableCollection<ExpressionRowViewModel> Rows { get; }
-            = [];
     }
+
+    public string Conclusion => _model.Conclusion;
+
+    // We now expose a list of ROWS, not a flat list of expressions
+    public ObservableCollection<ExpressionRowViewModel> Rows { get; }
+        = [];
 }

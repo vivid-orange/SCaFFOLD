@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SCaFFOLD_Desktop
+namespace Scaffold.Desktop;
+
+// Standard INotifyPropertyChanged implementation
+public class ViewModelBase : INotifyPropertyChanged
 {
-    // Standard INotifyPropertyChanged implementation
-    public class ViewModelBase : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string name = null) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
+    public event PropertyChangedEventHandler PropertyChanged;
+    public void OnPropertyChanged([CallerMemberName] string name = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

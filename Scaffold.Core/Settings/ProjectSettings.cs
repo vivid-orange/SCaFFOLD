@@ -1,5 +1,7 @@
 ﻿using VividOrange.Standards.Eurocode;
 
+namespace Scaffold.Settings;
+
 public class ProjectSettings
 {
     public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.UnitedKingdom;
