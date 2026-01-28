@@ -85,7 +85,7 @@
                             </Setter.Value>
                         </Setter>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLeaf}" Value="True">
+                            <DataTrigger Binding="{Binding IsData}" Value="True">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
@@ -112,7 +112,7 @@
                             </Setter.Value>
                         </Setter>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsLeaf}" Value="True">
+                            <DataTrigger Binding="{Binding IsData}" Value="True">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
@@ -126,8 +126,6 @@
                 </ContentControl.Style>
             </ContentControl>
         </HierarchicalDataTemplate>
-
-
 
         <DataTemplate x:Key="DetailItemTemplate" DataType="{x:Type local:OutputItemViewModel}">
             <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="5,10">

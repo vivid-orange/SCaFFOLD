@@ -5,37 +5,43 @@ namespace SCaFFOLD_Desktop
 {
     public class CalcNodeViewModel : ViewModelBase
     {
-        // For Group Nodes
+        // 1. Identification
         public string Name { get; }
-        public ObservableCollection<CalcNodeViewModel> Children { get; } = new ObservableCollection<CalcNodeViewModel>();
 
-        // For Leaf Nodes
+        // 2. The Data (Null for pure Folder/Heading nodes)
         public CalcValueViewModel Value { get; }
 
-        // Flags
-        public bool IsLeaf => Value != null;
-        public bool IsExpanded { get; set; } = true; // Default groups to open
+        // 3. The Hierarchy
+        public ObservableCollection<CalcNodeViewModel> Children { get; } = new ObservableCollection<CalcNodeViewModel>();
 
-        // Constructor for Group
+        // --- FLAGS ---
+        // Replaces IsLeaf. True if this node wraps an actual Input/Output object.
+        public bool IsData => Value != null;
+
+        // True if this is just a heading/folder
+        public bool IsGroup => Value == null;
+
+        public bool IsExpanded { get; set; } = true;
+
+        // Constructor for Group/Heading
         public CalcNodeViewModel(string name)
         {
             Name = name;
             Value = null;
         }
 
-        // Constructor for Leaf
+        // Constructor for Data Object
         public CalcNodeViewModel(CalcValueViewModel value)
         {
-            Name = value.DisplayName; // Or Symbol, depending on preference
+            // Use DisplayName from the value, or fallback to Symbol if needed
+            Name = value.DisplayName;
             Value = value;
         }
 
-        /// <summary>
-        /// Helper to find or create a child group node
-        /// </summary>
-        public CalcNodeViewModel GetOrCreateChild(string name)
+        // Helper to find existing group nodes (e.g. "Geometry")
+        public CalcNodeViewModel GetOrCreateChildGroup(string name)
         {
-            var child = Children.FirstOrDefault(c => c.Name == name && !c.IsLeaf);
+            var child = Children.FirstOrDefault(c => c.Name == name && c.IsGroup);
             if (child == null)
             {
                 child = new CalcNodeViewModel(name);

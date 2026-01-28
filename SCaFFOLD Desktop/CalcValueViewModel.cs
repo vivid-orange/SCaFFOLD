@@ -111,15 +111,39 @@ namespace SCaFFOLD_Desktop
             }
         }
 
-        public string Unit => (_model as ICalcQuantity)?.Unit ?? string.Empty;
+        public string Unit => "";
         public bool HasUnit => !string.IsNullOrEmpty(Unit);
 
-        public bool IsStandard => !IsSelectionList && !IsDoubleListArray;
-        public bool IsComplex => _model is ICalculation && _onNavigateRequest != null;
+        public bool IsComplex => _model.IsComplexValue || _model.IsICalculation;
+        public bool IsCollection => _model.IsCollection;
+        public bool IsStandard => !IsComplex && !IsCollection;
 
         // GENERALLY : NEED TO REMOVE ALL TRACES OF SELECTION LIST
         public bool IsSelectionList => false; //_model is DelegateCalcValue<CalcSelectionList>;
         public bool IsDoubleListArray => false; // _model is ICalcListOfDoubleArrays;
+
+        // --- Accessor for Collection Iteration ---
+        public object RawValue
+        {
+            get
+            {
+                // We use reflection to get the 'Value' property from DelegateCalcValue<T>
+                // because ICalcValue doesn't expose the generic T.
+                // Alternatively, use 'dynamic' if your project supports it.
+                var prop = _model.GetType().GetProperty("Value");
+                return prop?.GetValue(_model);
+            }
+        }
+
+        public List<ICalcValue> GetChildren()
+        {
+            // If it's a single complex object or calculation, use the Reader integration
+            if (IsComplex)
+            {
+                return _model.GetChildInputs();
+            }
+            return new List<ICalcValue>();
+        }
 
         public IEnumerable<string> SelectionOptions => (IEnumerable<string>)[]; 
             // (_model as DelegateCalcValue<CalcSelectionList>)?.Value.Selections ?? (IEnumerable<string>)[];
