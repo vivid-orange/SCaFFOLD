@@ -16,13 +16,11 @@ namespace SCaFFOLD_Desktop
         private readonly Stack<ICalculation> _navigationStack = new Stack<ICalculation>();
 
         public ObservableCollection<ICalculation> Breadcrumbs { get; } = [];
-
-        // CHANGED: Now collections of Nodes (Tree Roots)
         public ObservableCollection<CalcNodeViewModel> Inputs { get; } = [];
         public ObservableCollection<CalcNodeViewModel> Outputs { get; } = [];
         public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
-        public string CurrentTitle => _currentCalculation?.CalculationTitle;
+        public string CurrentTitle => _currentCalculation.CalculationTitle;
         public ICommand NavigateUpCommand { get; }
 
         private InteractiveGeometryViewModel _geometryVm;
