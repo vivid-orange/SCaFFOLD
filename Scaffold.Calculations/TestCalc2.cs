@@ -119,7 +119,7 @@ namespace Scaffold.Calculations
         {
             var returnList = new List<IOutputItem>();
 
-            var outputs = new OutputItem("reffy", "This one goes first", "Done", new TextItem("We can explain a bit about the formula here. There is no longer a separate 'Narrative' property."));
+            var outputs = new OutputItem("reffy", "This one goes first", new TextItem("We can explain a bit about the formula here. There is no longer a separate 'Narrative' property."));
             outputs.Expressions.Add(new LatexItem(@"M = \frac{wl^2} {8}"));
             outputs.Expressions.Add(new TextItem("and then a bit more text whcih can now be in-line", true));
             outputs.Expressions.Add(new TextItem("and then an image"));

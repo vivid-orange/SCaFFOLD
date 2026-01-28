@@ -21,7 +21,7 @@ namespace Scaffold.Desktop
         public ObservableCollection<CalcNodeViewModel> Outputs { get; } = [];
         public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
-        public string CurrentTitle => _currentCalculation?.CalculationTitle;
+        public string CurrentTitle => _currentCalculation.CalculationTitle;
         public ICommand NavigateUpCommand { get; }
 
         private InteractiveGeometryViewModel _geometryVm;
