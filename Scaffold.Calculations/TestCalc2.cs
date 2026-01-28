@@ -1,19 +1,6 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Scaffold.Core;
-using Scaffold.Core.Geometry;
+﻿using System.Numerics;
 using Scaffold.Geometry;
 using Scaffold.Report;
-using SkiaSharp;
-using UnitsNet;
-using UnitsNet.Units;
 
 namespace Scaffold.Calculations
 {
@@ -39,7 +26,7 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "E", "Column height")]
+        [CalcValueType(CalcValueType.Input, "E", "Column height", ["Misc"])]
         public EmbeddedCalc ReducedHeight { get; set; } = new EmbeddedCalc();
 
 
@@ -54,15 +41,13 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Output, "F_req", "Force required")]
         public Force ForceRequired { get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
-        [CalcValueType(CalcValueType.Input, "C", "Complex Input type")]
+        [CalcValueType(CalcValueType.Input, "C", "Complex Input type", ["Misc"])]
         public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
 
-        //[CalcValueType(CalcValueType.Input, "L", "List of lengths")]
-        //public List<Length> lengths { get; set; } = new List<Length> { new Length(100, LengthUnit.Millimeter), new Length(200, LengthUnit.Millimeter) };
-        [CalcValueType(CalcValueType.Input, "L", "List of things")]
-        public List<MyDataHolder> Things { get; set; } = new List<MyDataHolder> { new MyDataHolder(10,20), new MyDataHolder(1,2) };
+        [CalcValueType(CalcValueType.Input, "L", "List of things", ["Misc"])]
+        public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35,20, 0.35), new MyOtherDataHolder(40,20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
 
-        [CalcValueType(CalcValueType.Input, "LL2", "List of lists of more things")]
+        [CalcValueType(CalcValueType.Input, "LL2", "List of lists of more things", ["Misc"])]
         public List<List<MyDataHolder>> MoreThings { get; set; } = [[ new MyDataHolder(100, 200), new MyDataHolder(300, 400) ] , [new MyDataHolder(500,600)]];
 
         public CalcStatus Status => CalcStatus.None;
@@ -178,9 +163,9 @@ namespace Scaffold.Calculations
 
     public class MyDataHolder
     {
-        [CalcValueType(CalcValueType.Input, "P1", "Prop 1")]
+        [CalcValueType(CalcValueType.Input, "L_{col}", "Prop 1")]
         public Length FirstLength { get; set; } = new Length(10, LengthUnit.Meter);
-        [CalcValueType(CalcValueType.Input, "P2", "Prop Two")]
+        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
 
         public MyDataHolder()
@@ -191,6 +176,27 @@ namespace Scaffold.Calculations
         {
             FirstLength = Length.From(length, LengthUnit.Meter);
             ForceyForce = Force.From(forceyForce, ForceUnit.Kilonewton);
+        }
+    }
+
+    public class MyOtherDataHolder
+    {
+        [CalcValueType(CalcValueType.Input, "f_{ck}", "Char compressive strength")]
+        public Pressure ComeStr { get; set; } = new Pressure(35, PressureUnit.NewtonPerSquareMillimeter);
+        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
+        public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
+        [CalcValueType(CalcValueType.Input, @"\epsilon_t", "")]
+        public Ratio MyRatio { get; set; } = new Ratio(0.35, RatioUnit.DecimalFraction);
+
+        public MyOtherDataHolder()
+        {
+        }
+
+        public MyOtherDataHolder(double strength, double forceyForce, double ratio)
+        {
+            ComeStr = Pressure.From(strength, PressureUnit.NewtonPerSquareMillimeter);
+            ForceyForce = Force.From(forceyForce, ForceUnit.Kilonewton);
+            MyRatio = Ratio.From(ratio, RatioUnit.DecimalFraction);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
-using Scaffold;
-using Scaffold.Core;
-using Scaffold.Desktop;
+using Scaffold.Reader; // Required for ICalculation
 
 namespace Scaffold.Desktop
 {
@@ -15,8 +15,6 @@ namespace Scaffold.Desktop
         private readonly ICalcValue _model;
         private readonly Action _onValueChanged;
         private readonly Action<ICalculation> _onNavigateRequest;
-
-        // ... (Other fields like _declaredType, _onReplaceRequest if needed) ...
 
         public ICalcValue Model => _model;
 
@@ -31,12 +29,12 @@ namespace Scaffold.Desktop
         }
 
         // --- Properties ---
-        public string DisplayName => _model.EntityLabel; // Mapped from DelegateCalcValue
+        public string DisplayName => _model.EntityLabel;
         public string Symbol => _model.Symbol;
 
         public string Value
         {
-            get => _model.ValueAsString(); // Simplified for brevity
+            get => _model.ValueAsString();
             set
             {
                 if (IsStandard && _model.ValueAsString() != value)
@@ -48,20 +46,15 @@ namespace Scaffold.Desktop
             }
         }
 
-        //public string Unit => (_model as ICalcQuantity)?.Unit ?? "";
-
         // Structure Flags
-        // The View binds to 'IsComplex' to show the "..." button.
-        // This remains true for both ICalculation and other Complex objects.
         public bool IsComplex => _model.IsComplexValue || _model.IsICalculation;
         public bool IsCollection => _model.IsCollection;
         public bool IsStandard => !IsComplex && !IsCollection;
-
+        public bool IsCalculation => _model.IsICalculation;
         public bool IsSelectionList => false;
         public IEnumerable<string> SelectionOptions => Enumerable.Empty<string>();
         public int SelectedIndex { get => -1; set { } }
 
-        // --- Helper to get the actual object inside the DelegateCalcValue wrapper ---
         public object RawValue
         {
             get
@@ -71,11 +64,103 @@ namespace Scaffold.Desktop
             }
         }
 
+        // --- Table Logic ---
+        public bool IsTable { get; private set; }
+        public ObservableCollection<string> TableHeaders { get; } = new ObservableCollection<string>();
+        public ObservableCollection<ObservableCollection<CalcValueViewModel>> TableRows { get; } = new ObservableCollection<ObservableCollection<CalcValueViewModel>>();
+
+        public bool TryConfigureAsTable()
+        {
+            // 1. Must be a collection
+            if (!IsCollection) return false;
+
+            var list = RawValue as IList;
+            if (list == null) return false;
+
+            // 2. Determine the Item Type (T)
+            Type itemType = null;
+            var modelType = _model.GetType();
+            // Try to get T from DelegateCalcValue<List<T>>
+            if (modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(DelegateCalcValue<>))
+            {
+                var listType = modelType.GetGenericArguments()[0];
+                if (listType.IsGenericType && typeof(IEnumerable).IsAssignableFrom(listType))
+                {
+                    itemType = listType.GetGenericArguments()[0];
+                }
+            }
+            // Fallback: Check first item
+            if (itemType == null && list.Count > 0 && list[0] != null) itemType = list[0].GetType();
+
+            if (itemType == null) return false;
+
+            // 3. Must be "Complex" Input
+            // FIX: Check for the base CalcValueTypeAttribute and ensure Type is Input.
+            // This covers both [CalcValueType(CalcValueType.Input)] AND [InputCalcValue].
+            bool isComplex = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                     .Any(p => {
+                                         var attr = p.GetCustomAttribute<CalcValueTypeAttribute>();
+                                         return attr != null && attr.Type == CalcValueType.Input;
+                                     });
+
+            if (!isComplex) return false;
+
+            // 4. Must NOT be a nested collection
+            if (typeof(IEnumerable).IsAssignableFrom(itemType) && itemType != typeof(string)) return false;
+
+            // --- It is a Table ---
+            IsTable = true;
+            TableHeaders.Clear();
+            TableRows.Clear();
+
+            // 5. Build Headers
+            try
+            {
+                // Create dummy to read structure via ObjectReader (preferred)
+                var dummy = Activator.CreateInstance(itemType);
+                if (dummy != null)
+                {
+                    var prototypes = ObjectReader.GetInputs(dummy);
+                    foreach (var p in prototypes)
+                    {
+                        TableHeaders.Add(p.Symbol);
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback: Manual Reflection using the correct Attribute check
+                var props = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Select(p => p.GetCustomAttribute<CalcValueTypeAttribute>())
+                    .Where(attr => attr != null && attr.Type == CalcValueType.Input)
+                    .ToList();
+
+                foreach (var attr in props) TableHeaders.Add(attr.Symbol);
+            }
+
+            // 6. Build Rows
+            foreach (var item in list)
+            {
+                if (item == null) continue;
+
+                var rowVMs = new ObservableCollection<CalcValueViewModel>();
+                // Recursively read inputs for the row item
+                var inputs = ObjectReader.GetInputs(item);
+
+                foreach (var input in inputs)
+                {
+                    rowVMs.Add(new CalcValueViewModel(input, _onValueChanged, _onNavigateRequest));
+                }
+                TableRows.Add(rowVMs);
+            }
+
+            return true;
+        }
+
         // --- Commands ---
 
         public ICommand EditCommand => new RelayCommand(_ =>
         {
-            // FIX: Check the underlying value, not the wrapper
             if (RawValue is ICalculation calc)
             {
                 _onNavigateRequest?.Invoke(calc);
@@ -85,7 +170,6 @@ namespace Scaffold.Desktop
         public void Refresh()
         {
             OnPropertyChanged(nameof(Value));
-            //OnPropertyChanged(nameof(Unit));
             OnPropertyChanged(nameof(Symbol));
         }
     }

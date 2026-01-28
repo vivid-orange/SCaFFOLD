@@ -5,11 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
-using Scaffold;
 using Scaffold.Core;
-using Scaffold.Core.Geometry;
-
-using Scaffold.Desktop;
 using Scaffold.Geometry;
 using Scaffold.Reader;
 
@@ -25,7 +21,7 @@ namespace Scaffold.Desktop
         public ObservableCollection<CalcNodeViewModel> Outputs { get; } = [];
         public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
-        public string CurrentTitle => _currentCalculation?.CalculationTitle; // Updated to match ICalculationStatus property usually
+        public string CurrentTitle => _currentCalculation?.CalculationTitle;
         public ICommand NavigateUpCommand { get; }
 
         private InteractiveGeometryViewModel _geometryVm;
@@ -99,20 +95,23 @@ namespace Scaffold.Desktop
             Inputs.Clear();
             Outputs.Clear();
             CalculationDetails.Clear();
-            // Geometry = ... (Reset geometry logic)
+
+            Geometry = null;
 
             if (_currentCalculation == null) return;
 
-            // 1. Inputs - Recursive Build
+            // 1. Inputs
             var rawInputs = CalculationReader.GetInputs(_currentCalculation);
             BuildTreeNodes(Inputs, rawInputs, isInput: true);
 
-            // 2. Outputs - Recursive Build
+            // 2. Outputs
             var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
             BuildTreeNodes(Outputs, rawOutputs, isInput: false);
 
-            // 3. Details & Geometry
+            // 3. Details
             RebuildCalculationDetails();
+
+            // 4. Interactive Geometry
             if (_currentCalculation is IInteractiveGeometry interactiveCalc)
             {
                 Geometry = new InteractiveGeometryViewModel(interactiveCalc, OnCalculationUpdate);
@@ -130,17 +129,15 @@ namespace Scaffold.Desktop
 
         private void AddRecursive(ObservableCollection<CalcNodeViewModel> nodes, ICalcValue model, bool isInput)
         {
-            // Create the VM for this value
-            // We pass the NavigateTo method here so the child can request navigation
             var vm = new CalcValueViewModel(model, OnCalculationUpdate, (calc) => NavigateTo(calc));
 
-            // 1. Find Insertion Point (Handle Headings)
+            // Headings Logic
             ObservableCollection<CalcNodeViewModel> currentLevel = nodes;
             if (model.Headings != null)
             {
                 foreach (var heading in model.Headings)
                 {
-                    var group = nodes.FirstOrDefault(n => n.Name == heading && n.IsGroup);
+                    var group = currentLevel.FirstOrDefault(n => n.Name == heading && n.IsGroup);
                     if (group != null)
                     {
                         currentLevel = group.Children;
@@ -154,20 +151,20 @@ namespace Scaffold.Desktop
                 }
             }
 
-            // 2. Create the Node for this Data Item
             var itemNode = new CalcNodeViewModel(vm);
             currentLevel.Add(itemNode);
 
-            // 3. RECURSION LOGIC
+            // --- STOP RECURSION CHECKS ---
 
-            // Case A: It is a nested Calculation -> STOP recursion. 
-            // The UI will show the "..." button (via IsComplex=true), but no children in the tree.
-            if (model.IsICalculation)
-            {
-                return;
-            }
+            // 1. If it's a Calculation, stop (displayed as link)
+            if (model.IsICalculation) return;
 
-            // Case B: It is a Complex Value (Structure/Class) -> Continue recursion
+            // 2. If it's a Table (Single List of Complex Objects), configure and stop
+            // The ViewModel will populate TableHeaders/TableRows, and the View will switch template.
+            if (isInput && vm.TryConfigureAsTable()) return;
+
+            // --- CONTINUE RECURSION ---
+
             if (model.IsComplexValue)
             {
                 var children = isInput ? model.GetChildInputs() : model.GetChildOutputs();
@@ -176,10 +173,8 @@ namespace Scaffold.Desktop
                     AddRecursive(itemNode.Children, child, isInput);
                 }
             }
-            // Case C: It is a Collection -> Continue recursion
             else if (model.IsCollection)
             {
-                // Access via RawValue helper
                 if (vm.RawValue is IList list)
                 {
                     for (int i = 0; i < list.Count; i++)
@@ -193,8 +188,6 @@ namespace Scaffold.Desktop
                 }
             }
         }
-
-        // --- Helpers for Dynamic Collection Item Wrapping ---
 
         private ICalcValue CreateCollectionItemWrapper(IList collection, int index)
         {
@@ -215,7 +208,6 @@ namespace Scaffold.Desktop
             Action<T> setter = (val) => collection[index] = val;
             string name = $"[{index}]";
 
-            // This constructor automatically detects IsICalculation, IsComplexValue etc.
             return new DelegateCalcValue<T>(getter, setter, "", name, null);
         }
 

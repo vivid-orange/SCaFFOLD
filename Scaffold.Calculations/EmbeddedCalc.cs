@@ -14,7 +14,7 @@ namespace Scaffold.Calculations
 {
     public class EmbeddedCalc : ICalculation
     {
-        public string CalculationTitle { get; set; } = "";
+        public string CalculationTitle { get; set; } = "Column H/2";
 
         public string EntityLabel => "Embedded calc";
 
