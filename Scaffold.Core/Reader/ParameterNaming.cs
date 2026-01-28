@@ -5,6 +5,27 @@ namespace Scaffold.Reader
 {
     public static class ParameterNaming
     {
+        public static string SplitPascalCaseToString(string input, bool lowercaseRest = false)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return string.Empty;
+            }
+
+            MatchCollection matches = Regex.Matches(input, @"([A-Z]+(?=[A-Z][a-z])|[A-Z][a-z]+|[0-9]+|[A-Z]+)");
+            string[] words = matches.Cast<Match>().Select(m => m.Value).ToArray();
+            if (lowercaseRest && words.Length > 1)
+            {
+                // Keep first word as is, lowercase the rest
+                for (int i = 1; i < words.Length; i++)
+                {
+                    words[i] = words[i].ToLower();
+                }
+            }
+
+            return string.Join(" ", words);
+        }
+
         // Dictionary contains the "Ideal" acronym. 
         // Logic handles transforming the casing to match the input.
         private static readonly Dictionary<string, string> _wordBank = new(StringComparer.OrdinalIgnoreCase)
@@ -16,7 +37,7 @@ namespace Scaffold.Reader
         private static readonly char[] _hardConsonants = { 'k', 't', 'd', 'p', 'b', 'g', 'x', 'z' };
         private static readonly char[] _softConsonants = { 'n', 's', 'l', 'r', 'm', 'f', 'v', 'h', 'c' };
 
-        public static string CreateTla(string input)
+        public static string CreateThreeLetterAcronym(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -78,7 +99,7 @@ namespace Scaffold.Reader
 
         private static string GenerateSkeleton(string input)
         {
-            var sb = new StringBuilder().Append(input[0]);
+            StringBuilder sb = new StringBuilder().Append(input[0]);
             string remainder = input.Substring(1).Replace("ck", "k", StringComparison.OrdinalIgnoreCase);
 
             foreach (char c in remainder)
