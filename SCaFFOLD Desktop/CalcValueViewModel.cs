@@ -1,10 +1,10 @@
-﻿using Scaffold.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Scaffold.Core;
 
 namespace SCaFFOLD_Desktop
 {
@@ -145,8 +145,8 @@ namespace SCaFFOLD_Desktop
             return new List<ICalcValue>();
         }
 
-        public IEnumerable<string> SelectionOptions => (IEnumerable<string>)[]; 
-            // (_model as DelegateCalcValue<CalcSelectionList>)?.Value.Selections ?? (IEnumerable<string>)[];
+        public IEnumerable<string> SelectionOptions => (IEnumerable<string>)[];
+        // (_model as DelegateCalcValue<CalcSelectionList>)?.Value.Selections ?? (IEnumerable<string>)[];
 
         public int SelectedIndex
         {

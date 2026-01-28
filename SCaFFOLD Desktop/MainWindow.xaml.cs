@@ -1,6 +1,4 @@
-﻿using Scaffold.Calculations;
-using Scaffold.Core;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Scaffold.Calculations;
+using Scaffold.Calculations;
+using Scaffold.Core;
 
 namespace SCaFFOLD_Desktop
 {

@@ -1,8 +1,8 @@
-﻿using Scaffold.Core;
-using SCaFFOLD_Desktop;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
+using Scaffold.Core;
+using SCaFFOLD_Desktop;
 
 namespace SCaFFOLD_Desktop
 {

@@ -19,7 +19,7 @@ namespace Scaffold.Calculations
     public class TestCalc2 : ICalculation, IInteractiveGeometry
     {
 
-        public string EntityLabel{ get; } = "Test calc";
+        public string EntityLabel { get; } = "Test calc";
         public string CalculationTitle { get; set; } = "This is my test calc";
 
 
@@ -29,17 +29,17 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "M", "Moment")]
         public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
 
-        [CalcValueType(CalcValueType.Input, "L_1", "Length 1", [ "Geometry", "Length" ])]
+        [CalcValueType(CalcValueType.Input, "L_1", "Length 1", ["Geometry", "Length"])]
         public Length Length { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "C_x", "Centre X", [ "Geometry", "Centre" ])]
+        [CalcValueType(CalcValueType.Input, "C_x", "Centre X", ["Geometry", "Centre"])]
         public Length Offset1 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", [ "Geometry", "Centre"])]
+        [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
-        [CalcValueType(CalcValueType.Input, "L_2", "Length 2", [ "Geometry", "Length" ])]
+        [CalcValueType(CalcValueType.Input, "L_2", "Length 2", ["Geometry", "Length"])]
         public Length Length2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
@@ -48,7 +48,7 @@ namespace Scaffold.Calculations
 
 
         [CalcValueType(CalcValueType.Output, "F_req", "Force required")]
-        public Force ForceRequired{ get; private set; } = new Force(0, ForceUnit.Kilonewton);
+        public Force ForceRequired { get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
         [CalcValueType(CalcValueType.Input, "C", "Complex Input type")]
         public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
@@ -114,10 +114,10 @@ namespace Scaffold.Calculations
             ForceRequired = (Moment / Length).ToUnit(ForceUnit.Kilonewton);
 
             var lines = new List<Line>();
-            var topLeft = (Offset1.Value - Length.Value / 2, Offset2.Value + Length2.Value/2 );
-            var topRight = ( Offset1.Value + Length.Value / 2, Offset2.Value + Length2.Value/2 );
-            var bottomRight = (Offset1.Value + Length.Value / 2, Offset2.Value - Length2.Value / 2 );
-            var bottomLeft = (Offset1.Value - Length.Value / 2, Offset2.Value - Length2.Value / 2 );
+            var topLeft = (Offset1.Value - Length.Value / 2, Offset2.Value + Length2.Value / 2);
+            var topRight = (Offset1.Value + Length.Value / 2, Offset2.Value + Length2.Value / 2);
+            var bottomRight = (Offset1.Value + Length.Value / 2, Offset2.Value - Length2.Value / 2);
+            var bottomLeft = (Offset1.Value - Length.Value / 2, Offset2.Value - Length2.Value / 2);
             lines.AddRange(CreateContinuousPath(new List<(double x, double y)> { topLeft, topRight, bottomRight, bottomLeft, topLeft }));
 
             _geometryBases.Clear();
