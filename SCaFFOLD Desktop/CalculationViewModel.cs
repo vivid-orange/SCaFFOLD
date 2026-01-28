@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,7 +20,6 @@ namespace SCaFFOLD_Desktop
         // CHANGED: Now collections of Nodes (Tree Roots)
         public ObservableCollection<CalcNodeViewModel> Inputs { get; } = [];
         public ObservableCollection<CalcNodeViewModel> Outputs { get; } = [];
-
         public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
         public string CurrentTitle => _currentCalculation?.CalculationTitle;
@@ -96,59 +96,106 @@ namespace SCaFFOLD_Desktop
             Inputs.Clear();
             Outputs.Clear();
             CalculationDetails.Clear();
-            Geometry = null;
+            // Geometry = ... (Reset geometry logic)
 
             if (_currentCalculation == null) return;
 
-            // 1. Inputs - Build Tree
+            // 1. Inputs - Recursive Build
             var rawInputs = CalculationReader.GetInputs(_currentCalculation);
-            var inputVMs = rawInputs.Select(i => new CalcValueViewModel(i, OnCalculationUpdate)).ToList();
-            BuildTree(Inputs, inputVMs);
+            BuildTreeNodes(Inputs, rawInputs, isInput: true);
 
-            // 2. Outputs - Build Tree
+            // 2. Outputs - Recursive Build
             var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
-            var outputVMs = rawOutputs.Select(o => new CalcValueViewModel(o, null)).ToList();
-            BuildTree(Outputs, outputVMs);
+            BuildTreeNodes(Outputs, rawOutputs, isInput: false);
 
-            // 3. Details
+            // 3. Details & Geometry
             RebuildCalculationDetails();
-
-            // 4. Geometry
             if (_currentCalculation is IInteractiveGeometry interactiveCalc)
             {
                 Geometry = new InteractiveGeometryViewModel(interactiveCalc, OnCalculationUpdate);
             }
         }
 
-        // NEW: Tree Building Logic
-        private void BuildTree(ObservableCollection<CalcNodeViewModel> roots, List<CalcValueViewModel> items)
+        private void BuildTreeNodes(ObservableCollection<CalcNodeViewModel> collection, List<ICalcValue> values, bool isInput)
         {
-            roots.Clear();
-
-            foreach (var item in items)
+            collection.Clear();
+            foreach (var item in values)
             {
-                // Access Headings from the Model (via ICalcValue interface update)
-                var headings = item.Model.Headings;
+                AddRecursive(collection, item, isInput);
+            }
+        }
 
-                ObservableCollection<CalcNodeViewModel> currentLevel = roots;
+        private void AddRecursive(ObservableCollection<CalcNodeViewModel> nodes, ICalcValue model, bool isInput)
+        {
+            // Create the VM for this value
+            var vm = new CalcValueViewModel(model, OnCalculationUpdate);
 
-                // Traverse/Create Groups
-                if (headings != null)
+            // 1. Find Insertion Point (Handle Headings)
+            ObservableCollection<CalcNodeViewModel> currentLevel = nodes;
+            if (model.Headings != null)
+            {
+                foreach (var heading in model.Headings)
                 {
-                    foreach (var heading in headings)
+                    var group = nodes.FirstOrDefault(n => n.Name == heading && n.IsGroup);
+
+                    // If searching inside a previous group, look in its children
+                    if (group != null)
                     {
-                        var groupNode = currentLevel.FirstOrDefault(n => n.Name == heading && !n.IsLeaf);
-                        if (groupNode == null)
-                        {
-                            groupNode = new CalcNodeViewModel(heading);
-                            currentLevel.Add(groupNode);
-                        }
-                        currentLevel = groupNode.Children;
+                        // Found existing group at this level
+                        currentLevel = group.Children;
+                    }
+                    else
+                    {
+                        // Create new group
+                        var newGroup = new CalcNodeViewModel(heading);
+                        currentLevel.Add(newGroup);
+                        currentLevel = newGroup.Children;
                     }
                 }
+            }
 
-                // Add Leaf
-                currentLevel.Add(new CalcNodeViewModel(item));
+            // 2. Create the Node for this Data Item
+            var itemNode = new CalcNodeViewModel(vm);
+            currentLevel.Add(itemNode);
+
+            // 3. RECURSION: Check if this item has children (Complex or Calculation)
+            if (vm.IsComplex)
+            {
+                // Drill down: Get children using the new ICalcValue methods
+                var children = isInput ? model.GetChildInputs() : model.GetChildOutputs();
+
+                foreach (var child in children)
+                {
+                    AddRecursive(itemNode.Children, child, isInput);
+                }
+            }
+            // 4. RECURSION: Handle Collections
+            else if (vm.IsCollection)
+            {
+                // Iterate the collection items
+                // Note: CalcValueViewModel.RawValue needs to act as the bridge here
+                if (vm.RawValue is IEnumerable collection)
+                {
+                    int index = 0;
+                    foreach (var obj in collection)
+                    {
+                        if (obj == null) continue;
+
+                        // Create a "Folder" node for the item (e.g. "[0] Beam")
+                        string label = $"[{index}] {obj.GetType().Name}";
+                        var arrayNode = new CalcNodeViewModel(label);
+                        itemNode.Children.Add(arrayNode);
+
+                        // Scan the item for inputs/outputs
+                        var itemProps = isInput ? ObjectReader.GetInputs(obj) : ObjectReader.GetOutputs(obj);
+
+                        foreach (var prop in itemProps)
+                        {
+                            AddRecursive(arrayNode.Children, prop, isInput);
+                        }
+                        index++;
+                    }
+                }
             }
         }
 
@@ -156,33 +203,24 @@ namespace SCaFFOLD_Desktop
         {
             _currentCalculation.Calculate();
 
-            // Refresh Inputs (Leaf Nodes only)
-            RefreshLeaves(Inputs);
+            // Refresh Values (Recursive)
+            RefreshNodes(Inputs);
 
-            // Refresh Outputs (Rebuild Tree as values/structure might change)
-            // Ideally we just refresh values, but if structure is dynamic, we rebuild.
+            // Rebuild Outputs (Structure might change)
             Outputs.Clear();
             var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
-            var outputVMs = rawOutputs.Select(o => new CalcValueViewModel(o, null)).ToList();
-            BuildTree(Outputs, outputVMs);
+            BuildTreeNodes(Outputs, rawOutputs, isInput: false);
 
             RebuildCalculationDetails();
             Geometry?.Refresh();
         }
 
-        // Recursive helper to refresh leaf values
-        private void RefreshLeaves(ObservableCollection<CalcNodeViewModel> nodes)
+        private void RefreshNodes(ObservableCollection<CalcNodeViewModel> nodes)
         {
             foreach (var node in nodes)
             {
-                if (node.IsLeaf)
-                {
-                    node.Value.Refresh();
-                }
-                else
-                {
-                    RefreshLeaves(node.Children);
-                }
+                if (node.IsData) node.Value.Refresh();
+                if (node.Children.Count > 0) RefreshNodes(node.Children);
             }
         }
 

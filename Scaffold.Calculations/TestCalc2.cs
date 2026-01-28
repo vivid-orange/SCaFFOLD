@@ -50,6 +50,15 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Output, "F_req", "Force required")]
         public Force ForceRequired{ get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
+        [CalcValueType(CalcValueType.Input, "C", "Complex Input type")]
+        public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
+
+        //[CalcValueType(CalcValueType.Input, "L", "List of lengths")]
+        //public List<Length> lengths { get; set; } = new List<Length> { new Length(100, LengthUnit.Millimeter), new Length(200, LengthUnit.Millimeter) };
+        [CalcValueType(CalcValueType.Input, "L", "List of things")]
+        public List<MyDataHolder> Things { get; set; } = new List<MyDataHolder> { new MyDataHolder(), new MyDataHolder() };
+
+
         public CalcStatus Status => CalcStatus.None;
 
         List<IInteractiveGeometryItem> geometry = new List<IInteractiveGeometryItem>();
@@ -159,5 +168,13 @@ namespace Scaffold.Calculations
 
             return lines;
         }
+    }
+
+    public class MyDataHolder
+    {
+        [CalcValueType(CalcValueType.Input, "P1", "Prop 1")]
+        public Length FirstLength { get; set; } = new Length(10, LengthUnit.Meter);
+        [CalcValueType(CalcValueType.Input, "P2", "Prop Two")]
+        public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
     }
 }

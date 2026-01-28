@@ -1,22 +1,28 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 
 namespace Scaffold.Core
 {
-    /// <summary>
-    /// A generic wrapper that delegates property access to compiled functions.
-    /// </summary>
     public class DelegateCalcValue<T> : ICalcValue
     {
         private readonly Func<T> _getter;
         private readonly Action<T> _setter;
+
         public string Symbol { get; }
         public string EntityLabel { get; }
         public List<string> Headings { get; }
 
         public CalcStatus Status { get; set; } = CalcStatus.None;
+
+        // --- New Flags ---
+        public bool IsICalculation { get; }
+        public bool IsCollection { get; }
+        public bool IsComplexValue { get; }
 
         public DelegateCalcValue(
             Func<T> getter,
@@ -30,17 +36,70 @@ namespace Scaffold.Core
             Symbol = symbol;
             EntityLabel = displayName ?? typeof(T).Name;
             Headings = headings != null ? new List<string>(headings) : new List<string>();
+
+            // 1. Check for ICalculation
+            IsICalculation = typeof(ICalculation).IsAssignableFrom(typeof(T));
+
+            // 2. Check for ICollection (excluding strings)
+            IsCollection = typeof(ICollection).IsAssignableFrom(typeof(T)) && typeof(T) != typeof(string);
+
+            // 3. Check for Complex Value
+            // True if the type T has any public properties tagged with [InputCalcValue] or [OutputCalcValue]
+            // We cache this check per type T to avoid reflecting every constructor call
+            IsComplexValue = CheckIfComplex(typeof(T));
         }
+
+        private static bool CheckIfComplex(Type type)
+        {
+            // Simple string/value types are not complex in this context
+            if (type == typeof(string) || type.IsValueType)
+            {
+                // Edge case: Structs with attributes are complex
+                if (type.IsPrimitive) return false;
+            }
+
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                       .Any(p => Attribute.IsDefined(p, typeof(CalcValueTypeAttribute)));
+        }
+
+        // --- Object Reader Integration ---
+
+        /// <summary>
+        /// Retrieves child input values if this is a Complex Value or ICalculation.
+        /// </summary>
+        public List<ICalcValue> GetChildInputs()
+        {
+            object val = Value;
+            if (val == null) return new List<ICalcValue>();
+
+            // Use the ObjectReader to scan the current value instance
+            return ObjectReader.GetInputs(val);
+        }
+
+        /// <summary>
+        /// Retrieves child output values if this is a Complex Value or ICalculation.
+        /// </summary>
+        public List<ICalcValue> GetChildOutputs()
+        {
+            object val = Value;
+            if (val == null) return new List<ICalcValue>();
+
+            return ObjectReader.GetOutputs(val);
+        }
+
+        // --- Existing Implementation ---
 
         public string ValueAsString()
         {
             var val = _getter();
 
-            // Handle specific formatting for arrays if needed, or default toString
             if (val is List<double[]> list)
             {
-                // Simple formatter for the list type mentioned in context
                 return $"List<double[]> ({list.Count} items)";
+            }
+            if (IsCollection && val is ICollection collection)
+            {
+                return $"{typeof(T).Name} ({collection.Count} items)";
             }
 
             return val?.ToString() ?? string.Empty;
@@ -50,7 +109,6 @@ namespace Scaffold.Core
         {
             if (_setter == null) return false;
 
-            // WE NEED TO FIND A MORE GENERIC WAY TO HANDLE CONVERSION FROM STRING / DOUBLE ETC TO UNDERLYING TYPE
             if (Value is IQuantity)
             {
                 try
@@ -66,7 +124,6 @@ namespace Scaffold.Core
                     Value = (T)UnitsNet.Quantity.From(val, ((IQuantity)Value).Unit);
                     return true;
                 }
-
                 return false;
             }
 
