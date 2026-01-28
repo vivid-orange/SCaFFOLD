@@ -43,8 +43,8 @@ public class CreepCalculation : ICalculation
     [OutputCalcValue(@"\varphi_0", "Creep coefficient")]
     public double CreepCoefficient { get; private set; }
 
-    public List<IContentItem> Expressions = new List<IContentItem>();
-    public IList<IContentItem> GetFormulae() => Expressions;
+    public List<IOutputItem> Expressions = new List<IOutputItem>();
+    public IList<IOutputItem> GetFormulae() => Expressions;
 
     public CreepCalculation()
     {
@@ -53,7 +53,7 @@ public class CreepCalculation : ICalculation
 
     public void Calculate()
     {
-        Expressions = new List<IContentItem>();
+        Expressions = new List<IOutputItem>();
         Pressure fcm = Concrete.fcm;
         IProfile profile = new Rectangle(Width, Length);
         var sectionProperties = new SectionProperties(profile);

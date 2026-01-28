@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
+using Scaffold.Core;
 
 internal static class InternalExtensionMethods
 {

@@ -1,0 +1,420 @@
+﻿<Window x:Class="SCaFFOLD_Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SCaFFOLD_Desktop"
+        xmlns:math="clr-namespace:WpfMath.Controls;assembly=WpfMath"
+        mc:Ignorable="d"
+        Title="SCaFFOLD Desktop" Height="800" Width="1500">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+        <DataTemplate x:Key="ArrayCellTemplate">
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" 
+                     Width="60" Margin="2" Padding="2"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="InputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
+
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" IsReadOnly="{Binding IsComplex}">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStandard}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsComplex}" Value="True">
+                                            <Setter Property="Background" Value="#F5F5F5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <ComboBox ItemsSource="{Binding SelectionOptions}" SelectedIndex="{Binding SelectedIndex}" Visibility="{Binding IsSelectionList, Converter={StaticResource BoolToVis}}"/>
+                    </Grid>
+
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="Gray" FontSize="11"/>
+
+                    <Button Grid.Column="4" Content="..." Command="{Binding EditCommand}" Width="25" Visibility="{Binding IsComplex, Converter={StaticResource BoolToVis}}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="OutputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5" Background="#FAFAFA">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="60" />
+                    </Grid.ColumnDefinitions>
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Value}" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Foreground="Gray" FontSize="11"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <HierarchicalDataTemplate x:Key="TreeInputTemplate" DataType="{x:Type local:CalcNodeViewModel}" ItemsSource="{Binding Children}">
+            <ContentControl Content="{Binding}">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,5,0,2" Foreground="#005599"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsData}" Value="True">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <ContentControl Content="{Binding Value}" ContentTemplate="{StaticResource InputItemTemplate}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </HierarchicalDataTemplate>
+
+        <HierarchicalDataTemplate x:Key="TreeOutputTemplate" DataType="{x:Type local:CalcNodeViewModel}" ItemsSource="{Binding Children}">
+            <ContentControl Content="{Binding}">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,5,0,2" Foreground="#005599"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsData}" Value="True">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <ContentControl Content="{Binding Value}" ContentTemplate="{StaticResource OutputItemTemplate}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </HierarchicalDataTemplate>
+
+        <DataTemplate x:Key="DetailItemTemplate" DataType="{x:Type local:OutputItemViewModel}">
+            <Border BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Padding="5,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--<TextBlock Grid.Column="0" Text="{Binding Ref}" 
+                               FontWeight="Bold" Foreground="Gray" VerticalAlignment="Top"/>-->
+
+                    <StackPanel Grid.Column="1" Margin="10,0">
+
+                        <ItemsControl ItemsSource="{Binding Rows}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <ItemsControl ItemsSource="{Binding Items}" Margin="0,0,0,5">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,0,5,2" VerticalAlignment="Center">
+
+                                                    <math:FormulaControl Formula="{Binding Content}" 
+                                                                         Scale="20" 
+                                                                         Visibility="{Binding IsLatex, Converter={StaticResource BoolToVis}}"/>
+
+                                                    <TextBlock Text="{Binding Content}" 
+                                                               Foreground="#333"
+                                                               Visibility="{Binding IsText, Converter={StaticResource BoolToVis}}"/>
+
+                                                    <Image Source="{Binding Image}" 
+                                                           MaxHeight="300" 
+                                                           Stretch="Uniform"
+                                                           Visibility="{Binding IsImage, Converter={StaticResource BoolToVis}}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="{Binding Conclusion}" 
+                               FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Breadcrumbs}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="{Binding TypeName}" Command="{Binding DataContext.NavigateUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" Cursor="Hand"/>
+                        <TextBlock Text=" > " Margin="5,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Separator Grid.Row="1" Margin="0,10"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" MinWidth="450" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="3*" MinWidth="200" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Inputs" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
+                        <TreeView ItemsSource="{Binding Inputs}" 
+                                  ItemTemplate="{StaticResource TreeInputTemplate}" 
+                                  BorderThickness="0">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                    </Border>
+                </Grid>
+
+                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" Background="#DDDDDD" ShowsPreview="True"/>
+
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Outputs" FontSize="16" FontWeight="Bold" Margin="0,5,0,5"/>
+                    <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
+                        <TreeView ItemsSource="{Binding Outputs}" 
+                                  ItemTemplate="{StaticResource TreeOutputTemplate}" 
+                                  BorderThickness="0">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" 
+                  Width="5" 
+                  HorizontalAlignment="Center" 
+                  VerticalAlignment="Stretch" 
+                  ResizeDirection="Columns" 
+                  Background="#DDDDDD" 
+                  ShowsPreview="True"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="100"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*" MinHeight="100"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Detailed Output" 
+                               FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                    <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding CalculationDetails}" 
+                                          ItemTemplate="{StaticResource DetailItemTemplate}"/>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+
+                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" Background="#DDDDDD" ShowsPreview="True"/>
+
+                <Grid Grid.Row="2" Visibility="{Binding HasGeometry, Converter={StaticResource BoolToVis}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Interactive Geometry" FontSize="16" FontWeight="Bold" Margin="0,5,0,5"/>
+
+                    <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Background="White" ClipToBounds="True">
+                        <Viewbox Stretch="Uniform">
+                            <Canvas Width="1000" Height="1000" Background="Transparent">
+
+                                <!--<ItemsControl ItemsSource="{Binding Geometry.Lines}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Line X1="{Binding X1}" Y1="{Binding Y1}" 
+                                                  X2="{Binding X2}" Y2="{Binding Y2}" 
+                                                  Stroke="#333333" StrokeThickness="2"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>-->
+
+                                <ItemsControl ItemsSource="{Binding Geometry.StaticGeometry}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.Resources>
+                                        <DataTemplate DataType="{x:Type local:GeometryLineViewModel}">
+                                            <Line X1="{Binding X1}" Y1="{Binding Y1}" 
+                                                  X2="{Binding X2}" Y2="{Binding Y2}" 
+                                                  Stroke="#333333" StrokeThickness="2"/>
+                                        </DataTemplate>
+
+                                        <DataTemplate DataType="{x:Type local:GeometryArcViewModel}">
+                                            <Path Stroke="#333333" StrokeThickness="2">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathFigure StartPoint="{Binding StartPoint}">
+                                                            <ArcSegment Point="{Binding EndPoint}" 
+                                                                        Size="{Binding Size}" 
+                                                                        RotationAngle="{Binding RotationAngle}"
+                                                                        IsLargeArc="{Binding IsLargeArc}"
+                                                                        SweepDirection="{Binding SweepDirection}"/>
+                                                        </PathFigure>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                        </DataTemplate>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>
+
+                                <ItemsControl ItemsSource="{Binding Geometry.Points}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Thumb DragDelta="Thumb_DragDelta" Cursor="SizeAll">
+
+                                                <Thumb.ToolTip>
+                                                    <ToolTip>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <math:FormulaControl Formula="{Binding Symbol}" Scale="20" VerticalAlignment="Center"/>
+                                                            <TextBlock Text=": " VerticalAlignment="Center" Margin="2,0"/>
+                                                            <TextBlock Text="{Binding Summary}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </ToolTip>
+                                                </Thumb.ToolTip>
+
+                                                <Thumb.Template>
+                                                    <ControlTemplate>
+                                                        <Grid>
+                                                            <Ellipse Width="100" Height="100" Fill="Transparent" RenderTransformOrigin="0.5,0.5">
+                                                                <Ellipse.RenderTransform>
+                                                                    <TranslateTransform X="0" Y="0"/>
+                                                                </Ellipse.RenderTransform>
+                                                            </Ellipse>
+                                                            <Ellipse Width="50" Height="50" Fill="#D9534F" Stroke="#A94442" StrokeThickness="1" RenderTransformOrigin="0.5,0.5">
+                                                                <Ellipse.RenderTransform>
+                                                                    <TranslateTransform X="-50" Y="-50"/>
+                                                                </Ellipse.RenderTransform>
+                                                            </Ellipse>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </Canvas>
+                        </Viewbox>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

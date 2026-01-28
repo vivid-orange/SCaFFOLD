@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.WebSockets;
 using System.Numerics;
 using Scaffold.Core.Geometry.Abstract;
 using Scaffold.Core.Geometry.Enums;
@@ -6,7 +7,7 @@ using Scaffold.Core.Geometry.Enums;
 namespace Scaffold.Core.Geometry;
 
 [ExcludeFromCodeCoverage] // because we will be using Kris' libs for this from v1.
-public class PolyLine
+public class PolyLine : GeometryBase
 {
     List<GeometryBase> _segments;
     public List<GeometryBase> Segments
@@ -18,23 +19,31 @@ public class PolyLine
     }
 
 
-    public Vector2 Start
+    public override Vector2 Start
     {
         get
         {
             return _segments.First().Start;
         }
+        set
+        {
+            _segments.First().Start = value;
+        }
     }
 
-    public Vector2 End
+    public override Vector2 End
     {
         get
         {
             return _segments.Last().End;
         }
+        set
+        {
+            _segments.Last().End = value;
+        }
     }
 
-    public double Length
+    public override double Length
     {
         get
         {
@@ -77,7 +86,7 @@ public class PolyLine
         _segments = segments;
     }
 
-    public List<IntersectionResult> intersection(Line line) // need to add full support for NONE and PROJECTED 
+    public override List<IntersectionResult> intersection(Line line) // need to add full support for NONE and PROJECTED 
     {
         double totalLength = Length;
         double lengthToSegment = 0;
@@ -126,7 +135,7 @@ public class PolyLine
         return returnString;
     }
 
-    public Vector2 PointAtParameter(double parameter)
+    public override Vector2 PointAtParameter(double parameter)
     {
         double totalLength = Length;
         double lengthToSegmentStart = 0;
@@ -149,7 +158,7 @@ public class PolyLine
         return _segments.Last().PointAtParameter(1);
     }
 
-    public Vector2 PerpAtParameter(double parameter)
+    public override Vector2 PerpAtParameter(double parameter)
     {
         double totalLength = Length;
         double lengthToSegmentStart = 0;
@@ -261,5 +270,15 @@ public class PolyLine
             }
         }
         return new PolyLine(segments);
+    }
+
+    public override List<GeometryBase> Cut(double parameter)
+    {
+        var returnList = new List<GeometryBase>();
+
+        returnList.Add(Cut(0, parameter));
+        returnList.Add(Cut(parameter, 0));
+
+        return returnList;
     }
 }

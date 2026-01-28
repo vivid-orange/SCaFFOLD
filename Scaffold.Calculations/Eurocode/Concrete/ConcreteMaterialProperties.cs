@@ -89,9 +89,9 @@ namespace Scaffold.Calculations.Eurocode.Concrete
         }
 
 
-        public IList<IContentItem> GetFormulae()
+        public IList<IOutputItem> GetFormulae()
         {
-            return new List<IContentItem>();
+            return new List<IOutputItem>();
         }
 
         public void Calculate() { }

@@ -7,7 +7,7 @@ public interface ICalculation : ICalculationStatus
     /// </summary>
     public string CalculationTitle { get; set; }
 
-    public IList<IContentItem> GetFormulae();
+    public IList<IOutputItem> GetFormulae();
 
     public void Calculate();
 }

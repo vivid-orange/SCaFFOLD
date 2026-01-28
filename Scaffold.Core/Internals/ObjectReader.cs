@@ -5,75 +5,76 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Scaffold.Core.Services
+namespace Scaffold.Core
 {
-    public static class CalculationReader
+    public static class ObjectReader
     {
         // 1. Type-Level Cache: Stores the structural definition (Reflection/Expressions)
-        // Calculated once per Class Type.
-        private static readonly ConcurrentDictionary<Type, CalculationDefinition> _typeCache
-            = new ConcurrentDictionary<Type, CalculationDefinition>();
+        private static readonly ConcurrentDictionary<Type, ObjectDefinition> _typeCache
+            = new ConcurrentDictionary<Type, ObjectDefinition>();
 
         // 2. Instance-Level Cache: Stores the actual wrapper lists for specific instances.
-        // ConditionalWeakTable ensures we don't cause memory leaks; if the ICalculation 
-        // is garbage collected, these cached lists go with it.
-        private static readonly ConditionalWeakTable<ICalculation, InstanceCache> _instanceCache
-            = new ConditionalWeakTable<ICalculation, InstanceCache>();
+        // ConditionalWeakTable ensures we don't cause memory leaks.
+        private static readonly ConditionalWeakTable<object, InstanceCache> _instanceCache
+            = new ConditionalWeakTable<object, InstanceCache>();
 
-        public static List<ICalcValue> GetInputs(ICalculation calculation)
+        /// <summary>
+        /// Reads properties decorated with [InputCalcValue] from the provided object instance.
+        /// </summary>
+        public static List<ICalcValue> GetInputs(object instance)
         {
-            if (calculation == null) return new List<ICalcValue>();
+            if (instance == null) return new List<ICalcValue>();
 
-            // Get or create the cache container for this specific instance
-            var instanceData = _instanceCache.GetOrCreateValue(calculation);
+            var instanceData = _instanceCache.GetOrCreateValue(instance);
 
-            // If we haven't created the Input wrappers for this instance yet, do so now
             if (instanceData.Inputs == null)
             {
-                var definition = GetDefinition(calculation.GetType());
-                instanceData.Inputs = definition.CreateInputs(calculation);
+                var definition = GetDefinition(instance.GetType());
+                instanceData.Inputs = definition.CreateInputs(instance);
             }
 
             return instanceData.Inputs;
         }
 
-        public static List<ICalcValue> GetOutputs(ICalculation calculation)
+        /// <summary>
+        /// Reads properties decorated with [OutputCalcValue] from the provided object instance.
+        /// </summary>
+        public static List<ICalcValue> GetOutputs(object instance)
         {
-            if (calculation == null) return new List<ICalcValue>();
+            if (instance == null) return new List<ICalcValue>();
 
-            var instanceData = _instanceCache.GetOrCreateValue(calculation);
+            var instanceData = _instanceCache.GetOrCreateValue(instance);
 
             if (instanceData.Outputs == null)
             {
-                var definition = GetDefinition(calculation.GetType());
-                instanceData.Outputs = definition.CreateOutputs(calculation);
+                var definition = GetDefinition(instance.GetType());
+                instanceData.Outputs = definition.CreateOutputs(instance);
             }
 
             return instanceData.Outputs;
         }
 
-        private static CalculationDefinition GetDefinition(Type type)
+        private static ObjectDefinition GetDefinition(Type type)
         {
-            return _typeCache.GetOrAdd(type, t => new CalculationDefinition(t));
+            return _typeCache.GetOrAdd(type, t => new ObjectDefinition(t));
         }
 
         // --- Internal Helper Classes ---
 
-        // Holds the cached lists for a specific ICalculation instance
         private class InstanceCache
         {
             public List<ICalcValue> Inputs { get; set; }
             public List<ICalcValue> Outputs { get; set; }
         }
 
-        // Holds the structural map for a Calculation Type (e.g., BeamCalc)
-        private class CalculationDefinition
+        private class ObjectDefinition
         {
             private readonly List<IPropertyAdapter> _inputAdapters = new List<IPropertyAdapter>();
             private readonly List<IPropertyAdapter> _outputAdapters = new List<IPropertyAdapter>();
 
-            public CalculationDefinition(Type type)
+            public ObjectDefinition(Type type)
             {
+                // Scan all public properties for attributes
                 foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
                     var attr = prop.GetCustomAttribute<CalcValueTypeAttribute>();
@@ -138,7 +139,6 @@ namespace Scaffold.Core.Services
             {
                 TModel model = (TModel)instance;
 
-                // Create closures around the specific instance
                 Func<TProp> boundGetter = () => _getter(model);
                 Action<TProp> boundSetter = _setter == null ? null : (v) => _setter(model, v);
 
