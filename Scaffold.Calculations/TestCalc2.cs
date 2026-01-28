@@ -38,6 +38,9 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
+        [CalcValueType(CalcValueType.Input, "E", "Column height")]
+        public EmbeddedCalc ReducedHeight { get; set; } = new EmbeddedCalc();
+
 
         [CalcValueType(CalcValueType.Input, "L_2", "Length 2", ["Geometry", "Length"])]
         public Length Length2 { get; set; } = new Length(5, LengthUnit.Millimeter);
@@ -56,8 +59,10 @@ namespace Scaffold.Calculations
         //[CalcValueType(CalcValueType.Input, "L", "List of lengths")]
         //public List<Length> lengths { get; set; } = new List<Length> { new Length(100, LengthUnit.Millimeter), new Length(200, LengthUnit.Millimeter) };
         [CalcValueType(CalcValueType.Input, "L", "List of things")]
-        public List<MyDataHolder> Things { get; set; } = new List<MyDataHolder> { new MyDataHolder(), new MyDataHolder() };
+        public List<MyDataHolder> Things { get; set; } = new List<MyDataHolder> { new MyDataHolder(10,20), new MyDataHolder(1,2) };
 
+        [CalcValueType(CalcValueType.Input, "LL2", "List of lists of more things")]
+        public List<List<MyDataHolder>> MoreThings { get; set; } = [[ new MyDataHolder(100, 200), new MyDataHolder(300, 400) ] , [new MyDataHolder(500,600)]];
 
         public CalcStatus Status => CalcStatus.None;
 
@@ -176,5 +181,15 @@ namespace Scaffold.Calculations
         public Length FirstLength { get; set; } = new Length(10, LengthUnit.Meter);
         [CalcValueType(CalcValueType.Input, "P2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
+
+        public MyDataHolder()
+        {
+        }
+
+        public MyDataHolder(double length, double forceyForce)
+        {
+            FirstLength = Length.From(length, LengthUnit.Meter);
+            ForceyForce = Force.From(forceyForce, ForceUnit.Kilonewton);
+        }
     }
 }
