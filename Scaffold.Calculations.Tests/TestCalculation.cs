@@ -17,9 +17,9 @@ namespace Scaffold.Calculations
         [OutputCalcValue(@"R", "Result")]
         public double Result { get; private set; } = 0;
 
-        public IList<IContentItem> GetFormulae()
+        public IList<IOutputItem> GetFormulae()
         {
-            return new List<IContentItem>();
+            return new List<IOutputItem>();
         }
 
         public void Calculate()
