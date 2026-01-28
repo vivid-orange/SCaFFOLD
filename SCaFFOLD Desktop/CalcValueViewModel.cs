@@ -96,8 +96,8 @@ namespace SCaFFOLD_Desktop
         {
             get
             {
-                if (_model is ICalcListOfDoubleArrays arrayModel)
-                    return FormatArrayOutput(arrayModel.Value);
+                //if (_model is ICalcListOfDoubleArrays arrayModel)
+                //    return FormatArrayOutput(arrayModel.Value);
                 return _model.ValueAsString();
             }
             set
@@ -116,24 +116,26 @@ namespace SCaFFOLD_Desktop
 
         public bool IsStandard => !IsSelectionList && !IsDoubleListArray;
         public bool IsComplex => _model is ICalculation && _onNavigateRequest != null;
-        public bool IsSelectionList => _model is DelegateCalcValue<CalcSelectionList>;
-        public bool IsDoubleListArray => _model is ICalcListOfDoubleArrays;
 
-        public IEnumerable<string> SelectionOptions =>
-            (_model as DelegateCalcValue<CalcSelectionList>)?.Value.Selections ?? (IEnumerable<string>)[];
+        // GENERALLY : NEED TO REMOVE ALL TRACES OF SELECTION LIST
+        public bool IsSelectionList => false; //_model is DelegateCalcValue<CalcSelectionList>;
+        public bool IsDoubleListArray => false; // _model is ICalcListOfDoubleArrays;
+
+        public IEnumerable<string> SelectionOptions => (IEnumerable<string>)[]; 
+            // (_model as DelegateCalcValue<CalcSelectionList>)?.Value.Selections ?? (IEnumerable<string>)[];
 
         public int SelectedIndex
         {
-            get => (_model as DelegateCalcValue<CalcSelectionList>)?.Value.SelectedItemIndex ?? -1;
+            get => -1; // (_model as DelegateCalcValue<CalcSelectionList>)?.Value.SelectedItemIndex ?? -1;
             set
             {
-                if (_model is ICalcSelectionList listModel && listModel.SelectedItemIndex != value)
-                {
-                    listModel.SelectedItemIndex = value;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Value));
-                    _onValueChanged?.Invoke();
-                }
+                //if (_model is ICalcSelectionList listModel && listModel.SelectedItemIndex != value)
+                //{
+                //    listModel.SelectedItemIndex = value;
+                //    OnPropertyChanged();
+                //    OnPropertyChanged(nameof(Value));
+                //    _onValueChanged?.Invoke();
+                //}
             }
         }
 
@@ -142,30 +144,30 @@ namespace SCaFFOLD_Desktop
 
         private void InitializeComplexTypes()
         {
-            if (IsDoubleListArray && _model is ICalcListOfDoubleArrays arrayModel)
-            {
-                RebuildTable();
-            }
+            //if (IsDoubleListArray && _model is ICalcListOfDoubleArrays arrayModel)
+            //{
+            //    RebuildTable();
+            //}
         }
 
         private void RebuildTable()
         {
-            TableRows.Clear();
-            var list = (_model as ICalcListOfDoubleArrays)?.Value;
-            if (list == null) return;
-            foreach (var row in list) TableRows.Add(new ArrayRowViewModel(row, _onValueChanged));
+            //TableRows.Clear();
+            //var list = (_model as ICalcListOfDoubleArrays)?.Value;
+            //if (list == null) return;
+            //foreach (var row in list) TableRows.Add(new ArrayRowViewModel(row, _onValueChanged));
         }
 
         private void AddTableRow()
         {
-            if (_model is ICalcListOfDoubleArrays arrayModel)
-            {
-                int colCount = (arrayModel.Value.Count > 0) ? arrayModel.Value[0].Length : 1;
-                var newRow = new double[colCount];
-                arrayModel.Value.Add(newRow);
-                TableRows.Add(new ArrayRowViewModel(newRow, _onValueChanged));
-                _onValueChanged?.Invoke();
-            }
+            //if (_model is ICalcListOfDoubleArrays arrayModel)
+            //{
+            //    int colCount = (arrayModel.Value.Count > 0) ? arrayModel.Value[0].Length : 1;
+            //    var newRow = new double[colCount];
+            //    arrayModel.Value.Add(newRow);
+            //    TableRows.Add(new ArrayRowViewModel(newRow, _onValueChanged));
+            //    _onValueChanged?.Invoke();
+            //}
         }
 
         private string FormatArrayOutput(List<double[]> list)

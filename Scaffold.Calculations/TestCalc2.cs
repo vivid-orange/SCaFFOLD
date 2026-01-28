@@ -26,9 +26,6 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "I", "Multiplier")]
         public double Multiplier { get; set; }
 
-        [CalcValueType(CalcValueType.Input, "S", "Selection list!")]
-        public CalcSelectionList Options { get; set; } = new CalcSelectionList(1, ["one", "two"]);
-
         [CalcValueType(CalcValueType.Input, "M", "Moment")]
         public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
 
