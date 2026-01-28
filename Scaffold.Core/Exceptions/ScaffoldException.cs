@@ -1,4 +1,6 @@
-﻿public class ScaffoldException : Exception
+﻿namespace Scaffold.Exceptions;
+
+public class ScaffoldException : Exception
 {
     /// <exception cref="ScaffoldException">
     ///     If anything else goes wrong, typically due to a bug or unhandled case.

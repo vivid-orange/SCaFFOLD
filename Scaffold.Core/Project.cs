@@ -1,12 +1,14 @@
-﻿using VividOrange.Standards.Eurocode;
+﻿using Scaffold.Settings;
+using Scaffold.Settings.Units;
+using VividOrange.Standards.Eurocode;
 
 namespace Scaffold;
 
 public static class Project
 {
-    public static NationalAnnex NationalAnnex => SettingsSingleton.Instance.ProjectSettings.NationalAnnex;
-    public static string ProjectName => SettingsSingleton.Instance.ProjectSettings.ProjectName;
-    public static string JobNumber => SettingsSingleton.Instance.ProjectSettings.ProjectNumber;
-    public static UnitSystem UnitSystem => SettingsSingleton.Instance.UnitSettings.UnitSystem;
-    public static int SignificantDigits => SettingsSingleton.Instance.UnitSettings.SignificantDigits;
+    public static NationalAnnex NationalAnnex => SettingsSingleton.Instance.Project.NationalAnnex;
+    public static string ProjectName => SettingsSingleton.Instance.Project.ProjectName;
+    public static string JobNumber => SettingsSingleton.Instance.Project.ProjectNumber;
+    public static ScaffoldUnits Units => SettingsSingleton.Instance.Units.Units;
+    public static int SignificantDigits => SettingsSingleton.Instance.Units.SignificantDigits;
 }

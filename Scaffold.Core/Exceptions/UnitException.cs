@@ -1,4 +1,6 @@
-﻿public class UnitException : ScaffoldException
+﻿namespace Scaffold.Exceptions;
+
+public class UnitException : ScaffoldException
 {
     public UnitException(string message) : base(message) { }
 

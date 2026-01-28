@@ -1,4 +1,4 @@
-﻿using Scaffold.Core;
+﻿using Scaffold.Report;
 using VividOrange.Materials.StandardMaterials.En;
 
 namespace Scaffold.Calculations.Eurocode.Concrete

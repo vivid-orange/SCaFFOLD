@@ -1,4 +1,4 @@
-﻿using Scaffold.Core;
+﻿using Scaffold.Report;
 
 namespace Scaffold.Calculations
 {

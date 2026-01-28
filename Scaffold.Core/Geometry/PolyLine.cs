@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Net.WebSockets;
 using System.Numerics;
-using Scaffold.Core.Geometry.Abstract;
-using Scaffold.Core.Geometry.Enums;
 
-namespace Scaffold.Core.Geometry;
+namespace Scaffold.Geometry;
 
 [ExcludeFromCodeCoverage] // because we will be using Kris' libs for this from v1.
 public class PolyLine : GeometryBase
@@ -77,7 +74,9 @@ public class PolyLine : GeometryBase
                 }
             }
             else
+            {
                 _isClosed = value;
+            }
         }
     }
 
@@ -96,16 +95,16 @@ public class PolyLine : GeometryBase
             List<IntersectionResult> intersections = segment.intersection(line);
             foreach (IntersectionResult intersection in intersections)
             {
-                if (intersection.TypeOfIntersection == IntersectionType.WITHIN)
+                if (intersection.TypeOfIntersection == IntersectionType.Within)
                 {
-                    returnList.Add(new IntersectionResult((lengthToSegment + intersection.Parameter * segment.Length) / totalLength, intersection.Point, intersection.TypeOfIntersection));
+                    returnList.Add(new IntersectionResult((lengthToSegment + (intersection.Parameter * segment.Length)) / totalLength, intersection.Point, intersection.TypeOfIntersection));
                 }
             }
             lengthToSegment += segment.Length;
         }
         if (returnList.Count == 0)
         {
-            returnList.Add(new IntersectionResult(double.NaN, new Vector2(), IntersectionType.NONE));
+            returnList.Add(new IntersectionResult(double.NaN, new Vector2(), IntersectionType.None));
         }
         return returnList;
     }
@@ -151,7 +150,10 @@ public class PolyLine : GeometryBase
             {
                 double segmentParameter = (parameter - parameterToSegmentStart) / (parameterToSegmentEnd - parameterToSegmentStart);
                 if (double.IsNaN(segmentParameter))
+                {
                     segmentParameter = 0;
+                }
+
                 return segment.PointAtParameter(segmentParameter);
             }
         }
@@ -174,7 +176,10 @@ public class PolyLine : GeometryBase
             {
                 double segmentParameter = (parameter - parameterToSegmentStart) / (parameterToSegmentEnd - parameterToSegmentStart);
                 if (double.IsNaN(segmentParameter))
+                {
                     segmentParameter = 0;
+                }
+
                 return segment.PerpAtParameter(segmentParameter);
             }
         }
@@ -210,7 +215,10 @@ public class PolyLine : GeometryBase
                 {
                     double segmentParameter = (endParameter - parameterToSegmentStart) / (parameterToSegmentEnd - parameterToSegmentStart);
                     if (double.IsNaN(segmentParameter))
+                    {
                         segmentParameter = 0;
+                    }
+
                     GeometryBase partialCut = segment.Cut(segmentParameter)[0];
                     double secondSegmentParameter = (startParameter - parameterToSegmentStart) / (endParameter - parameterToSegmentStart);
                     segments.Add(partialCut.Cut(secondSegmentParameter)[1]);
@@ -221,7 +229,10 @@ public class PolyLine : GeometryBase
                 {
                     double segmentParameter = (startParameter - parameterToSegmentStart) / (parameterToSegmentEnd - parameterToSegmentStart);
                     if (double.IsNaN(segmentParameter))
+                    {
                         segmentParameter = 0;
+                    }
+
                     segments.Add(segment.Cut(segmentParameter)[1]);
                     started = true;
                 }
@@ -230,7 +241,10 @@ public class PolyLine : GeometryBase
             {
                 double segmentParameter = (endParameter - parameterToSegmentStart) / (parameterToSegmentEnd - parameterToSegmentStart);
                 if (double.IsNaN(segmentParameter))
+                {
                     segmentParameter = 0;
+                }
+
                 segments.Add(segment.Cut(segmentParameter)[0]);
                 finished = true;
                 break;
@@ -263,7 +277,10 @@ public class PolyLine : GeometryBase
             {
                 double segmentParameter = (endParameter - parameterToSegmentStart) / (parameterToSegmentEnd - parameterToSegmentStart);
                 if (double.IsNaN(segmentParameter))
+                {
                     segmentParameter = 0;
+                }
+
                 segments.Add(segment.Cut(segmentParameter)[0]);
                 finished = true;
                 break;

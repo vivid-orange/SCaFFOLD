@@ -1,3 +1,4 @@
+using Scaffold.Settings;
 using VividOrange.Standards.Eurocode;
 
 namespace Scaffold.Tests.Settings;
@@ -33,8 +34,8 @@ public class SettingsSingletonTests
         ScaffoldSettings instance = SettingsSingleton.Instance;
 
         // Assert
-        Assert.NotNull(instance.ProjectSettings);
-        Assert.IsType<ProjectSettings>(instance.ProjectSettings);
+        Assert.NotNull(instance.Project);
+        Assert.IsType<ProjectSettings>(instance.Project);
     }
 
     [Fact]
@@ -44,8 +45,8 @@ public class SettingsSingletonTests
         ScaffoldSettings instance = SettingsSingleton.Instance;
 
         // Assert
-        Assert.NotNull(instance.UnitSettings);
-        Assert.IsType<UnitSettings>(instance.UnitSettings);
+        Assert.NotNull(instance.Units);
+        Assert.IsType<UnitSettings>(instance.Units);
     }
 
     [Fact]
@@ -55,9 +56,9 @@ public class SettingsSingletonTests
         ScaffoldSettings instance = SettingsSingleton.Instance;
 
         // Assert
-        Assert.Equal(NationalAnnex.UnitedKingdom, instance.ProjectSettings.NationalAnnex);
-        Assert.Equal(string.Empty, instance.ProjectSettings.ProjectName);
-        Assert.Equal(string.Empty, instance.ProjectSettings.ProjectNumber);
+        Assert.Equal(NationalAnnex.UnitedKingdom, instance.Project.NationalAnnex);
+        Assert.Equal(string.Empty, instance.Project.ProjectName);
+        Assert.Equal(string.Empty, instance.Project.ProjectNumber);
     }
 
     [Fact]
@@ -67,8 +68,8 @@ public class SettingsSingletonTests
         ScaffoldSettings instance = SettingsSingleton.Instance;
 
         // Assert
-        Assert.Equal(4, instance.UnitSettings.SignificantDigits);
-        Assert.NotNull(instance.UnitSettings.UnitSystem);
+        Assert.Equal(4, instance.Units.SignificantDigits);
+        Assert.NotNull(instance.Units.Units);
     }
 
     [Fact]
@@ -78,13 +79,13 @@ public class SettingsSingletonTests
         ScaffoldSettings instance = SettingsSingleton.Instance;
 
         // Act
-        instance.ProjectSettings.ProjectName = "Test Project";
+        instance.Project.ProjectName = "Test Project";
 
         // Assert
-        Assert.Equal("Test Project", instance.ProjectSettings.ProjectName);
+        Assert.Equal("Test Project", instance.Project.ProjectName);
 
         // Cleanup
-        instance.ProjectSettings.ProjectName = string.Empty;
+        instance.Project.ProjectName = string.Empty;
     }
 
     [Fact]
@@ -92,16 +93,16 @@ public class SettingsSingletonTests
     {
         // Arrange
         ScaffoldSettings instance = SettingsSingleton.Instance;
-        int originalDigits = instance.UnitSettings.SignificantDigits;
+        int originalDigits = instance.Units.SignificantDigits;
 
         // Act
-        instance.UnitSettings.SignificantDigits = 7;
+        instance.Units.SignificantDigits = 7;
 
         // Assert
-        Assert.Equal(7, instance.UnitSettings.SignificantDigits);
+        Assert.Equal(7, instance.Units.SignificantDigits);
 
         // Cleanup
-        instance.UnitSettings.SignificantDigits = originalDigits;
+        instance.Units.SignificantDigits = originalDigits;
     }
 
     [Fact]
@@ -111,8 +112,8 @@ public class SettingsSingletonTests
         var settings = new ScaffoldSettings();
 
         // Assert
-        Assert.NotNull(settings.ProjectSettings);
-        Assert.NotNull(settings.UnitSettings);
+        Assert.NotNull(settings.Project);
+        Assert.NotNull(settings.Units);
     }
 
     [Fact]
@@ -123,11 +124,11 @@ public class SettingsSingletonTests
         var newProjectSettings = new ProjectSettings { ProjectName = "New Project" };
 
         // Act
-        settings.ProjectSettings = newProjectSettings;
+        settings.Project = newProjectSettings;
 
         // Assert
-        Assert.Same(newProjectSettings, settings.ProjectSettings);
-        Assert.Equal("New Project", settings.ProjectSettings.ProjectName);
+        Assert.Same(newProjectSettings, settings.Project);
+        Assert.Equal("New Project", settings.Project.ProjectName);
     }
 
     [Fact]
@@ -138,11 +139,11 @@ public class SettingsSingletonTests
         var newUnitSettings = new UnitSettings { SignificantDigits = 6 };
 
         // Act
-        settings.UnitSettings = newUnitSettings;
+        settings.Units = newUnitSettings;
 
         // Assert
-        Assert.Same(newUnitSettings, settings.UnitSettings);
-        Assert.Equal(6, settings.UnitSettings.SignificantDigits);
+        Assert.Same(newUnitSettings, settings.Units);
+        Assert.Equal(6, settings.Units.SignificantDigits);
     }
 
     [Fact]
@@ -153,13 +154,13 @@ public class SettingsSingletonTests
         string tempFilePath = Path.Combine(tempDir, "Scaffold", $"settings-{Guid.NewGuid()}.json");
         var settings = new ScaffoldSettings
         {
-            ProjectSettings = new ProjectSettings
+            Project = new ProjectSettings
             {
                 ProjectName = "Save Test",
                 ProjectNumber = "ST-001",
                 NationalAnnex = NationalAnnex.Germany
             },
-            UnitSettings = new UnitSettings { SignificantDigits = 5 }
+            Units = new UnitSettings { SignificantDigits = 5 }
         };
 
         try
@@ -190,13 +191,13 @@ public class SettingsSingletonTests
         string tempFilePath = Path.Combine(tempDir, "Scaffold", $"settings-{Guid.NewGuid()}.json");
         var originalSettings = new ScaffoldSettings
         {
-            ProjectSettings = new ProjectSettings
+            Project = new ProjectSettings
             {
                 ProjectName = "Load Test",
                 ProjectNumber = "LT-002",
                 NationalAnnex = NationalAnnex.France
             },
-            UnitSettings = new UnitSettings { SignificantDigits = 8 }
+            Units = new UnitSettings { SignificantDigits = 8 }
         };
 
         try
@@ -208,10 +209,10 @@ public class SettingsSingletonTests
 
             // Assert
             Assert.NotNull(loadedSettings);
-            Assert.Equal("Load Test", loadedSettings.ProjectSettings.ProjectName);
-            Assert.Equal("LT-002", loadedSettings.ProjectSettings.ProjectNumber);
-            Assert.Equal(NationalAnnex.France, loadedSettings.ProjectSettings.NationalAnnex);
-            Assert.Equal(8, loadedSettings.UnitSettings.SignificantDigits);
+            Assert.Equal("Load Test", loadedSettings.Project.ProjectName);
+            Assert.Equal("LT-002", loadedSettings.Project.ProjectNumber);
+            Assert.Equal(NationalAnnex.France, loadedSettings.Project.NationalAnnex);
+            Assert.Equal(8, loadedSettings.Units.SignificantDigits);
         }
         finally
         {
@@ -229,14 +230,14 @@ public class SettingsSingletonTests
         string tempDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string tempFilePath = Path.Combine(tempDir, "Scaffold", $"singleton-{Guid.NewGuid()}.json");
         ScaffoldSettings instance = SettingsSingleton.Instance;
-        string originalProjectName = instance.ProjectSettings.ProjectName;
-        int originalDigits = instance.UnitSettings.SignificantDigits;
+        string originalProjectName = instance.Project.ProjectName;
+        int originalDigits = instance.Units.SignificantDigits;
 
         try
         {
             // Act - modify singleton and save
-            instance.ProjectSettings.ProjectName = "Singleton Test";
-            instance.UnitSettings.SignificantDigits = 9;
+            instance.Project.ProjectName = "Singleton Test";
+            instance.Units.SignificantDigits = 9;
             instance.SaveToJsonFile(tempFilePath);
 
             // Assert
@@ -247,8 +248,8 @@ public class SettingsSingletonTests
         finally
         {
             // Cleanup
-            instance.ProjectSettings.ProjectName = originalProjectName;
-            instance.UnitSettings.SignificantDigits = originalDigits;
+            instance.Project.ProjectName = originalProjectName;
+            instance.Units.SignificantDigits = originalDigits;
             if (File.Exists(tempFilePath))
             {
                 File.Delete(tempFilePath);
@@ -263,22 +264,22 @@ public class SettingsSingletonTests
         string tempDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string tempFilePath = Path.Combine(tempDir, "Scaffold", $"singleton-{Guid.NewGuid()}.json");
         ScaffoldSettings instance = SettingsSingleton.Instance;
-        string originalProjectName = instance.ProjectSettings.ProjectName;
-        string originalProjectNumber = instance.ProjectSettings.ProjectNumber;
-        int originalDigits = instance.UnitSettings.SignificantDigits;
+        string originalProjectName = instance.Project.ProjectName;
+        string originalProjectNumber = instance.Project.ProjectNumber;
+        int originalDigits = instance.Units.SignificantDigits;
 
         try
         {
             // Arrange - create a saved settings file
             var savedSettings = new ScaffoldSettings
             {
-                ProjectSettings = new ProjectSettings
+                Project = new ProjectSettings
                 {
                     ProjectName = "Loaded From File",
                     ProjectNumber = "LFF-999",
                     NationalAnnex = NationalAnnex.UnitedKingdom
                 },
-                UnitSettings = new UnitSettings { SignificantDigits = 10 }
+                Units = new UnitSettings { SignificantDigits = 10 }
             };
             savedSettings.SaveToJsonFile(tempFilePath);
 
@@ -286,21 +287,21 @@ public class SettingsSingletonTests
             ScaffoldSettings loaded = JsonSerializationExtensions.LoadFromJsonFile<ScaffoldSettings>(tempFilePath);
             if (loaded != null)
             {
-                instance.ProjectSettings = loaded.ProjectSettings;
-                instance.UnitSettings = loaded.UnitSettings;
+                instance.Project = loaded.Project;
+                instance.Units = loaded.Units;
             }
 
             // Assert
-            Assert.Equal("Loaded From File", instance.ProjectSettings.ProjectName);
-            Assert.Equal("LFF-999", instance.ProjectSettings.ProjectNumber);
-            Assert.Equal(10, instance.UnitSettings.SignificantDigits);
+            Assert.Equal("Loaded From File", instance.Project.ProjectName);
+            Assert.Equal("LFF-999", instance.Project.ProjectNumber);
+            Assert.Equal(10, instance.Units.SignificantDigits);
         }
         finally
         {
             // Cleanup
-            instance.ProjectSettings.ProjectName = originalProjectName;
-            instance.ProjectSettings.ProjectNumber = originalProjectNumber;
-            instance.UnitSettings.SignificantDigits = originalDigits;
+            instance.Project.ProjectName = originalProjectName;
+            instance.Project.ProjectNumber = originalProjectNumber;
+            instance.Units.SignificantDigits = originalDigits;
             if (File.Exists(tempFilePath))
             {
                 File.Delete(tempFilePath);
@@ -314,13 +315,13 @@ public class SettingsSingletonTests
         // Arrange
         var original = new ScaffoldSettings
         {
-            ProjectSettings = new ProjectSettings
+            Project = new ProjectSettings
             {
                 ProjectName = "Parse Test",
                 ProjectNumber = "PT-001",
                 NationalAnnex = NationalAnnex.Germany
             },
-            UnitSettings = new UnitSettings { SignificantDigits = 6 }
+            Units = new UnitSettings { SignificantDigits = 6 }
         };
         string json = ((IFormattable)original).ToString(null, null);
 
@@ -329,10 +330,10 @@ public class SettingsSingletonTests
 
         // Assert
         Assert.NotNull(parsed);
-        Assert.Equal("Parse Test", parsed.ProjectSettings.ProjectName);
-        Assert.Equal("PT-001", parsed.ProjectSettings.ProjectNumber);
-        Assert.Equal(NationalAnnex.Germany, parsed.ProjectSettings.NationalAnnex);
-        Assert.Equal(6, parsed.UnitSettings.SignificantDigits);
+        Assert.Equal("Parse Test", parsed.Project.ProjectName);
+        Assert.Equal("PT-001", parsed.Project.ProjectNumber);
+        Assert.Equal(NationalAnnex.Germany, parsed.Project.NationalAnnex);
+        Assert.Equal(6, parsed.Units.SignificantDigits);
     }
 
     [Fact]
@@ -341,8 +342,8 @@ public class SettingsSingletonTests
         // Arrange
         var original = new ScaffoldSettings
         {
-            ProjectSettings = new ProjectSettings { ProjectName = "TryParse Test" },
-            UnitSettings = new UnitSettings { SignificantDigits = 5 }
+            Project = new ProjectSettings { ProjectName = "TryParse Test" },
+            Units = new UnitSettings { SignificantDigits = 5 }
         };
         string json = ((IFormattable)original).ToString(null, null);
 
@@ -352,8 +353,8 @@ public class SettingsSingletonTests
         // Assert
         Assert.True(success);
         Assert.NotNull(parsed);
-        Assert.Equal("TryParse Test", parsed.ProjectSettings.ProjectName);
-        Assert.Equal(5, parsed.UnitSettings.SignificantDigits);
+        Assert.Equal("TryParse Test", parsed.Project.ProjectName);
+        Assert.Equal(5, parsed.Units.SignificantDigits);
     }
 
     [Fact]
@@ -376,12 +377,12 @@ public class SettingsSingletonTests
         // Arrange
         var settings = new ScaffoldSettings
         {
-            ProjectSettings = new ProjectSettings
+            Project = new ProjectSettings
             {
                 ProjectName = "ToString Test",
                 ProjectNumber = "TT-001"
             },
-            UnitSettings = new UnitSettings { SignificantDigits = 7 }
+            Units = new UnitSettings { SignificantDigits = 7 }
         };
 
         // Act
