@@ -1,3 +1,4 @@
+global using UnitsNet.Units;
 global using Xunit;
 global using Moment = UnitsNet.Torque;
 global using MomentPerLength = UnitsNet.TorquePerLength;
