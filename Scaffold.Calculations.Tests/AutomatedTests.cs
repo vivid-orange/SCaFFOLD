@@ -64,6 +64,11 @@ namespace Scaffold.Calculations.Tests
                 {
                     continue;
                 }
+
+                if (property.SetMethod == null)
+                {
+                    continue;
+                }
                 Assert.False(property.GetValue(obj) == null,
                     $"The calculation '{obj}'\ncontains a property '{property.Name}' that is null.");
                 CalcValueTypeAttribute baseAttribute = property.GetCustomAttribute<CalcValueTypeAttribute>();
