@@ -1,3 +1,5 @@
+using Scaffold.Settings.Units;
+
 namespace Scaffold.Tests.Settings;
 
 public class UnitSystemTests
@@ -6,7 +8,7 @@ public class UnitSystemTests
     public void DefaultConstructor_InitializesAllUnits()
     {
         // Arrange & Act
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Assert - verify all properties are initialized by checking they have values
         Assert.NotEqual(default(LengthUnit), unitSystem.SectionLengthUnit);
@@ -40,7 +42,7 @@ public class UnitSystemTests
     public void DefaultConstructor_UsesDefaultUnitsValues()
     {
         // Arrange & Act
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Assert
         Assert.Equal(DefaultUnits.LengthUnitSection, unitSystem.SectionLengthUnit);
@@ -54,7 +56,7 @@ public class UnitSystemTests
     public void AccelerationUnit_CanBeSet()
     {
         // Arrange
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Act
         unitSystem.AccelerationUnit = AccelerationUnit.MeterPerSecondSquared;
@@ -67,8 +69,8 @@ public class UnitSystemTests
     public void MultipleInstances_HaveIndependentUnits()
     {
         // Arrange & Act
-        var unitSystem1 = new UnitSystem();
-        var unitSystem2 = new UnitSystem();
+        var unitSystem1 = new ScaffoldUnits();
+        var unitSystem2 = new ScaffoldUnits();
 
         // Modify one instance
         unitSystem2.AccelerationUnit = AccelerationUnit.MillimeterPerSecondSquared;
@@ -81,7 +83,7 @@ public class UnitSystemTests
     public void ReadOnlyProperties_AreInitializedFromDefaultUnits()
     {
         // Arrange & Act
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Assert
         Assert.Equal(DefaultUnits.CurvatureUnit, unitSystem.CurvatureUnit);
@@ -93,7 +95,7 @@ public class UnitSystemTests
     public void LengthUnits_AreCorrectlyAssigned()
     {
         // Arrange & Act
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Assert
         Assert.Equal(DefaultUnits.LengthUnitSection, unitSystem.SectionLengthUnit);
@@ -105,7 +107,7 @@ public class UnitSystemTests
     public void StressAndStrainUnits_AreCorrectlyAssigned()
     {
         // Arrange & Act
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Assert
         Assert.Equal(DefaultUnits.StressUnit, unitSystem.StressUnit);
@@ -118,7 +120,7 @@ public class UnitSystemTests
     public void CoefficientOfThermalExpansionUnit_IsNotNull()
     {
         // Arrange & Act
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Assert
         Assert.NotEqual(default(CoefficientOfThermalExpansionUnit), unitSystem.CoefficientOfThermalExpansionUnit);
@@ -128,10 +130,10 @@ public class UnitSystemTests
     public void CoefficientOfThermalExpansionUnit_DependsOnTemperatureUnit()
     {
         // Arrange
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Act
-        var coefficientUnit = unitSystem.CoefficientOfThermalExpansionUnit;
+        CoefficientOfThermalExpansionUnit coefficientUnit = unitSystem.CoefficientOfThermalExpansionUnit;
 
         // Assert - verify it's derived from the temperature unit
         Assert.NotEqual(default(CoefficientOfThermalExpansionUnit), coefficientUnit);
@@ -141,15 +143,15 @@ public class UnitSystemTests
     public void CoefficientOfThermalExpansionUnit_IsComputedFromTemperatureUnit()
     {
         // Arrange
-        var unitSystem1 = new UnitSystem();
-        var unitSystem2 = new UnitSystem();
+        var unitSystem1 = new ScaffoldUnits();
+        var unitSystem2 = new ScaffoldUnits();
 
         // Both should have the same temperature unit (default)
         Assert.Equal(unitSystem1.TemperatureUnit, unitSystem2.TemperatureUnit);
 
         // Act
-        var coefficientUnit1 = unitSystem1.CoefficientOfThermalExpansionUnit;
-        var coefficientUnit2 = unitSystem2.CoefficientOfThermalExpansionUnit;
+        CoefficientOfThermalExpansionUnit coefficientUnit1 = unitSystem1.CoefficientOfThermalExpansionUnit;
+        CoefficientOfThermalExpansionUnit coefficientUnit2 = unitSystem2.CoefficientOfThermalExpansionUnit;
 
         // Assert - coefficient units should be the same since temperature units are the same
         Assert.Equal(coefficientUnit1, coefficientUnit2);
@@ -159,11 +161,11 @@ public class UnitSystemTests
     public void CoefficientOfThermalExpansionUnit_IsReadOnly()
     {
         // Arrange
-        var unitSystem = new UnitSystem();
+        var unitSystem = new ScaffoldUnits();
 
         // Act & Assert - verify the property doesn't have a setter
         // This is a read-only computed property, so we just verify we can read it
-        var unit = unitSystem.CoefficientOfThermalExpansionUnit;
+        CoefficientOfThermalExpansionUnit unit = unitSystem.CoefficientOfThermalExpansionUnit;
         Assert.NotEqual(default(CoefficientOfThermalExpansionUnit), unit);
     }
 }

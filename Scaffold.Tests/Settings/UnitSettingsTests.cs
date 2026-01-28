@@ -1,4 +1,5 @@
-using Xunit;
+using Scaffold.Settings;
+using Scaffold.Settings.Units;
 
 namespace Scaffold.Tests.Settings;
 
@@ -12,7 +13,7 @@ public class UnitSettingsTests
 
         // Assert
         Assert.Equal(4, settings.SignificantDigits);
-        Assert.NotNull(settings.UnitSystem);
+        Assert.NotNull(settings.Units);
     }
 
     [Fact]
@@ -52,7 +53,7 @@ public class UnitSettingsTests
         var settings = new UnitSettings();
 
         // Assert
-        Assert.NotNull(settings.UnitSystem);
+        Assert.NotNull(settings.Units);
     }
 
     [Fact]
@@ -60,13 +61,13 @@ public class UnitSettingsTests
     {
         // Arrange
         var settings = new UnitSettings();
-        var newUnitSystem = new UnitSystem();
+        var newUnitSystem = new ScaffoldUnits();
 
         // Act
-        settings.UnitSystem = newUnitSystem;
+        settings.Units = newUnitSystem;
 
         // Assert
-        Assert.Same(newUnitSystem, settings.UnitSystem);
+        Assert.Same(newUnitSystem, settings.Units);
     }
 
     [Fact]
@@ -77,6 +78,6 @@ public class UnitSettingsTests
         var settings2 = new UnitSettings();
 
         // Assert
-        Assert.NotSame(settings1.UnitSystem, settings2.UnitSystem);
+        Assert.NotSame(settings1.Units, settings2.Units);
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using Scaffold.Core.Geometry.Abstract;
-using Scaffold.Core.Geometry.Enums;
 
-namespace Scaffold.Core.Geometry;
+namespace Scaffold.Geometry;
 
 [ExcludeFromCodeCoverage] // because we will be using Kris' libs for this from v1.
 public class Arc : GeometryBase
@@ -62,7 +60,7 @@ public class Arc : GeometryBase
     {
         get
         {
-            return new Vector2((float)(Centre.X + Radius * Math.Cos(StartAngle)), (float)(Centre.Y + Radius * Math.Sin(StartAngle)));
+            return new Vector2((float)(Centre.X + (Radius * Math.Cos(StartAngle))), (float)(Centre.Y + (Radius * Math.Sin(StartAngle))));
         }
         set { }
     }
@@ -70,7 +68,7 @@ public class Arc : GeometryBase
     {
         get
         {
-            return new Vector2((float)(Centre.X + Radius * Math.Cos(EndAngle)), (float)(Centre.Y + Radius * Math.Sin(EndAngle)));
+            return new Vector2((float)(Centre.X + (Radius * Math.Cos(EndAngle))), (float)(Centre.Y + (Radius * Math.Sin(EndAngle))));
         }
         set { }
     }
@@ -85,12 +83,12 @@ public class Arc : GeometryBase
             if (StartAngle > EndAngle)
             {
                 double end = EndAngle + Math.PI;
-                return ((end - StartAngle) / (2 * Math.PI)) * 2 * Math.PI * Radius;
+                return (end - StartAngle) / (2 * Math.PI) * 2 * Math.PI * Radius;
             }
             else
             {
                 double end = EndAngle;
-                return ((end - StartAngle) / (2 * Math.PI)) * 2 * Math.PI * Radius;
+                return (end - StartAngle) / (2 * Math.PI) * 2 * Math.PI * Radius;
             }
         }
     }
@@ -124,7 +122,7 @@ public class Arc : GeometryBase
         {
             diffAngle += 2 * Math.PI;
         }
-        return new Vector2((float)(Centre.X + Radius * Math.Cos(StartAngle + diffAngle)), (float)(Centre.Y + Radius * Math.Sin(StartAngle + diffAngle)));
+        return new Vector2((float)(Centre.X + (Radius * Math.Cos(StartAngle + diffAngle))), (float)(Centre.Y + (Radius * Math.Sin(StartAngle + diffAngle))));
     }
 
     public override Vector2 PerpAtParameter(double parameter)
@@ -134,7 +132,7 @@ public class Arc : GeometryBase
         {
             diffAngle += 2 * Math.PI;
         }
-        var point = new Vector2((float)(Centre.X + Radius * Math.Cos(StartAngle + diffAngle)), (float)(Centre.Y + Radius * Math.Sin(StartAngle + diffAngle)));
+        var point = new Vector2((float)(Centre.X + (Radius * Math.Cos(StartAngle + diffAngle))), (float)(Centre.Y + (Radius * Math.Sin(StartAngle + diffAngle))));
         Vector2 returnVector = point - Centre;
         return Vector2.Normalize(returnVector);
     }
@@ -157,11 +155,11 @@ public class Arc : GeometryBase
         dx = point2.X - point1.X;
         dy = point2.Y - point1.Y;
 
-        A = dx * dx + dy * dy;
-        B = 2 * (dx * (point1.X - cx) + dy * (point1.Y - cy));
-        C = (point1.X - cx) * (point1.X - cx) + (point1.Y - cy) * (point1.Y - cy) - radius * radius;
+        A = (dx * dx) + (dy * dy);
+        B = 2 * ((dx * (point1.X - cx)) + (dy * (point1.Y - cy)));
+        C = ((point1.X - cx) * (point1.X - cx)) + ((point1.Y - cy) * (point1.Y - cy)) - (radius * radius);
 
-        det = B * B - 4 * A * C;
+        det = (B * B) - (4 * A * C);
         if ((A <= 0.0000001) || (det < 0))
         {
             // No real solutions.
@@ -172,7 +170,7 @@ public class Arc : GeometryBase
             // One solution.
             var returnList = new List<IntersectionResult>();
             t = -B / (2 * A);
-            intersection1 = new Vector2(point1.X + t * dx, point1.Y + t * dy);
+            intersection1 = new Vector2(point1.X + (t * dx), point1.Y + (t * dy));
             double angle = Math.Atan2(intersection1.Y - arc.Centre.Y, intersection1.X - arc.Centre.X);
             if (angle < 0)
             {
@@ -187,11 +185,14 @@ public class Arc : GeometryBase
                 endY - tol <= Math.Max(point1.Y, point2.Y))
             {
                 double temp = angle - StartAngle;
-                if (temp < 0) temp += 2 * Math.PI;
+                if (temp < 0)
+                {
+                    temp += 2 * Math.PI;
+                }
 
-                double param = (Radius * temp) / (Length);
+                double param = Radius * temp / Length;
 
-                returnList.Add(new IntersectionResult(param, intersection1, IntersectionType.WITHIN));
+                returnList.Add(new IntersectionResult(param, intersection1, IntersectionType.Within));
             }
             return returnList;
         }
@@ -200,7 +201,7 @@ public class Arc : GeometryBase
             // Two solutions.
             var returnList = new List<IntersectionResult>();
             t = (float)((-B + Math.Sqrt(det)) / (2 * A));
-            intersection1 = new Vector2(point1.X + t * dx, point1.Y + t * dy);
+            intersection1 = new Vector2(point1.X + (t * dx), point1.Y + (t * dy));
             double angle = Math.Atan2(intersection1.Y - arc.Centre.Y, intersection1.X - arc.Centre.X);
             if (angle < 0)
             {
@@ -215,14 +216,17 @@ public class Arc : GeometryBase
                 endY - tol <= Math.Max(point1.Y, point2.Y))
             {
                 double temp = angle - StartAngle;
-                if (temp < 0) temp += 2 * Math.PI;
+                if (temp < 0)
+                {
+                    temp += 2 * Math.PI;
+                }
 
-                double param = (Radius * temp) / (Length);
+                double param = Radius * temp / Length;
 
-                returnList.Add(new IntersectionResult(param, intersection1, IntersectionType.WITHIN));
+                returnList.Add(new IntersectionResult(param, intersection1, IntersectionType.Within));
             }
             t = (float)((-B - Math.Sqrt(det)) / (2 * A));
-            intersection2 = new Vector2(point1.X + t * dx, point1.Y + t * dy);
+            intersection2 = new Vector2(point1.X + (t * dx), point1.Y + (t * dy));
             angle = Math.Atan2(intersection2.Y - arc.Centre.Y, intersection2.X - arc.Centre.X);
             if (angle < 0)
             {
@@ -237,11 +241,14 @@ public class Arc : GeometryBase
                 endY - tol <= Math.Max(point1.Y, point2.Y))
             {
                 double temp = angle - StartAngle;
-                if (temp < 0) temp += 2 * Math.PI;
+                if (temp < 0)
+                {
+                    temp += 2 * Math.PI;
+                }
 
-                double param = (Radius * temp) / (Length);
+                double param = Radius * temp / Length;
 
-                returnList.Add(new IntersectionResult(param, intersection2, IntersectionType.WITHIN));
+                returnList.Add(new IntersectionResult(param, intersection2, IntersectionType.Within));
             }
             return returnList;
         }

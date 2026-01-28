@@ -1,4 +1,4 @@
-﻿using Scaffold.Core;
+﻿using Scaffold.Report;
 using VividOrange.Profiles;
 using VividOrange.Sections.SectionProperties;
 
