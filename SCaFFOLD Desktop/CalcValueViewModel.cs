@@ -1,226 +1,177 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Input;
+using Scaffold.Reader; // Required for ICalculation
 
-namespace Scaffold.Desktop;
-
-public class CalcValueViewModel : ViewModelBase
+namespace Scaffold.Desktop
 {
-    private readonly ICalcValue _model;
-    private readonly Action _onValueChanged;
-    private readonly Action<ICalculation> _onNavigateRequest;
-    private readonly Action<ICalcValue, ICalcValue> _onReplaceRequest;
-    private readonly Type _declaredType;
-
-    public ICalcValue Model => _model;
-    public Type DeclaredType => _declaredType;
-
-    public CalcValueViewModel(
-        ICalcValue model,
-        Action onValueChanged,
-        Action<ICalculation> onNavigateRequest = null,
-        Type declaredType = null,
-        Action<ICalcValue, ICalcValue> onReplaceRequest = null)
+    public class CalcValueViewModel : ViewModelBase
     {
-        _model = model;
-        _onValueChanged = onValueChanged;
-        _onNavigateRequest = onNavigateRequest;
-        _declaredType = declaredType;
-        _onReplaceRequest = onReplaceRequest;
+        private readonly ICalcValue _model;
+        private readonly Action _onValueChanged;
+        private readonly Action<ICalculation> _onNavigateRequest;
 
-        InitializeComplexTypes();
-        InitializeTypeSelection();
-    }
+        public ICalcValue Model => _model;
 
-    // --- Type Selection Logic ---
-
-    public ObservableCollection<Type> AvailableTypes { get; } = [];
-
-    public Type SelectedType
-    {
-        get => _model.GetType();
-        set
+        public CalcValueViewModel(
+            ICalcValue model,
+            Action onValueChanged,
+            Action<ICalculation> onNavigateRequest = null)
         {
-            // Check value is valid and distinct from current
-            if (value != null && value != _model.GetType())
+            _model = model;
+            _onValueChanged = onValueChanged;
+            _onNavigateRequest = onNavigateRequest;
+        }
+
+        // --- Properties ---
+        public string DisplayName => _model.EntityLabel;
+        public string Symbol => _model.Symbol;
+
+        public string Value
+        {
+            get => _model.ValueAsString();
+            set
             {
-                ChangeImplementation(value);
+                if (IsStandard && _model.ValueAsString() != value)
+                {
+                    _model.TryParse(value);
+                    Refresh();
+                    _onValueChanged?.Invoke();
+                }
             }
         }
-    }
 
-    private void InitializeTypeSelection()
-    {
-        if (IsComplex && _declaredType != null && _onReplaceRequest != null)
+        // Structure Flags
+        public bool IsComplex => _model.IsComplexValue || _model.IsICalculation;
+        public bool IsCollection => _model.IsCollection;
+        public bool IsStandard => !IsComplex && !IsCollection;
+        public bool IsCalculation => _model.IsICalculation;
+        public bool IsSelectionList => false;
+        public IEnumerable<string> SelectionOptions => Enumerable.Empty<string>();
+        public int SelectedIndex { get => -1; set { } }
+
+        public object RawValue
         {
-            IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => _declaredType.IsAssignableFrom(p) && p.IsClass && !p.IsAbstract);
-
-            foreach (Type? t in types)
+            get
             {
-                AvailableTypes.Add(t);
+                var prop = _model.GetType().GetProperty("Value");
+                return prop?.GetValue(_model);
             }
         }
-    }
 
-    private void ChangeImplementation(Type newType)
-    {
-        try
+        // --- Table Logic ---
+        public bool IsTable { get; private set; }
+        public ObservableCollection<string> TableHeaders { get; } = new ObservableCollection<string>();
+        public ObservableCollection<ObservableCollection<CalcValueViewModel>> TableRows { get; } = new ObservableCollection<ObservableCollection<CalcValueViewModel>>();
+
+        public bool TryConfigureAsTable()
         {
-            // Attempt to create the new object (Must have default constructor)
-            var newInstance = Activator.CreateInstance(newType) as ICalcValue;
+            // 1. Must be a collection
+            if (!IsCollection) return false;
 
-            if (newInstance != null)
+            var list = RawValue as IList;
+            if (list == null) return false;
+
+            // 2. Determine the Item Type (T)
+            Type itemType = null;
+            var modelType = _model.GetType();
+            // Try to get T from DelegateCalcValue<List<T>>
+            if (modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(DelegateCalcValue<>))
             {
-                _onReplaceRequest?.Invoke(_model, newInstance);
+                var listType = modelType.GetGenericArguments()[0];
+                if (listType.IsGenericType && typeof(IEnumerable).IsAssignableFrom(listType))
+                {
+                    itemType = listType.GetGenericArguments()[0];
+                }
             }
-        }
-        catch (Exception)
-        {
-            // If constructor fails, force UI to revert selection (by notifying property changed)
-            // This prevents the ComboBox from showing the "new" type when the switch actually failed.
-            OnPropertyChanged(nameof(SelectedType));
-        }
-    }
+            // Fallback: Check first item
+            if (itemType == null && list.Count > 0 && list[0] != null) itemType = list[0].GetType();
 
-    // --- Standard Properties ---
-    public string DisplayName => _model.EntityLabel;
-    public string Symbol => _model.Symbol;
+            if (itemType == null) return false;
 
-    public string Value
-    {
-        get
-        {
-            //if (_model is ICalcListOfDoubleArrays arrayModel)
-            //    return FormatArrayOutput(arrayModel.Value);
-            return _model.ValueAsString();
-        }
-        set
-        {
-            if (IsStandard && _model.ValueAsString() != value)
+            // 3. Must be "Complex" Input
+            // FIX: Check for the base CalcValueTypeAttribute and ensure Type is Input.
+            // This covers both [CalcValueType(CalcValueType.Input)] AND [InputCalcValue].
+            bool isComplex = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                     .Any(p =>
+                                     {
+                                         var attr = p.GetCustomAttribute<CalcValueTypeAttribute>();
+                                         return attr != null && attr.Type == CalcValueType.Input;
+                                     });
+
+            if (!isComplex) return false;
+
+            // 4. Must NOT be a nested collection
+            if (typeof(IEnumerable).IsAssignableFrom(itemType) && itemType != typeof(string)) return false;
+
+            // --- It is a Table ---
+            IsTable = true;
+            TableHeaders.Clear();
+            TableRows.Clear();
+
+            // 5. Build Headers
+            try
             {
-                _model.TryParse(value);
-                Refresh();
-                _onValueChanged?.Invoke();
+                // Create dummy to read structure via ObjectReader (preferred)
+                var dummy = Activator.CreateInstance(itemType);
+                if (dummy != null)
+                {
+                    var prototypes = ObjectReader.GetInputs(dummy);
+                    foreach (var p in prototypes)
+                    {
+                        TableHeaders.Add(p.Symbol);
+                    }
+                }
             }
-        }
-    }
+            catch
+            {
+                // Fallback: Manual Reflection using the correct Attribute check
+                var props = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Select(p => p.GetCustomAttribute<CalcValueTypeAttribute>())
+                    .Where(attr => attr != null && attr.Type == CalcValueType.Input)
+                    .ToList();
 
-    public string Unit => "";
-    public bool HasUnit => !string.IsNullOrEmpty(Unit);
+                foreach (var attr in props) TableHeaders.Add(attr.Symbol);
+            }
 
-    public bool IsComplex => _model.IsComplexValue || _model.IsICalculation;
-    public bool IsCollection => _model.IsCollection;
-    public bool IsStandard => !IsComplex && !IsCollection;
+            // 6. Build Rows
+            foreach (var item in list)
+            {
+                if (item == null) continue;
 
-    // GENERALLY : NEED TO REMOVE ALL TRACES OF SELECTION LIST
-    public bool IsSelectionList => false; //_model is DelegateCalcValue<CalcSelectionList>;
-    public bool IsDoubleListArray => false; // _model is ICalcListOfDoubleArrays;
+                var rowVMs = new ObservableCollection<CalcValueViewModel>();
+                // Recursively read inputs for the row item
+                var inputs = ObjectReader.GetInputs(item);
 
-    // --- Accessor for Collection Iteration ---
-    public object RawValue
-    {
-        get
-        {
-            // We use reflection to get the 'Value' property from DelegateCalcValue<T>
-            // because ICalcValue doesn't expose the generic T.
-            // Alternatively, use 'dynamic' if your project supports it.
-            PropertyInfo? prop = _model.GetType().GetProperty("Value");
-            return prop?.GetValue(_model);
-        }
-    }
+                foreach (var input in inputs)
+                {
+                    rowVMs.Add(new CalcValueViewModel(input, _onValueChanged, _onNavigateRequest));
+                }
+                TableRows.Add(rowVMs);
+            }
 
-    public List<ICalcValue> GetChildren()
-    {
-        // If it's a single complex object or calculation, use the Reader integration
-        if (IsComplex)
-        {
-            return _model.GetChildInputs();
-        }
-        return new List<ICalcValue>();
-    }
-
-    public IEnumerable<string> SelectionOptions => [];
-    // (_model as DelegateCalcValue<CalcSelectionList>)?.Value.Selections ?? (IEnumerable<string>)[];
-
-    public int SelectedIndex
-    {
-        get => -1; // (_model as DelegateCalcValue<CalcSelectionList>)?.Value.SelectedItemIndex ?? -1;
-        set
-        {
-            //if (_model is ICalcSelectionList listModel && listModel.SelectedItemIndex != value)
-            //{
-            //    listModel.SelectedItemIndex = value;
-            //    OnPropertyChanged();
-            //    OnPropertyChanged(nameof(Value));
-            //    _onValueChanged?.Invoke();
-            //}
-        }
-    }
-
-    public ObservableCollection<ArrayRowViewModel> TableRows { get; } = [];
-    public ICommand AddRowCommand => new RelayCommand(_ => AddTableRow());
-
-    private void InitializeComplexTypes()
-    {
-        //if (IsDoubleListArray && _model is ICalcListOfDoubleArrays arrayModel)
-        //{
-        //    RebuildTable();
-        //}
-    }
-
-    private void RebuildTable()
-    {
-        //TableRows.Clear();
-        //var list = (_model as ICalcListOfDoubleArrays)?.Value;
-        //if (list == null) return;
-        //foreach (var row in list) TableRows.Add(new ArrayRowViewModel(row, _onValueChanged));
-    }
-
-    private void AddTableRow()
-    {
-        //if (_model is ICalcListOfDoubleArrays arrayModel)
-        //{
-        //    int colCount = (arrayModel.Value.Count > 0) ? arrayModel.Value[0].Length : 1;
-        //    var newRow = new double[colCount];
-        //    arrayModel.Value.Add(newRow);
-        //    TableRows.Add(new ArrayRowViewModel(newRow, _onValueChanged));
-        //    _onValueChanged?.Invoke();
-        //}
-    }
-
-    private string FormatArrayOutput(List<double[]> list)
-    {
-        if (list == null || list.Count == 0)
-        {
-            return "Empty";
+            return true;
         }
 
-        var sb = new StringBuilder();
-        foreach (var arr in list) { sb.Append(string.Join(", ", arr)); sb.Append("; "); }
-        return sb.ToString().TrimEnd(';', ' ');
-    }
+        // --- Commands ---
 
-    public ICommand EditCommand => new RelayCommand(_ =>
-    {
-        if (_model is ICalculation complex)
+        public ICommand EditCommand => new RelayCommand(_ =>
         {
-            _onNavigateRequest?.Invoke(complex);
-        }
-    });
+            if (RawValue is ICalculation calc)
+            {
+                _onNavigateRequest?.Invoke(calc);
+            }
+        });
 
-    public void Refresh()
-    {
-        OnPropertyChanged(nameof(Value));
-        OnPropertyChanged(nameof(Unit));
-        OnPropertyChanged(nameof(HasUnit));
-        OnPropertyChanged(nameof(Symbol));
-        OnPropertyChanged(nameof(SelectedIndex));
-        if (IsDoubleListArray)
+        public void Refresh()
         {
-            RebuildTable();
+            OnPropertyChanged(nameof(Value));
+            OnPropertyChanged(nameof(Symbol));
         }
     }
 }

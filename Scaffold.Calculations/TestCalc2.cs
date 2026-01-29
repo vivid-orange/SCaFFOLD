@@ -1,19 +1,9 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 using Scaffold.Core;
-using Scaffold.Core.Geometry;
 using Scaffold.Geometry;
+using Scaffold.Reader.Images;
 using Scaffold.Report;
 using SkiaSharp;
-using UnitsNet;
-using UnitsNet.Units;
 
 namespace Scaffold.Calculations
 {
@@ -30,8 +20,8 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "M", "Moment")]
         public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
 
-        [CalcValueType(CalcValueType.Input, "L_1", "Length 1", ["Geometry", "Length"])]
-        public Length Length { get; set; } = new Length(5, LengthUnit.Millimeter);
+        [CalcValueType(CalcValueType.Input, "B", "Breadth", ["Geometry", "Section"])]
+        public Length Breadth { get; set; } = new Length(200, LengthUnit.Millimeter);
 
         [CalcValueType(CalcValueType.Input, "C_x", "Centre X", ["Geometry", "Centre"])]
         public Length Offset1 { get; set; } = new Length(5, LengthUnit.Millimeter);
@@ -39,9 +29,20 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
+        [CalcValueType(CalcValueType.Input, "E", "Column height", ["Misc"])]
+        public EmbeddedCalc ReducedHeight { get; set; } = new EmbeddedCalc();
 
-        [CalcValueType(CalcValueType.Input, "L_2", "Length 2", ["Geometry", "Length"])]
-        public Length Length2 { get; set; } = new Length(5, LengthUnit.Millimeter);
+        [CalcValueType(CalcValueType.Input, "H", "Height", ["Geometry", "Section"])]
+        public Length Height { get; set; } = new Length(500, LengthUnit.Millimeter);
+
+        [CalcValueType(CalcValueType.Input, "T", "Flange", ["Geometry", "Section"])]
+        public Length FlangeThickness { get; set; } = new Length(25, LengthUnit.Millimeter);
+
+        [CalcValueType(CalcValueType.Input, "t", "Web", ["Geometry", "Section"])]
+        public Length WebThickness { get; set; } = new Length(12, LengthUnit.Millimeter);
+
+        [CalcValueType(CalcValueType.Input, "r", "Root radius", ["Geometry", "Section"])]
+        public Length RootRadius { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
         [CalcValueType(CalcValueType.Output, "M_o", "Moment out")]
@@ -51,14 +52,14 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Output, "F_req", "Force required")]
         public Force ForceRequired { get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
-        [CalcValueType(CalcValueType.Input, "C", "Complex Input type")]
+        [CalcValueType(CalcValueType.Input, "C", "Complex Input type", ["Misc"])]
         public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
 
-        //[CalcValueType(CalcValueType.Input, "L", "List of lengths")]
-        //public List<Length> lengths { get; set; } = new List<Length> { new Length(100, LengthUnit.Millimeter), new Length(200, LengthUnit.Millimeter) };
-        [CalcValueType(CalcValueType.Input, "L", "List of things")]
-        public List<MyDataHolder> Things { get; set; } = new List<MyDataHolder> { new MyDataHolder(), new MyDataHolder() };
+        [CalcValueType(CalcValueType.Input, "L", "List of things", ["Misc"])]
+        public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35, 20, 0.35), new MyOtherDataHolder(40, 20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
 
+        [CalcValueType(CalcValueType.Input, "LL2", "List of lists of more things", ["Misc"])]
+        public List<List<MyDataHolder>> MoreThings { get; set; } = [[new MyDataHolder(100, 200), new MyDataHolder(300, 400)], [new MyDataHolder(500, 600)]];
 
         public CalcStatus Status => CalcStatus.None;
 
@@ -72,9 +73,9 @@ namespace Scaffold.Calculations
         {
             var xg = new InteractiveGeometryQuantityOnXY(
                 xGetter: () => this.Offset1.Value,
-                xSetter: (newValue) => { this.Offset1 = Length.From(newValue, Length.Unit); },
+                xSetter: (newValue) => { this.Offset1 = Length.From(newValue, Breadth.Unit); },
                 yGetter: () => this.Offset2.Value,
-                ySetter: (newValue) => { this.Offset2 = Length.From(newValue, Length.Unit); },
+                ySetter: (newValue) => { this.Offset2 = Length.From(newValue, Breadth.Unit); },
                 false,
                 false
                 );
@@ -83,8 +84,8 @@ namespace Scaffold.Calculations
             var xg2 = new InteractiveGeometryQuantityOnXY(
                 xGetter: () => 0,
                 xSetter: null,
-                yGetter: () => this.Length2.Value,
-                ySetter: (newValue) => { this.Length2 = Length.From(newValue, Length2.Unit); },
+                yGetter: () => this.Height.Value,
+                ySetter: (newValue) => { this.Height = Length.From(newValue, Height.Unit); },
                 true,
                 true,
                 xOffset: () => this.Offset1.Value,
@@ -93,8 +94,8 @@ namespace Scaffold.Calculations
             geometry.Add(xg2);
 
             var xg3 = new InteractiveGeometryQuantityOnXY(
-                xGetter: () => this.Length.Value,
-                xSetter: (newValue) => { this.Length = Length.From(newValue, Length.Unit); },
+                xGetter: () => this.Breadth.Value,
+                xSetter: (newValue) => { this.Breadth = Length.From(newValue, Breadth.Unit); },
                 yGetter: () => 0,
                 ySetter: null,
                 true,
@@ -112,13 +113,13 @@ namespace Scaffold.Calculations
         {
             MomentOut = Moment * Multiplier;
 
-            ForceRequired = (Moment / Length).ToUnit(ForceUnit.Kilonewton);
+            ForceRequired = (Moment / Breadth).ToUnit(ForceUnit.Kilonewton);
 
             var lines = new List<Line>();
-            var topLeft = (Offset1.Value - Length.Value / 2, Offset2.Value + Length2.Value / 2);
-            var topRight = (Offset1.Value + Length.Value / 2, Offset2.Value + Length2.Value / 2);
-            var bottomRight = (Offset1.Value + Length.Value / 2, Offset2.Value - Length2.Value / 2);
-            var bottomLeft = (Offset1.Value - Length.Value / 2, Offset2.Value - Length2.Value / 2);
+            var topLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value + Height.Value / 2);
+            var topRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value + Height.Value / 2);
+            var bottomRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value - Height.Value / 2);
+            var bottomLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value - Height.Value / 2);
             lines.AddRange(CreateContinuousPath(new List<(double x, double y)> { topLeft, topRight, bottomRight, bottomLeft, topLeft }));
 
             _geometryBases.Clear();
@@ -129,11 +130,19 @@ namespace Scaffold.Calculations
         {
             var returnList = new List<IOutputItem>();
 
-            var outputs = new OutputItem("reffy", "This one goes first", "Done", new TextItem("We can explain a bit about the formula here. There is no longer a separate 'Narrative' property."));
+            var outputs = new OutputItem("reffy", "This one goes first", new TextItem("We can explain a bit about the formula here. There is no longer a separate 'Narrative' property."));
             outputs.Expressions.Add(new LatexItem(@"M = \frac{wl^2} {8}"));
             outputs.Expressions.Add(new TextItem("and then a bit more text whcih can now be in-line", true));
             outputs.Expressions.Add(new TextItem("and then an image"));
-            //outputs.Expressions.Add(new ImageOutputItem(new ImageFromSkBitmap(Utilities.CreateMultiCircleImage(Coordinates.Value, SKColors.Orange)), true));
+            outputs.Expressions.Add(new ImageItem(
+                new ImageFromSkBitmap(
+                    Utilities.CreateDetailedISectionBitmap(
+                        Height.Value,
+                        Breadth.Value,
+                        FlangeThickness.Value,
+                        WebThickness.Value,
+                        RootRadius.Value, SKColors.Orange))));
+            //outputs.Expressions.Add(new ImageItem(new ImageFromSkBitmap(Utilities.CreateMultiCircleImage([[50, 20, 10], [10,10,2]], SKColors.Orange)), true));
             outputs.Expressions.Add(new TextItem("and then another formula", true));
             outputs.Expressions.Add(new LatexItem(@"E = mc^2"));
             outputs.Expressions.Add(new TextItem("all of which can be set to in-line or new line"));
@@ -173,9 +182,40 @@ namespace Scaffold.Calculations
 
     public class MyDataHolder
     {
-        [CalcValueType(CalcValueType.Input, "P1", "Prop 1")]
+        [CalcValueType(CalcValueType.Input, "L_{col}", "Prop 1")]
         public Length FirstLength { get; set; } = new Length(10, LengthUnit.Meter);
-        [CalcValueType(CalcValueType.Input, "P2", "Prop Two")]
+        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
+
+        public MyDataHolder()
+        {
+        }
+
+        public MyDataHolder(double length, double forceyForce)
+        {
+            FirstLength = Length.From(length, LengthUnit.Meter);
+            ForceyForce = Force.From(forceyForce, ForceUnit.Kilonewton);
+        }
+    }
+
+    public class MyOtherDataHolder
+    {
+        [CalcValueType(CalcValueType.Input, "f_{ck}", "Char compressive strength")]
+        public Pressure ComeStr { get; set; } = new Pressure(35, PressureUnit.NewtonPerSquareMillimeter);
+        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
+        public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
+        [CalcValueType(CalcValueType.Input, @"\epsilon_t", "")]
+        public Ratio MyRatio { get; set; } = new Ratio(0.35, RatioUnit.DecimalFraction);
+
+        public MyOtherDataHolder()
+        {
+        }
+
+        public MyOtherDataHolder(double strength, double forceyForce, double ratio)
+        {
+            ComeStr = Pressure.From(strength, PressureUnit.NewtonPerSquareMillimeter);
+            ForceyForce = Force.From(forceyForce, ForceUnit.Kilonewton);
+            MyRatio = Ratio.From(ratio, RatioUnit.DecimalFraction);
+        }
     }
 }
