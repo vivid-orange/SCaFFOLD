@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Scaffold.Core;
 using Scaffold.Geometry;
 using Scaffold.Reader.Images;
 using Scaffold.Report;
@@ -19,8 +20,8 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "M", "Moment")]
         public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
 
-        [CalcValueType(CalcValueType.Input, "L_1", "Length 1", ["Geometry", "Length"])]
-        public Length Length { get; set; } = new Length(5, LengthUnit.Millimeter);
+        [CalcValueType(CalcValueType.Input, "B", "Breadth", ["Geometry", "Section"])]
+        public Length Breadth { get; set; } = new Length(200, LengthUnit.Millimeter);
 
         [CalcValueType(CalcValueType.Input, "C_x", "Centre X", ["Geometry", "Centre"])]
         public Length Offset1 { get; set; } = new Length(5, LengthUnit.Millimeter);
@@ -31,9 +32,17 @@ namespace Scaffold.Calculations
         [CalcValueType(CalcValueType.Input, "E", "Column height", ["Misc"])]
         public EmbeddedCalc ReducedHeight { get; set; } = new EmbeddedCalc();
 
+        [CalcValueType(CalcValueType.Input, "H", "Height", ["Geometry", "Section"])]
+        public Length Height { get; set; } = new Length(500, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "L_2", "Length 2", ["Geometry", "Length"])]
-        public Length Length2 { get; set; } = new Length(5, LengthUnit.Millimeter);
+        [CalcValueType(CalcValueType.Input, "T", "Flange", ["Geometry", "Section"])]
+        public Length FlangeThickness { get; set; } = new Length(25, LengthUnit.Millimeter);
+
+        [CalcValueType(CalcValueType.Input, "t", "Web", ["Geometry", "Section"])]
+        public Length WebThickness { get; set; } = new Length(12, LengthUnit.Millimeter);
+
+        [CalcValueType(CalcValueType.Input, "r", "Root radius", ["Geometry", "Section"])]
+        public Length RootRadius { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
         [CalcValueType(CalcValueType.Output, "M_o", "Moment out")]
@@ -64,9 +73,9 @@ namespace Scaffold.Calculations
         {
             var xg = new InteractiveGeometryQuantityOnXY(
                 xGetter: () => this.Offset1.Value,
-                xSetter: (newValue) => { this.Offset1 = Length.From(newValue, Length.Unit); },
+                xSetter: (newValue) => { this.Offset1 = Length.From(newValue, Breadth.Unit); },
                 yGetter: () => this.Offset2.Value,
-                ySetter: (newValue) => { this.Offset2 = Length.From(newValue, Length.Unit); },
+                ySetter: (newValue) => { this.Offset2 = Length.From(newValue, Breadth.Unit); },
                 false,
                 false
                 );
@@ -75,8 +84,8 @@ namespace Scaffold.Calculations
             var xg2 = new InteractiveGeometryQuantityOnXY(
                 xGetter: () => 0,
                 xSetter: null,
-                yGetter: () => this.Length2.Value,
-                ySetter: (newValue) => { this.Length2 = Length.From(newValue, Length2.Unit); },
+                yGetter: () => this.Height.Value,
+                ySetter: (newValue) => { this.Height = Length.From(newValue, Height.Unit); },
                 true,
                 true,
                 xOffset: () => this.Offset1.Value,
@@ -85,8 +94,8 @@ namespace Scaffold.Calculations
             geometry.Add(xg2);
 
             var xg3 = new InteractiveGeometryQuantityOnXY(
-                xGetter: () => this.Length.Value,
-                xSetter: (newValue) => { this.Length = Length.From(newValue, Length.Unit); },
+                xGetter: () => this.Breadth.Value,
+                xSetter: (newValue) => { this.Breadth = Length.From(newValue, Breadth.Unit); },
                 yGetter: () => 0,
                 ySetter: null,
                 true,
@@ -104,13 +113,13 @@ namespace Scaffold.Calculations
         {
             MomentOut = Moment * Multiplier;
 
-            ForceRequired = (Moment / Length).ToUnit(ForceUnit.Kilonewton);
+            ForceRequired = (Moment / Breadth).ToUnit(ForceUnit.Kilonewton);
 
             var lines = new List<Line>();
-            var topLeft = (Offset1.Value - Length.Value / 2, Offset2.Value + Length2.Value / 2);
-            var topRight = (Offset1.Value + Length.Value / 2, Offset2.Value + Length2.Value / 2);
-            var bottomRight = (Offset1.Value + Length.Value / 2, Offset2.Value - Length2.Value / 2);
-            var bottomLeft = (Offset1.Value - Length.Value / 2, Offset2.Value - Length2.Value / 2);
+            var topLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value + Height.Value / 2);
+            var topRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value + Height.Value / 2);
+            var bottomRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value - Height.Value / 2);
+            var bottomLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value - Height.Value / 2);
             lines.AddRange(CreateContinuousPath(new List<(double x, double y)> { topLeft, topRight, bottomRight, bottomLeft, topLeft }));
 
             _geometryBases.Clear();
@@ -125,7 +134,15 @@ namespace Scaffold.Calculations
             outputs.Expressions.Add(new LatexItem(@"M = \frac{wl^2} {8}"));
             outputs.Expressions.Add(new TextItem("and then a bit more text whcih can now be in-line", true));
             outputs.Expressions.Add(new TextItem("and then an image"));
-            outputs.Expressions.Add(new ImageItem(new ImageFromSkBitmap(Utilities.CreateMultiCircleImage([[50, 20, 10], [10,10,2]], SKColors.Orange)), true));
+            outputs.Expressions.Add(new ImageItem(
+                new ImageFromSkBitmap(
+                    Utilities.CreateDetailedISectionBitmap(
+                        Height.Value,
+                        Breadth.Value,
+                        FlangeThickness.Value,
+                        WebThickness.Value,
+                        RootRadius.Value, SKColors.Orange))));
+            //outputs.Expressions.Add(new ImageItem(new ImageFromSkBitmap(Utilities.CreateMultiCircleImage([[50, 20, 10], [10,10,2]], SKColors.Orange)), true));
             outputs.Expressions.Add(new TextItem("and then another formula", true));
             outputs.Expressions.Add(new LatexItem(@"E = mc^2"));
             outputs.Expressions.Add(new TextItem("all of which can be set to in-line or new line"));

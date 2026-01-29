@@ -98,7 +98,7 @@ namespace Scaffold.Calculations
             SKColor sectionColor)
         {
             // 1. Define Padding
-            float padding = 10f;
+            float padding = 2f;
 
             // 2. Cast doubles to floats for SkiaSharp
             float b = (float)breadth;
@@ -108,8 +108,8 @@ namespace Scaffold.Calculations
             float r = (float)rootRadius;
 
             // 3. Calculate Canvas Dimensions
-            int canvasWidth = (int)Math.Ceiling(b) + (int)(padding * 2);
-            int canvasHeight = (int)Math.Ceiling(h) + (int)(padding * 2);
+            int canvasWidth = (int)((Math.Ceiling(b))*.5) + (int)(padding * 2);
+            int canvasHeight = (int)((Math.Ceiling(h))*0.5) + (int)(padding * 2);
 
             SKBitmap bitmap = new SKBitmap(canvasWidth, canvasHeight);
 
@@ -117,6 +117,7 @@ namespace Scaffold.Calculations
             {
                 // 4. Set Background
                 canvas.Clear(SKColors.LightGray);
+                canvas.Scale(0.5f);
 
                 using (SKPaint paint = new SKPaint())
                 {
