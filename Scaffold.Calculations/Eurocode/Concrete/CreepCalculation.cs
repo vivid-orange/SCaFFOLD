@@ -4,12 +4,8 @@ using VividOrange.Sections.SectionProperties;
 
 namespace Scaffold.Calculations.Eurocode.Concrete;
 
-public class CreepCalculation : ICalculation
+public class CreepCalculation : Calculation
 {
-    public string CalculationTitle { get; set; }
-    public string EntityLabel { get; set; } = "Concrete Creep";
-    public CalcStatus Status { get; set; } = CalcStatus.None;
-
     [InputParameter("CMP", "Concrete Material Property")]
     public ConcreteMaterialProperties Concrete { get; set; } = new();
 
@@ -43,17 +39,14 @@ public class CreepCalculation : ICalculation
     [OutputParameter(@"\varphi_0", "Creep coefficient")]
     public double CreepCoefficient { get; private set; }
 
-    public List<IOutputItem> Expressions = new List<IOutputItem>();
-    public IList<IOutputItem> GetFormulae() => Expressions;
-
     public CreepCalculation()
     {
         Calculate();
     }
 
-    public void Calculate()
+    public override void Calculate()
     {
-        Expressions = new List<IOutputItem>();
+        Formulae = new List<IOutputItem>();
         Pressure fcm = Concrete.fcm;
         IProfile profile = new Rectangle(Width, Length);
         var sectionProperties = new SectionProperties(profile);
@@ -99,7 +92,7 @@ public class CreepCalculation : ICalculation
 
         betafcm = 16.8 / Math.Sqrt(fcm.Megapascals);
         //expressions.Add(
-        //    Formula.FormulaWithNarrative("")
+        //    Formula.FormulaWithNarrative(string.Empty)
         //    .AddExpression(@"\beta(f_{cm})=\frac{16.8}{\sqrt{f_{cm}}}=" + Math.Round(betafcm, 2))
         //    .AddRef("B.4")
         //    );

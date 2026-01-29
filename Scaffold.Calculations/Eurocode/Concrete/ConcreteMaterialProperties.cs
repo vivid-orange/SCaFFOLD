@@ -3,12 +3,8 @@ using VividOrange.Materials.StandardMaterials.En;
 
 namespace Scaffold.Calculations.Eurocode.Concrete
 {
-    public class ConcreteMaterialProperties : ICalculation
+    public class ConcreteMaterialProperties : Calculation
     {
-        public string CalculationTitle { get; set; }
-        public string EntityLabel { get; set; } = "Concrete Material Properties";
-        public CalcStatus Status { get; set; } = CalcStatus.None;
-
         [InputParameter("Grd", "Grade")]
         public EnConcreteGrade ConcreteGrade { get; set; } = EnConcreteGrade.C30_37;
 

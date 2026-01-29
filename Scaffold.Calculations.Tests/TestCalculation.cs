@@ -1,13 +1,7 @@
-﻿using Scaffold.Report;
-
-namespace Scaffold.Calculations
+﻿namespace Scaffold.Calculations
 {
-    public class TestCalculation : ICalculation
+    public class TestCalculation : Calculation
     {
-        public string CalculationTitle { get; set; } = "";
-        public string EntityLabel { get; set; } = "Test Calculation";
-        public CalcStatus Status { get; set; } = CalcStatus.None;
-
         [InputParameter(@"D", "Multiplier")]
         public double Multiplier { get; set; } = 0;
 
@@ -17,12 +11,7 @@ namespace Scaffold.Calculations
         [OutputParameter(@"R", "Result")]
         public double Result { get; private set; } = 0;
 
-        public IList<IOutputItem> GetFormulae()
-        {
-            return new List<IOutputItem>();
-        }
-
-        public void Calculate()
+        public override void Calculate()
         {
             Result = Force.Value * Multiplier;
         }

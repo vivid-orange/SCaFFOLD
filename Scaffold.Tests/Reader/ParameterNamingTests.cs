@@ -221,7 +221,7 @@ public class ParameterNamingTests
     public void CreateTla_EmptyString_ReturnsNul()
     {
         // Arrange
-        const string input = "";
+        const string input = string.Empty;
 
         // Act
         string result = ParameterNaming.CreateThreeLetterAcronym(input);
@@ -440,7 +440,7 @@ public class ParameterNamingTests
     public void SplitPascalCaseToString_EmptyString_ReturnsEmpty()
     {
         // Arrange
-        const string input = "";
+        const string input = string.Empty;
 
         // Act
         string result = ParameterNaming.SplitPascalCaseToString(input);

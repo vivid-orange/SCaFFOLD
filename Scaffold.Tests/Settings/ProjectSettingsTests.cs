@@ -33,7 +33,7 @@ public class ProjectSettingsTests
     [Theory]
     [InlineData("TestProject")]
     [InlineData("My Project 123")]
-    [InlineData("")]
+    [InlineData(string.Empty)]
     public void ProjectName_CanBeSet(string projectName)
     {
         // Arrange
@@ -49,7 +49,7 @@ public class ProjectSettingsTests
     [Theory]
     [InlineData("PRJ-001")]
     [InlineData("123456")]
-    [InlineData("")]
+    [InlineData(string.Empty)]
     public void ProjectNumber_CanBeSet(string projectNumber)
     {
         // Arrange

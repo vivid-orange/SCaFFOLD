@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace Scaffold.Report;
+﻿namespace Scaffold.Report;
 
 public class OutputItem : IOutputItem
 {
@@ -15,10 +13,11 @@ public class OutputItem : IOutputItem
         Status = status;
     }
 
-    public string EntityLabel { get; } = "";
+    public string EntityLabel { get; set; } = string.Empty;
+    public string Symbol { get; set; } = string.Empty;
     public List<IContentItem> Expressions { get; set; } = [];
-    public string Reference { get; set; } = "";
-    public string Conclusion { get; set; } = "";
+    public string Reference { get; set; } = string.Empty;
+    public string Conclusion { get; set; } = string.Empty;
     public CalcStatus Status { get; set; } = CalcStatus.None;
     public ICalcImage Image { get; set; }
 

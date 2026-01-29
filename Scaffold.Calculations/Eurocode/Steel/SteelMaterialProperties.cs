@@ -1,15 +1,10 @@
-﻿using Scaffold.Report;
-using VividOrange.Materials;
+﻿using VividOrange.Materials;
 using VividOrange.Materials.StandardMaterials.En;
 
 namespace Scaffold.Calculations.Eurocode.Steel
 {
-    public class SteelMaterialProperties : ICalculation
+    public class SteelMaterialProperties : Calculation
     {
-        public string CalculationTitle { get; set; }
-        public string EntityLabel { get; set; } = "Steel Material Properties";
-        public CalcStatus Status { get; set; } = CalcStatus.None;
-
         [InputParameter("Grd", "Grade")]
         public EnSteelGrade Grade { get; set; } = EnSteelGrade.S355;
 
@@ -54,12 +49,5 @@ namespace Scaffold.Calculations.Eurocode.Steel
         {
             Calculate();
         }
-
-        public IList<IOutputItem> GetFormulae()
-        {
-            return new List<IOutputItem>();
-        }
-
-        public void Calculate() { }
     }
 }

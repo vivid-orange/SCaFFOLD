@@ -6,18 +6,17 @@ using SkiaSharp;
 
 namespace Scaffold.Calculations
 {
-    public class TestCalc2 : ICalculation, IInteractiveGeometry
+    public class TestCalc2 : Calculation, IInteractiveGeometry
     {
-
-        public string EntityLabel { get; } = "Test calc";
-        public string CalculationTitle { get; set; } = "This is my test calc";
+        public override string CalculationTitle { get; } = "This is my test calc";
+        public override string EntityLabel { get; } = "Test calc";
 
 
         [CalcParameter(CalcParameterType.Input, "I", "Multiplier")]
         public double Multiplier { get; set; }
 
         [CalcParameter(CalcParameterType.Input, "M", "Moment")]
-        public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
+        public Moment Moment { get; set; } = new Moment(20, MomentUnit.KilonewtonMeter);
 
         [CalcParameter(CalcParameterType.Input, "B", "Breadth", ["Geometry", "Section"])]
         public Length Breadth { get; set; } = new Length(200, LengthUnit.Millimeter);
@@ -45,7 +44,7 @@ namespace Scaffold.Calculations
 
 
         [CalcParameter(CalcParameterType.Output, "M_o", "Moment out")]
-        public Torque MomentOut { get; private set; } = new Torque(0, TorqueUnit.KilonewtonMeter);
+        public Moment MomentOut { get; private set; } = new Moment(0, MomentUnit.KilonewtonMeter);
 
 
         [CalcParameter(CalcParameterType.Output, "F_req", "Force required")]
@@ -59,8 +58,6 @@ namespace Scaffold.Calculations
 
         [CalcParameter(CalcParameterType.Input, "LL2", "List of lists of more things", ["Misc"])]
         public List<List<MyDataHolder>> MoreThings { get; set; } = [[new MyDataHolder(100, 200), new MyDataHolder(300, 400)], [new MyDataHolder(500, 600)]];
-
-        public CalcStatus Status => CalcStatus.None;
 
         List<IInteractiveGeometryItem> geometry = new List<IInteractiveGeometryItem>();
         public List<IInteractiveGeometryItem> InteractiveGeometryItems => geometry;
@@ -108,7 +105,7 @@ namespace Scaffold.Calculations
 
 
 
-        public void Calculate()
+        public override void Calculate()
         {
             MomentOut = Moment * Multiplier;
 
@@ -125,7 +122,7 @@ namespace Scaffold.Calculations
             _geometryBases.AddRange(lines);
 
         }
-        public IList<IOutputItem> GetFormulae()
+        public override IList<IOutputItem> GetFormulae()
         {
             var returnList = new List<IOutputItem>();
 

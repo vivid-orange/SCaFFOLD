@@ -1,6 +1,6 @@
 ﻿namespace Scaffold.Report;
 
-public interface IOutputItem : ICalculationStatus
+public interface IOutputItem : ICalcParameter
 {
     List<IContentItem> Expressions { get; }
     string Reference { get; }

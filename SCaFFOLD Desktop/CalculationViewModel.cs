@@ -142,7 +142,7 @@ namespace Scaffold.Desktop
             ObservableCollection<CalcNodeViewModel> currentLevel = nodes;
             if (model.Headings != null)
             {
-                foreach (var heading in model.Headings)
+                foreach (string? heading in model.Headings)
                 {
                     CalcNodeViewModel? group = currentLevel.FirstOrDefault(n => n.Name == heading && n.IsGroup);
                     if (group != null)
@@ -224,7 +224,7 @@ namespace Scaffold.Desktop
             Action<T> setter = (val) => collection[index] = val;
             string name = $"[{index}]";
 
-            return new DelegateCalcValue<T>(getter, setter, "", name, null);
+            return new DelegateCalcValue<T>(getter, setter, string.Empty, name, null);
         }
 
         private void OnCalculationUpdate()
