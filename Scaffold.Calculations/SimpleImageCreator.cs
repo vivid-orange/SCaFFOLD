@@ -1,10 +1,10 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using SkiaSharp;
 
 namespace Scaffold.Calculations
 {
@@ -108,8 +108,8 @@ namespace Scaffold.Calculations
             float r = (float)rootRadius;
 
             // 3. Calculate Canvas Dimensions
-            int canvasWidth = (int)((Math.Ceiling(b))*.5) + (int)(padding * 2);
-            int canvasHeight = (int)((Math.Ceiling(h))*0.5) + (int)(padding * 2);
+            int canvasWidth = (int)((Math.Ceiling(b)) * .5) + (int)(padding * 2);
+            int canvasHeight = (int)((Math.Ceiling(h)) * 0.5) + (int)(padding * 2);
 
             SKBitmap bitmap = new SKBitmap(canvasWidth, canvasHeight);
 

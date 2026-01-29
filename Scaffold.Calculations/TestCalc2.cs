@@ -56,10 +56,10 @@ namespace Scaffold.Calculations
         public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
 
         [CalcValueType(CalcValueType.Input, "L", "List of things", ["Misc"])]
-        public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35,20, 0.35), new MyOtherDataHolder(40,20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
+        public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35, 20, 0.35), new MyOtherDataHolder(40, 20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
 
         [CalcValueType(CalcValueType.Input, "LL2", "List of lists of more things", ["Misc"])]
-        public List<List<MyDataHolder>> MoreThings { get; set; } = [[ new MyDataHolder(100, 200), new MyDataHolder(300, 400) ] , [new MyDataHolder(500,600)]];
+        public List<List<MyDataHolder>> MoreThings { get; set; } = [[new MyDataHolder(100, 200), new MyDataHolder(300, 400)], [new MyDataHolder(500, 600)]];
 
         public CalcStatus Status => CalcStatus.None;
 

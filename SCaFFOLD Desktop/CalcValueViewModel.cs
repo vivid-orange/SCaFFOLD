@@ -98,7 +98,8 @@ namespace Scaffold.Desktop
             // FIX: Check for the base CalcValueTypeAttribute and ensure Type is Input.
             // This covers both [CalcValueType(CalcValueType.Input)] AND [InputCalcValue].
             bool isComplex = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                     .Any(p => {
+                                     .Any(p =>
+                                     {
                                          var attr = p.GetCustomAttribute<CalcValueTypeAttribute>();
                                          return attr != null && attr.Type == CalcValueType.Input;
                                      });
