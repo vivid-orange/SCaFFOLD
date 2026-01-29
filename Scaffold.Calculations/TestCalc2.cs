@@ -14,8 +14,8 @@ namespace Scaffold.Calculations
         // public property with getter and setter will be treated as input by reader
         public double Multiplier { get; set; }
 
-        // Decorate a property with attribute to set custom symbol and display name
-        [CalcParameter(CalcParameterType.Input, "M", "Moment")]
+        // Decorate a property with attribute to set custom symbol
+        [InputParameter("M")]
         public Moment Moment { get; set; } = new Moment(20, MomentUnit.KilonewtonMeter);
 
         // Optionally add headings for grouping in UI

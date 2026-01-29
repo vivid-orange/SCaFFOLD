@@ -109,6 +109,11 @@ public static class CalculationReader
                     continue;
                 }
 
+                if (attr.EntityLabel is null or "")
+                {
+                    attr.EntityLabel = ParameterNaming.SplitPascalCaseToString(prop.Name);
+                }
+
                 IPropertyAdapter adapter = CreateAdapter(type, prop, attr);
                 if (attr.Type == CalcParameterType.Input)
                 {
