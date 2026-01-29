@@ -20,7 +20,7 @@ public class CalcNodeViewModel : ViewModelBase
     // True if this is just a heading/folder
     public bool IsGroup => Value == null;
 
-    public bool IsExpanded { get; set; } = true;
+    public bool IsExpanded { get; set; } = false;
 
     // Constructor for Group/Heading
     public CalcNodeViewModel(string name)

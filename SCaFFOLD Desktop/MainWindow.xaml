@@ -51,25 +51,59 @@
 
                     <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="Gray" FontSize="11"/>
 
-                    <Button Grid.Column="4" Content="..." Command="{Binding EditCommand}" Width="25" Visibility="{Binding IsComplex, Converter={StaticResource BoolToVis}}"/>
+                    <Button Grid.Column="4" Content="Edit" Command="{Binding EditCommand}" Width="25" Visibility="{Binding IsCalculation, Converter={StaticResource BoolToVis}}"/>
                 </Grid>
             </Border>
         </DataTemplate>
 
-        <DataTemplate x:Key="OutputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
-            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5" Background="#FAFAFA">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="120" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="60" />
-                    </Grid.ColumnDefinitions>
-                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
-                    <TextBlock Grid.Column="2" Text="{Binding Value}" FontWeight="Bold" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Foreground="Gray" FontSize="11"/>
-                </Grid>
+        <DataTemplate x:Key="TableInputTemplate" DataType="{x:Type local:CalcValueViewModel}">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5" Margin="5,0,0,5">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <math:FormulaControl Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding DisplayName}" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{Binding TableHeaders}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="120" Background="#EEE" BorderBrush="#CCC" BorderThickness="0,0,1,1" Padding="5">
+                                            <math:FormulaControl Formula="{Binding}" Scale="16" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <ItemsControl ItemsSource="{Binding TableRows}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ItemsControl ItemsSource="{Binding}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Width="120" BorderBrush="#EEE" BorderThickness="0,0,1,1" Padding="2">
+                                                        <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" BorderThickness="0" HorizontalContentAlignment="Center"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </StackPanel>
             </Border>
         </DataTemplate>
 
@@ -94,11 +128,37 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Value.IsTable}" Value="True">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <ContentControl Content="{Binding Value}" ContentTemplate="{StaticResource TableInputTemplate}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </ContentControl.Style>
             </ContentControl>
         </HierarchicalDataTemplate>
+
+        <DataTemplate x:Key="OutputItemTemplate" DataType="{x:Type local:CalcValueViewModel}">
+            <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5" Background="#FAFAFA">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="60" />
+                    </Grid.ColumnDefinitions>
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Value}" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Foreground="Gray" FontSize="11"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
 
         <HierarchicalDataTemplate x:Key="TreeOutputTemplate" DataType="{x:Type local:CalcNodeViewModel}" ItemsSource="{Binding Children}">
             <ContentControl Content="{Binding}">
@@ -135,51 +195,31 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="80" />
                     </Grid.ColumnDefinitions>
-
-                    <!--<TextBlock Grid.Column="0" Text="{Binding Ref}" 
-                               FontWeight="Bold" Foreground="Gray" VerticalAlignment="Top"/>-->
-
                     <StackPanel Grid.Column="1" Margin="10,0">
-
                         <ItemsControl ItemsSource="{Binding Rows}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-
                                     <ItemsControl ItemsSource="{Binding Items}" Margin="0,0,0,5">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal" />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
-
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Margin="0,0,5,2" VerticalAlignment="Center">
-
-                                                    <math:FormulaControl Formula="{Binding Content}" 
-                                                                         Scale="20" 
-                                                                         Visibility="{Binding IsLatex, Converter={StaticResource BoolToVis}}"/>
-
-                                                    <TextBlock Text="{Binding Content}" 
-                                                               Foreground="#333"
-                                                               Visibility="{Binding IsText, Converter={StaticResource BoolToVis}}"/>
-
-                                                    <Image Source="{Binding Image}" 
-                                                           MaxHeight="300" 
-                                                           Stretch="Uniform"
-                                                           Visibility="{Binding IsImage, Converter={StaticResource BoolToVis}}"/>
+                                                    <math:FormulaControl Formula="{Binding Content}" Scale="20" Visibility="{Binding IsLatex, Converter={StaticResource BoolToVis}}"/>
+                                                    <TextBlock Text="{Binding Content}" Foreground="#333" Visibility="{Binding IsText, Converter={StaticResource BoolToVis}}"/>
+                                                    <Image Source="{Binding Image}" MaxHeight="300" Stretch="Uniform" Visibility="{Binding IsImage, Converter={StaticResource BoolToVis}}"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-
-                    <TextBlock Grid.Column="2" Text="{Binding Conclusion}" 
-                               FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Conclusion}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                 </Grid>
             </Border>
         </DataTemplate>
@@ -202,7 +242,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="{Binding TypeName}" Command="{Binding DataContext.NavigateUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" Cursor="Hand"/>
+                        <Button Content="{Binding CalculationTitle}" Command="{Binding DataContext.NavigateUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" Cursor="Hand"/>
                         <TextBlock Text=" > " Margin="5,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
@@ -268,13 +308,7 @@
                 </Grid>
             </Grid>
 
-            <GridSplitter Grid.Column="1" 
-                  Width="5" 
-                  HorizontalAlignment="Center" 
-                  VerticalAlignment="Stretch" 
-                  ResizeDirection="Columns" 
-                  Background="#DDDDDD" 
-                  ShowsPreview="True"/>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" ResizeDirection="Columns" Background="#DDDDDD" ShowsPreview="True"/>
 
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
@@ -289,13 +323,11 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="Detailed Output" 
-                               FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Row="0" Text="Detailed Output" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
 
                     <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="2">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <ItemsControl ItemsSource="{Binding CalculationDetails}" 
-                                          ItemTemplate="{StaticResource DetailItemTemplate}"/>
+                            <ItemsControl ItemsSource="{Binding CalculationDetails}" ItemTemplate="{StaticResource DetailItemTemplate}"/>
                         </ScrollViewer>
                     </Border>
                 </Grid>
@@ -303,92 +335,37 @@
                 <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" Background="#DDDDDD" ShowsPreview="True"/>
 
                 <Grid Grid.Row="2" Visibility="{Binding HasGeometry, Converter={StaticResource BoolToVis}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
                     <TextBlock Grid.Row="0" Text="Interactive Geometry" FontSize="16" FontWeight="Bold" Margin="0,5,0,5"/>
-
                     <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Background="White" ClipToBounds="True">
                         <Viewbox Stretch="Uniform">
                             <Canvas Width="1000" Height="1000" Background="Transparent">
-
-                                <!--<ItemsControl ItemsSource="{Binding Geometry.Lines}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <Canvas/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Line X1="{Binding X1}" Y1="{Binding Y1}" 
-                                                  X2="{Binding X2}" Y2="{Binding Y2}" 
-                                                  Stroke="#333333" StrokeThickness="2"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>-->
-
                                 <ItemsControl ItemsSource="{Binding Geometry.StaticGeometry}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <Canvas/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
-
                                     <ItemsControl.Resources>
                                         <DataTemplate DataType="{x:Type local:GeometryLineViewModel}">
-                                            <Line X1="{Binding X1}" Y1="{Binding Y1}" 
-                                                  X2="{Binding X2}" Y2="{Binding Y2}" 
-                                                  Stroke="#333333" StrokeThickness="2"/>
-                                        </DataTemplate>
-
-                                        <DataTemplate DataType="{x:Type local:GeometryArcViewModel}">
-                                            <Path Stroke="#333333" StrokeThickness="2">
-                                                <Path.Data>
-                                                    <PathGeometry>
-                                                        <PathFigure StartPoint="{Binding StartPoint}">
-                                                            <ArcSegment Point="{Binding EndPoint}" 
-                                                                        Size="{Binding Size}" 
-                                                                        RotationAngle="{Binding RotationAngle}"
-                                                                        IsLargeArc="{Binding IsLargeArc}"
-                                                                        SweepDirection="{Binding SweepDirection}"/>
-                                                        </PathFigure>
-                                                    </PathGeometry>
-                                                </Path.Data>
-                                            </Path>
+                                            <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="#333333" StrokeThickness="2"/>
                                         </DataTemplate>
                                     </ItemsControl.Resources>
                                 </ItemsControl>
-
                                 <ItemsControl ItemsSource="{Binding Geometry.Points}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <Canvas/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
-
                                     <ItemsControl.ItemContainerStyle>
                                         <Style TargetType="ContentPresenter">
                                             <Setter Property="Canvas.Left" Value="{Binding X}"/>
                                             <Setter Property="Canvas.Top" Value="{Binding Y}"/>
                                         </Style>
                                     </ItemsControl.ItemContainerStyle>
-
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Thumb DragDelta="Thumb_DragDelta" Cursor="SizeAll">
-
-                                                <Thumb.ToolTip>
-                                                    <ToolTip>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <math:FormulaControl Formula="{Binding Symbol}" Scale="20" VerticalAlignment="Center"/>
-                                                            <TextBlock Text=": " VerticalAlignment="Center" Margin="2,0"/>
-                                                            <TextBlock Text="{Binding Summary}" VerticalAlignment="Center"/>
-                                                        </StackPanel>
-                                                    </ToolTip>
-                                                </Thumb.ToolTip>
-
                                                 <Thumb.Template>
                                                     <ControlTemplate>
                                                         <Grid>
@@ -409,7 +386,6 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-
                             </Canvas>
                         </Viewbox>
                     </Border>

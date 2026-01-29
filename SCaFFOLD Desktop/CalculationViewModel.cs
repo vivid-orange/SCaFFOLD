@@ -1,255 +1,246 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Input;
+using Scaffold.Core;
 using Scaffold.Geometry;
 using Scaffold.Reader;
-using Scaffold.Report;
 
-namespace Scaffold.Desktop;
-
-public class CalculationViewModel : ViewModelBase
+namespace Scaffold.Desktop
 {
-    private ICalculation _currentCalculation;
-    private readonly Stack<ICalculation> _navigationStack = new Stack<ICalculation>();
-
-    public ObservableCollection<ICalculation> Breadcrumbs { get; } = [];
-
-    // CHANGED: Now collections of Nodes (Tree Roots)
-    public ObservableCollection<CalcNodeViewModel> Inputs { get; } = [];
-    public ObservableCollection<CalcNodeViewModel> Outputs { get; } = [];
-    public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
-
-    public string CurrentTitle => _currentCalculation?.CalculationTitle;
-    public ICommand NavigateUpCommand { get; }
-
-    private InteractiveGeometryViewModel _geometryVm;
-    public InteractiveGeometryViewModel Geometry
+    public class CalculationViewModel : ViewModelBase
     {
-        get => _geometryVm;
-        set { _geometryVm = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasGeometry)); }
-    }
-    public bool HasGeometry => Geometry != null;
+        private ICalculation _currentCalculation;
+        private readonly Stack<ICalculation> _navigationStack = new Stack<ICalculation>();
 
-    public CalculationViewModel(ICalculation rootCalculation)
-    {
-        NavigateUpCommand = new RelayCommand(NavigateBack);
-        NavigateTo(rootCalculation);
-    }
+        public ObservableCollection<ICalculation> Breadcrumbs { get; } = [];
+        public ObservableCollection<CalcNodeViewModel> Inputs { get; } = [];
+        public ObservableCollection<CalcNodeViewModel> Outputs { get; } = [];
+        public ObservableCollection<OutputItemViewModel> CalculationDetails { get; } = [];
 
-    private void NavigateTo(ICalculation calculation)
-    {
-        if (_currentCalculation != null && _currentCalculation != calculation)
+        public string CurrentTitle => _currentCalculation.CalculationTitle;
+        public ICommand NavigateUpCommand { get; }
+
+        private InteractiveGeometryViewModel _geometryVm;
+        public InteractiveGeometryViewModel Geometry
         {
-            _navigationStack.Push(_currentCalculation);
+            get => _geometryVm;
+            set { _geometryVm = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasGeometry)); }
+        }
+        public bool HasGeometry => Geometry != null;
+
+        public CalculationViewModel(ICalculation rootCalculation)
+        {
+            NavigateUpCommand = new RelayCommand(NavigateBack);
+            NavigateTo(rootCalculation);
         }
 
-        _currentCalculation = calculation;
-        UpdateBreadcrumbs();
-        RefreshData();
-    }
-
-    private void NavigateBack(object targetCalculation)
-    {
-        var target = targetCalculation as ICalculation;
-        if (target == null)
+        private void NavigateTo(ICalculation calculation)
         {
-            return;
-        }
-
-        if (_currentCalculation == target)
-        {
-            return;
-        }
-
-        if (_navigationStack.Contains(target))
-        {
-            while (_navigationStack.Count > 0 && _navigationStack.Peek() != target)
+            if (_currentCalculation != null && _currentCalculation != calculation)
             {
-                _navigationStack.Pop();
+                _navigationStack.Push(_currentCalculation);
             }
-            if (_navigationStack.Count > 0)
+
+            _currentCalculation = calculation;
+            UpdateBreadcrumbs();
+            RefreshData();
+        }
+
+        private void NavigateBack(object targetCalculation)
+        {
+            var target = targetCalculation as ICalculation;
+            if (target == null) return;
+            if (_currentCalculation == target) return;
+
+            if (_navigationStack.Contains(target))
+            {
+                while (_navigationStack.Count > 0 && _navigationStack.Peek() != target)
+                {
+                    _navigationStack.Pop();
+                }
+                if (_navigationStack.Count > 0)
+                {
+                    _currentCalculation = _navigationStack.Pop();
+                }
+            }
+            else if (_navigationStack.Count > 0)
             {
                 _currentCalculation = _navigationStack.Pop();
             }
-        }
-        else if (_navigationStack.Count > 0)
-        {
-            _currentCalculation = _navigationStack.Pop();
-        }
 
-        UpdateBreadcrumbs();
-        RefreshData();
-    }
-
-    private void UpdateBreadcrumbs()
-    {
-        Breadcrumbs.Clear();
-        foreach (ICalculation? item in _navigationStack.Reverse())
-        {
-            Breadcrumbs.Add(item);
-        }
-        if (_currentCalculation != null)
-        {
-            Breadcrumbs.Add(_currentCalculation);
-        }
-        OnPropertyChanged(nameof(CurrentTitle));
-    }
-
-    private void RefreshData()
-    {
-        Inputs.Clear();
-        Outputs.Clear();
-        CalculationDetails.Clear();
-        // Geometry = ... (Reset geometry logic)
-
-        if (_currentCalculation == null)
-        {
-            return;
+            UpdateBreadcrumbs();
+            RefreshData();
         }
 
-        // 1. Inputs - Recursive Build
-        List<ICalcValue> rawInputs = CalculationReader.GetInputs(_currentCalculation);
-        BuildTreeNodes(Inputs, rawInputs, isInput: true);
-
-        // 2. Outputs - Recursive Build
-        List<ICalcValue> rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
-        BuildTreeNodes(Outputs, rawOutputs, isInput: false);
-
-        // 3. Details & Geometry
-        RebuildCalculationDetails();
-        if (_currentCalculation is IInteractiveGeometry interactiveCalc)
+        private void UpdateBreadcrumbs()
         {
-            Geometry = new InteractiveGeometryViewModel(interactiveCalc, OnCalculationUpdate);
-        }
-    }
-
-    private void BuildTreeNodes(ObservableCollection<CalcNodeViewModel> collection, List<ICalcValue> values, bool isInput)
-    {
-        collection.Clear();
-        foreach (ICalcValue item in values)
-        {
-            AddRecursive(collection, item, isInput);
-        }
-    }
-
-    private void AddRecursive(ObservableCollection<CalcNodeViewModel> nodes, ICalcValue model, bool isInput)
-    {
-        // Create the VM for this value
-        var vm = new CalcValueViewModel(model, OnCalculationUpdate);
-
-        // 1. Find Insertion Point (Handle Headings)
-        ObservableCollection<CalcNodeViewModel> currentLevel = nodes;
-        if (model.Headings != null)
-        {
-            foreach (string? heading in model.Headings)
+            Breadcrumbs.Clear();
+            foreach (var item in _navigationStack.Reverse())
             {
-                CalcNodeViewModel? group = nodes.FirstOrDefault(n => n.Name == heading && n.IsGroup);
+                Breadcrumbs.Add(item);
+            }
+            if (_currentCalculation != null)
+            {
+                Breadcrumbs.Add(_currentCalculation);
+            }
+            OnPropertyChanged(nameof(CurrentTitle));
+        }
 
-                // If searching inside a previous group, look in its children
-                if (group != null)
-                {
-                    // Found existing group at this level
-                    currentLevel = group.Children;
-                }
-                else
-                {
-                    // Create new group
-                    var newGroup = new CalcNodeViewModel(heading);
-                    currentLevel.Add(newGroup);
-                    currentLevel = newGroup.Children;
-                }
+        private void RefreshData()
+        {
+            Inputs.Clear();
+            Outputs.Clear();
+            CalculationDetails.Clear();
+
+            Geometry = null;
+
+            if (_currentCalculation == null) return;
+
+            // 1. Inputs
+            var rawInputs = CalculationReader.GetInputs(_currentCalculation);
+            BuildTreeNodes(Inputs, rawInputs, isInput: true);
+
+            // 2. Outputs
+            var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
+            BuildTreeNodes(Outputs, rawOutputs, isInput: false);
+
+            // 3. Details
+            RebuildCalculationDetails();
+
+            // 4. Interactive Geometry
+            if (_currentCalculation is IInteractiveGeometry interactiveCalc)
+            {
+                Geometry = new InteractiveGeometryViewModel(interactiveCalc, OnCalculationUpdate);
             }
         }
 
-        // 2. Create the Node for this Data Item
-        var itemNode = new CalcNodeViewModel(vm);
-        currentLevel.Add(itemNode);
-
-        // 3. RECURSION: Check if this item has children (Complex or Calculation)
-        if (vm.IsComplex)
+        private void BuildTreeNodes(ObservableCollection<CalcNodeViewModel> collection, List<ICalcValue> values, bool isInput)
         {
-            // Drill down: Get children using the new ICalcValue methods
-            List<ICalcValue> children = isInput ? model.GetChildInputs() : model.GetChildOutputs();
-
-            foreach (ICalcValue? child in children)
+            collection.Clear();
+            foreach (var item in values)
             {
-                AddRecursive(itemNode.Children, child, isInput);
+                AddRecursive(collection, item, isInput);
             }
         }
-        // 4. RECURSION: Handle Collections
-        else if (vm.IsCollection)
+
+        private void AddRecursive(ObservableCollection<CalcNodeViewModel> nodes, ICalcValue model, bool isInput)
         {
-            // Iterate the collection items
-            // Note: CalcValueViewModel.RawValue needs to act as the bridge here
-            if (vm.RawValue is IEnumerable collection)
+            var vm = new CalcValueViewModel(model, OnCalculationUpdate, (calc) => NavigateTo(calc));
+
+            // Headings Logic
+            ObservableCollection<CalcNodeViewModel> currentLevel = nodes;
+            if (model.Headings != null)
             {
-                int index = 0;
-                foreach (object? obj in collection)
+                foreach (var heading in model.Headings)
                 {
-                    if (obj == null)
+                    var group = currentLevel.FirstOrDefault(n => n.Name == heading && n.IsGroup);
+                    if (group != null)
                     {
-                        continue;
+                        currentLevel = group.Children;
                     }
-
-                    // Create a "Folder" node for the item (e.g. "[0] Beam")
-                    string label = $"[{index}] {obj.GetType().Name}";
-                    var arrayNode = new CalcNodeViewModel(label);
-                    itemNode.Children.Add(arrayNode);
-
-                    // Scan the item for inputs/outputs
-                    List<ICalcValue> itemProps = isInput ? ObjectReader.GetInputs(obj) : ObjectReader.GetOutputs(obj);
-
-                    foreach (ICalcValue? prop in itemProps)
+                    else
                     {
-                        AddRecursive(arrayNode.Children, prop, isInput);
+                        var newGroup = new CalcNodeViewModel(heading);
+                        currentLevel.Add(newGroup);
+                        currentLevel = newGroup.Children;
                     }
-                    index++;
+                }
+            }
+
+            var itemNode = new CalcNodeViewModel(vm);
+            currentLevel.Add(itemNode);
+
+            // --- STOP RECURSION CHECKS ---
+
+            // 1. If it's a Calculation, stop (displayed as link)
+            if (model.IsICalculation) return;
+
+            // 2. If it's a Table (Single List of Complex Objects), configure and stop
+            // The ViewModel will populate TableHeaders/TableRows, and the View will switch template.
+            if (isInput && vm.TryConfigureAsTable()) return;
+
+            // --- CONTINUE RECURSION ---
+
+            if (model.IsComplexValue)
+            {
+                var children = isInput ? model.GetChildInputs() : model.GetChildOutputs();
+                foreach (var child in children)
+                {
+                    AddRecursive(itemNode.Children, child, isInput);
+                }
+            }
+            else if (model.IsCollection)
+            {
+                if (vm.RawValue is IList list)
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        ICalcValue itemWrapper = CreateCollectionItemWrapper(list, i);
+                        if (itemWrapper != null)
+                        {
+                            AddRecursive(itemNode.Children, itemWrapper, isInput);
+                        }
+                    }
                 }
             }
         }
-    }
 
-    private void OnCalculationUpdate()
-    {
-        _currentCalculation.Calculate();
-
-        // Refresh Values (Recursive)
-        RefreshNodes(Inputs);
-
-        // Rebuild Outputs (Structure might change)
-        Outputs.Clear();
-        List<ICalcValue> rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
-        BuildTreeNodes(Outputs, rawOutputs, isInput: false);
-
-        RebuildCalculationDetails();
-        Geometry?.Refresh();
-    }
-
-    private void RefreshNodes(ObservableCollection<CalcNodeViewModel> nodes)
-    {
-        foreach (CalcNodeViewModel node in nodes)
+        private ICalcValue CreateCollectionItemWrapper(IList collection, int index)
         {
-            if (node.IsData)
-            {
-                node.Value.Refresh();
-            }
+            object item = collection[index];
+            if (item == null) return null;
 
-            if (node.Children.Count > 0)
+            Type itemType = item.GetType();
+
+            MethodInfo method = typeof(CalculationViewModel).GetMethod(nameof(CreateWrapperGeneric), BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo generic = method.MakeGenericMethod(itemType);
+
+            return (ICalcValue)generic.Invoke(this, new object[] { collection, index });
+        }
+
+        private ICalcValue CreateWrapperGeneric<T>(IList collection, int index)
+        {
+            Func<T> getter = () => (T)collection[index];
+            Action<T> setter = (val) => collection[index] = val;
+            string name = $"[{index}]";
+
+            return new DelegateCalcValue<T>(getter, setter, "", name, null);
+        }
+
+        private void OnCalculationUpdate()
+        {
+            _currentCalculation.Calculate();
+            RefreshNodes(Inputs);
+            Outputs.Clear();
+            var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
+            BuildTreeNodes(Outputs, rawOutputs, isInput: false);
+            RebuildCalculationDetails();
+            Geometry?.Refresh();
+        }
+
+        private void RefreshNodes(ObservableCollection<CalcNodeViewModel> nodes)
+        {
+            foreach (var node in nodes)
             {
-                RefreshNodes(node.Children);
+                if (node.IsData) node.Value.Refresh();
+                if (node.Children.Count > 0) RefreshNodes(node.Children);
             }
         }
-    }
 
-    private void RebuildCalculationDetails()
-    {
-        CalculationDetails.Clear();
-        IList<IOutputItem> newItems = _currentCalculation.GetFormulae();
-        if (newItems != null)
+        private void RebuildCalculationDetails()
         {
-            foreach (IOutputItem? item in newItems)
+            CalculationDetails.Clear();
+            var newItems = _currentCalculation.GetFormulae();
+            if (newItems != null)
             {
-                CalculationDetails.Add(new OutputItemViewModel(item));
+                foreach (var item in newItems)
+                {
+                    CalculationDetails.Add(new OutputItemViewModel(item));
+                }
             }
         }
     }

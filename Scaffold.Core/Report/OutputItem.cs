@@ -6,11 +6,10 @@ public class OutputItem : IOutputItem
 {
     public OutputItem() { }
 
-    public OutputItem(string reference, string narrative, string conclusion, IContentItem expression,
+    public OutputItem(string reference, string conclusion, IContentItem expression,
         CalcStatus status = CalcStatus.None)
     {
         Reference = reference;
-        Narrative = narrative;
         Conclusion = conclusion;
         Expressions.Add(expression);
         Status = status;
@@ -19,16 +18,9 @@ public class OutputItem : IOutputItem
     public string EntityLabel { get; } = "";
     public List<IContentItem> Expressions { get; set; } = [];
     public string Reference { get; set; } = "";
-    public string Narrative { get; set; } = "";
     public string Conclusion { get; set; } = "";
     public CalcStatus Status { get; set; } = CalcStatus.None;
     public ICalcImage Image { get; set; }
-
-
-    public static OutputItem New(string narrative)
-    {
-        return new OutputItem { Narrative = narrative };
-    }
 
     public OutputItem WithConclusion(string conclusion)
     {

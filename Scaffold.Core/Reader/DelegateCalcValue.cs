@@ -93,10 +93,6 @@ namespace Scaffold.Reader
         {
             var val = _getter();
 
-            if (val is List<double[]> list)
-            {
-                return $"List<double[]> ({list.Count} items)";
-            }
             if (IsCollection && val is ICollection collection)
             {
                 return $"{typeof(T).Name} ({collection.Count} items)";
