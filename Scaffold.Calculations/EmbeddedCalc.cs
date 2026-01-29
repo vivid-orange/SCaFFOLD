@@ -20,10 +20,10 @@ namespace Scaffold.Calculations
 
         public CalcStatus Status => CalcStatus.None;
 
-        [CalcValueType(CalcValueType.Input, "H", "Column height")]
+        [CalcParameter(CalcParameterType.Input, "H", "Column height")]
         public Length ColumnHeight { get; set; } = new Length(4.5, LengthUnit.Meter);
 
-        [CalcValueType(CalcValueType.Output, "H", "Reduced column height")]
+        [CalcParameter(CalcParameterType.Output, "H", "Reduced column height")]
         public Length ReducedColumnHeight { get; private set; } = new Length(0, LengthUnit.Meter);
 
         public void Calculate()

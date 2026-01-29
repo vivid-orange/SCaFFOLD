@@ -14,51 +14,51 @@ namespace Scaffold.Calculations
         public string CalculationTitle { get; set; } = "This is my test calc";
 
 
-        [CalcValueType(CalcValueType.Input, "I", "Multiplier")]
+        [CalcParameter(CalcParameterType.Input, "I", "Multiplier")]
         public double Multiplier { get; set; }
 
-        [CalcValueType(CalcValueType.Input, "M", "Moment")]
+        [CalcParameter(CalcParameterType.Input, "M", "Moment")]
         public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
 
-        [CalcValueType(CalcValueType.Input, "B", "Breadth", ["Geometry", "Section"])]
+        [CalcParameter(CalcParameterType.Input, "B", "Breadth", ["Geometry", "Section"])]
         public Length Breadth { get; set; } = new Length(200, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "C_x", "Centre X", ["Geometry", "Centre"])]
+        [CalcParameter(CalcParameterType.Input, "C_x", "Centre X", ["Geometry", "Centre"])]
         public Length Offset1 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
+        [CalcParameter(CalcParameterType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "E", "Column height", ["Misc"])]
+        [CalcParameter(CalcParameterType.Input, "E", "Column height", ["Misc"])]
         public EmbeddedCalc ReducedHeight { get; set; } = new EmbeddedCalc();
 
-        [CalcValueType(CalcValueType.Input, "H", "Height", ["Geometry", "Section"])]
+        [CalcParameter(CalcParameterType.Input, "H", "Height", ["Geometry", "Section"])]
         public Length Height { get; set; } = new Length(500, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "T", "Flange", ["Geometry", "Section"])]
+        [CalcParameter(CalcParameterType.Input, "T", "Flange", ["Geometry", "Section"])]
         public Length FlangeThickness { get; set; } = new Length(25, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "t", "Web", ["Geometry", "Section"])]
+        [CalcParameter(CalcParameterType.Input, "t", "Web", ["Geometry", "Section"])]
         public Length WebThickness { get; set; } = new Length(12, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "r", "Root radius", ["Geometry", "Section"])]
+        [CalcParameter(CalcParameterType.Input, "r", "Root radius", ["Geometry", "Section"])]
         public Length RootRadius { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
-        [CalcValueType(CalcValueType.Output, "M_o", "Moment out")]
+        [CalcParameter(CalcParameterType.Output, "M_o", "Moment out")]
         public Torque MomentOut { get; private set; } = new Torque(0, TorqueUnit.KilonewtonMeter);
 
 
-        [CalcValueType(CalcValueType.Output, "F_req", "Force required")]
+        [CalcParameter(CalcParameterType.Output, "F_req", "Force required")]
         public Force ForceRequired { get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
-        [CalcValueType(CalcValueType.Input, "C", "Complex Input type", ["Misc"])]
+        [CalcParameter(CalcParameterType.Input, "C", "Complex Input type", ["Misc"])]
         public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
 
-        [CalcValueType(CalcValueType.Input, "L", "List of things", ["Misc"])]
+        [CalcParameter(CalcParameterType.Input, "L", "List of things", ["Misc"])]
         public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35, 20, 0.35), new MyOtherDataHolder(40, 20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
 
-        [CalcValueType(CalcValueType.Input, "LL2", "List of lists of more things", ["Misc"])]
+        [CalcParameter(CalcParameterType.Input, "LL2", "List of lists of more things", ["Misc"])]
         public List<List<MyDataHolder>> MoreThings { get; set; } = [[new MyDataHolder(100, 200), new MyDataHolder(300, 400)], [new MyDataHolder(500, 600)]];
 
         public CalcStatus Status => CalcStatus.None;
@@ -182,9 +182,9 @@ namespace Scaffold.Calculations
 
     public class MyDataHolder
     {
-        [CalcValueType(CalcValueType.Input, "L_{col}", "Prop 1")]
+        [CalcParameter(CalcParameterType.Input, "L_{col}", "Prop 1")]
         public Length FirstLength { get; set; } = new Length(10, LengthUnit.Meter);
-        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
+        [CalcParameter(CalcParameterType.Input, "P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
 
         public MyDataHolder()
@@ -200,11 +200,11 @@ namespace Scaffold.Calculations
 
     public class MyOtherDataHolder
     {
-        [CalcValueType(CalcValueType.Input, "f_{ck}", "Char compressive strength")]
+        [CalcParameter(CalcParameterType.Input, "f_{ck}", "Char compressive strength")]
         public Pressure ComeStr { get; set; } = new Pressure(35, PressureUnit.NewtonPerSquareMillimeter);
-        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
+        [CalcParameter(CalcParameterType.Input, "P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
-        [CalcValueType(CalcValueType.Input, @"\epsilon_t", "")]
+        [CalcParameter(CalcParameterType.Input, @"\epsilon_t", "")]
         public Ratio MyRatio { get; set; } = new Ratio(0.35, RatioUnit.DecimalFraction);
 
         public MyOtherDataHolder()

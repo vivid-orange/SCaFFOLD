@@ -10,37 +10,37 @@ public class CreepCalculation : ICalculation
     public string EntityLabel { get; set; } = "Concrete Creep";
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
-    [InputCalcValue("CMP", "Concrete Material Property")]
+    [InputParameter("CMP", "Concrete Material Property")]
     public ConcreteMaterialProperties Concrete { get; set; } = new();
 
-    [InputCalcValue("RH", "Relative humidity")]
+    [InputParameter("RH", "Relative humidity")]
     public RelativeHumidity RelativeHumidity { get; set; } = new(70, RelativeHumidityUnit.Percent);
 
-    [InputCalcValue(@"t_0\", @"Time load applied")]
+    [InputParameter(@"t_0\", @"Time load applied")]
     public Duration Time0 { get; set; } = new(28, DurationUnit.Day);
 
-    [InputCalcValue("t", "Time")]
+    [InputParameter("t", "Time")]
     public Duration Time { get; set; } = new(50, DurationUnit.JulianYear);
 
-    [InputCalcValue("L", "Length")]
+    [InputParameter("L", "Length")]
     public Length Length { get; set; } = new(500, LengthUnit.Millimeter);
 
-    [InputCalcValue("W", "Width")]
+    [InputParameter("W", "Width")]
     public Length Width { get; set; } = new(500, LengthUnit.Millimeter);
 
-    [OutputCalcValue("A_c", "Cross section area")]
+    [OutputParameter("A_c", "Cross section area")]
     public Area Area { get; private set; }
 
-    [OutputCalcValue("u", "Section perimeter")]
+    [OutputParameter("u", "Section perimeter")]
     public Length Perimeter { get; private set; }
 
-    [OutputCalcValue(@"\varphi(t,t_0)", "Notional Creep Coefficient")]
+    [OutputParameter(@"\varphi(t,t_0)", "Notional Creep Coefficient")]
     public double NotionalCreepCoefficient { get; private set; }
 
-    [OutputCalcValue(@"\beta(t,t_0)", "Coefficient for creep with time")]
+    [OutputParameter(@"\beta(t,t_0)", "Coefficient for creep with time")]
     public double CreepTimeCoefficient { get; private set; }
 
-    [OutputCalcValue(@"\varphi_0", "Creep coefficient")]
+    [OutputParameter(@"\varphi_0", "Creep coefficient")]
     public double CreepCoefficient { get; private set; }
 
     public List<IOutputItem> Expressions = new List<IOutputItem>();

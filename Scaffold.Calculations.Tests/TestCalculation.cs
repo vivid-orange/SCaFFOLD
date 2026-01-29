@@ -8,13 +8,13 @@ namespace Scaffold.Calculations
         public string EntityLabel { get; set; } = "Test Calculation";
         public CalcStatus Status { get; set; } = CalcStatus.None;
 
-        [InputCalcValue(@"D", "Multiplier")]
+        [InputParameter(@"D", "Multiplier")]
         public double Multiplier { get; set; } = 0;
 
-        [InputCalcValue(@"F", "Force")]
+        [InputParameter(@"F", "Force")]
         public Force Force { get; set; } = new Force(10, ForceUnit.Kilonewton);
 
-        [OutputCalcValue(@"R", "Result")]
+        [OutputParameter(@"R", "Result")]
         public double Result { get; private set; } = 0;
 
         public IList<IOutputItem> GetFormulae()

@@ -81,7 +81,7 @@ public static class ObjectReader
             // Scan all public properties for attributes
             foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                CalcValueTypeAttribute attr = prop.GetCustomAttribute<CalcValueTypeAttribute>();
+                CalcParameterAttribute attr = prop.GetCustomAttribute<CalcParameterAttribute>();
                 if (attr == null)
                 {
                     continue;
@@ -89,7 +89,7 @@ public static class ObjectReader
 
                 IPropertyAdapter adapter = CreateAdapter(type, prop, attr);
 
-                if (attr.Type == CalcValueType.Input)
+                if (attr.Type == CalcParameterType.Input)
                 {
                     _inputAdapters.Add(adapter);
                 }
@@ -106,7 +106,7 @@ public static class ObjectReader
         public List<ICalcValue> CreateOutputs(object instance)
             => _outputAdapters.Select(a => a.Create(instance)).ToList();
 
-        private IPropertyAdapter CreateAdapter(Type modelType, PropertyInfo prop, CalcValueTypeAttribute attr)
+        private IPropertyAdapter CreateAdapter(Type modelType, PropertyInfo prop, CalcParameterAttribute attr)
         {
             Type adapterType = typeof(PropertyAdapter<,>).MakeGenericType(modelType, prop.PropertyType);
             return (IPropertyAdapter)Activator.CreateInstance(adapterType, prop, attr);
@@ -126,7 +126,7 @@ public static class ObjectReader
         private readonly string _displayName;
         private readonly string[] _headings;
 
-        public PropertyAdapter(PropertyInfo prop, CalcValueTypeAttribute attr)
+        public PropertyAdapter(PropertyInfo prop, CalcParameterAttribute attr)
         {
             _symbol = attr.Symbol;
             _displayName = attr.DisplayName ?? prop.Name;

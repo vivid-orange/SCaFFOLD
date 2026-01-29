@@ -59,7 +59,7 @@ public class DelegateCalcValue<T> : ICalcValue
         }
 
         return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                   .Any(p => Attribute.IsDefined(p, typeof(CalcValueTypeAttribute)));
+                   .Any(p => Attribute.IsDefined(p, typeof(CalcParameterAttribute)));
     }
 
     // --- Object Reader Integration ---

@@ -71,7 +71,7 @@ namespace Scaffold.Calculations.Tests
                 }
                 Assert.False(property.GetValue(obj) == null,
                     $"The calculation '{obj}'\ncontains a property '{property.Name}' that is null.");
-                CalcValueTypeAttribute baseAttribute = property.GetCustomAttribute<CalcValueTypeAttribute>();
+                CalcParameterAttribute baseAttribute = property.GetCustomAttribute<CalcParameterAttribute>();
                 Assert.False(baseAttribute == null,
                     $"The calculation '{obj}' \ncontains a public property '{property.Name}'\n" +
                     $"that has not been decorated with input/output attributes.");
@@ -84,7 +84,7 @@ namespace Scaffold.Calculations.Tests
                 BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
             foreach (FieldInfo field in fieldInfo)
             {
-                CalcValueTypeAttribute baseAttribute = field.GetCustomAttribute<CalcValueTypeAttribute>();
+                CalcParameterAttribute baseAttribute = field.GetCustomAttribute<CalcParameterAttribute>();
                 Assert.True(baseAttribute == null,
                     $"The calculation '{obj}' \ncontains a public field '{field.Name}'\n" +
                     $"that has been decorated with input/output attributes. \n" +
