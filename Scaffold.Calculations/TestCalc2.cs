@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Scaffold.Core;
 using Scaffold.Geometry;
 using Scaffold.Reader.Images;
 using Scaffold.Report;
@@ -116,10 +115,10 @@ namespace Scaffold.Calculations
             ForceRequired = (Moment / Breadth).ToUnit(ForceUnit.Kilonewton);
 
             var lines = new List<Line>();
-            var topLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value + Height.Value / 2);
-            var topRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value + Height.Value / 2);
-            var bottomRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value - Height.Value / 2);
-            var bottomLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value - Height.Value / 2);
+            (double, double) topLeft = (Offset1.Value - (Breadth.Value / 2), Offset2.Value + (Height.Value / 2));
+            (double, double) topRight = (Offset1.Value + (Breadth.Value / 2), Offset2.Value + (Height.Value / 2));
+            (double, double) bottomRight = (Offset1.Value + (Breadth.Value / 2), Offset2.Value - (Height.Value / 2));
+            (double, double) bottomLeft = (Offset1.Value - (Breadth.Value / 2), Offset2.Value - (Height.Value / 2));
             lines.AddRange(CreateContinuousPath(new List<(double x, double y)> { topLeft, topRight, bottomRight, bottomLeft, topLeft }));
 
             _geometryBases.Clear();
@@ -161,13 +160,15 @@ namespace Scaffold.Calculations
 
             // We need at least 2 points to make a line
             if (points == null || points.Count < 2)
+            {
                 return lines;
+            }
 
             // Iterate up to the second-to-last point
             for (int i = 0; i < points.Count - 1; i++)
             {
-                var current = points[i];
-                var next = points[i + 1];
+                (double x, double y) current = points[i];
+                (double x, double y) next = points[i + 1];
 
                 // Convert doubles to Vector2 (which usually takes floats)
                 Vector2 start = new Vector2((float)current.x, (float)current.y);

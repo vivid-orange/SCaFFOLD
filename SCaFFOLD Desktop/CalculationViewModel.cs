@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
-using Scaffold.Core;
 using Scaffold.Geometry;
 using Scaffold.Reader;
+using Scaffold.Report;
 
 namespace Scaffold.Desktop
 {
@@ -53,8 +50,15 @@ namespace Scaffold.Desktop
         private void NavigateBack(object targetCalculation)
         {
             var target = targetCalculation as ICalculation;
-            if (target == null) return;
-            if (_currentCalculation == target) return;
+            if (target == null)
+            {
+                return;
+            }
+
+            if (_currentCalculation == target)
+            {
+                return;
+            }
 
             if (_navigationStack.Contains(target))
             {
@@ -79,7 +83,7 @@ namespace Scaffold.Desktop
         private void UpdateBreadcrumbs()
         {
             Breadcrumbs.Clear();
-            foreach (var item in _navigationStack.Reverse())
+            foreach (ICalculation? item in _navigationStack.Reverse())
             {
                 Breadcrumbs.Add(item);
             }
@@ -98,14 +102,17 @@ namespace Scaffold.Desktop
 
             Geometry = null;
 
-            if (_currentCalculation == null) return;
+            if (_currentCalculation == null)
+            {
+                return;
+            }
 
             // 1. Inputs
-            var rawInputs = CalculationReader.GetInputs(_currentCalculation);
+            List<ICalcValue> rawInputs = CalculationReader.GetInputs(_currentCalculation);
             BuildTreeNodes(Inputs, rawInputs, isInput: true);
 
             // 2. Outputs
-            var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
+            List<ICalcValue> rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
             BuildTreeNodes(Outputs, rawOutputs, isInput: false);
 
             // 3. Details
@@ -121,7 +128,7 @@ namespace Scaffold.Desktop
         private void BuildTreeNodes(ObservableCollection<CalcNodeViewModel> collection, List<ICalcValue> values, bool isInput)
         {
             collection.Clear();
-            foreach (var item in values)
+            foreach (ICalcValue item in values)
             {
                 AddRecursive(collection, item, isInput);
             }
@@ -137,7 +144,7 @@ namespace Scaffold.Desktop
             {
                 foreach (var heading in model.Headings)
                 {
-                    var group = currentLevel.FirstOrDefault(n => n.Name == heading && n.IsGroup);
+                    CalcNodeViewModel? group = currentLevel.FirstOrDefault(n => n.Name == heading && n.IsGroup);
                     if (group != null)
                     {
                         currentLevel = group.Children;
@@ -157,18 +164,24 @@ namespace Scaffold.Desktop
             // --- STOP RECURSION CHECKS ---
 
             // 1. If it's a Calculation, stop (displayed as link)
-            if (model.IsICalculation) return;
+            if (model.IsICalculation)
+            {
+                return;
+            }
 
             // 2. If it's a Table (Single List of Complex Objects), configure and stop
             // The ViewModel will populate TableHeaders/TableRows, and the View will switch template.
-            if (isInput && vm.TryConfigureAsTable()) return;
+            if (isInput && vm.TryConfigureAsTable())
+            {
+                return;
+            }
 
             // --- CONTINUE RECURSION ---
 
             if (model.IsComplexValue)
             {
-                var children = isInput ? model.GetChildInputs() : model.GetChildOutputs();
-                foreach (var child in children)
+                List<ICalcValue> children = isInput ? model.GetChildInputs() : model.GetChildOutputs();
+                foreach (ICalcValue? child in children)
                 {
                     AddRecursive(itemNode.Children, child, isInput);
                 }
@@ -192,7 +205,10 @@ namespace Scaffold.Desktop
         private ICalcValue CreateCollectionItemWrapper(IList collection, int index)
         {
             object item = collection[index];
-            if (item == null) return null;
+            if (item == null)
+            {
+                return null;
+            }
 
             Type itemType = item.GetType();
 
@@ -216,7 +232,7 @@ namespace Scaffold.Desktop
             _currentCalculation.Calculate();
             RefreshNodes(Inputs);
             Outputs.Clear();
-            var rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
+            List<ICalcValue> rawOutputs = CalculationReader.GetOutputs(_currentCalculation);
             BuildTreeNodes(Outputs, rawOutputs, isInput: false);
             RebuildCalculationDetails();
             Geometry?.Refresh();
@@ -224,20 +240,27 @@ namespace Scaffold.Desktop
 
         private void RefreshNodes(ObservableCollection<CalcNodeViewModel> nodes)
         {
-            foreach (var node in nodes)
+            foreach (CalcNodeViewModel node in nodes)
             {
-                if (node.IsData) node.Value.Refresh();
-                if (node.Children.Count > 0) RefreshNodes(node.Children);
+                if (node.IsData)
+                {
+                    node.Value.Refresh();
+                }
+
+                if (node.Children.Count > 0)
+                {
+                    RefreshNodes(node.Children);
+                }
             }
         }
 
         private void RebuildCalculationDetails()
         {
             CalculationDetails.Clear();
-            var newItems = _currentCalculation.GetFormulae();
+            IList<IOutputItem> newItems = _currentCalculation.GetFormulae();
             if (newItems != null)
             {
-                foreach (var item in newItems)
+                foreach (IOutputItem? item in newItems)
                 {
                     CalculationDetails.Add(new OutputItemViewModel(item));
                 }
