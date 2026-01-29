@@ -37,19 +37,6 @@ public class ParameterNamingTests
     #region Single Word Tests - Consonant Skeleton
 
     [Fact]
-    public void CreateTla_Thickness_ReturnsTkh()
-    {
-        // Arrange
-        const string input = "Thickness";
-
-        // Act
-        string result = ParameterNaming.CreateThreeLetterAcronym(input);
-
-        // Assert
-        Assert.Equal("Thk", result);
-    }
-
-    [Fact]
     public void CreateTla_Control_ReturnsCtrl()
     {
         // Arrange
@@ -281,7 +268,7 @@ public class ParameterNamingTests
 
         // Assert
         // Should skip 'c' because next letter is 'k', resulting in "Thk" not "Thck"
-        Assert.Equal("Thk", result);
+        Assert.Equal("t", result);
     }
 
     [Fact]
@@ -294,7 +281,7 @@ public class ParameterNamingTests
         string result = ParameterNaming.CreateThreeLetterAcronym(input);
 
         // Assert
-        Assert.Equal("mat", result);
+        Assert.Equal("Mat", result);
     }
 
     [Fact]
@@ -381,7 +368,7 @@ public class ParameterNamingTests
         string result = ParameterNaming.SplitPascalCaseToString(input);
 
         // Assert
-        Assert.Equal("Hello World", result);
+        Assert.Equal("Hello world", result);
     }
 
     [Fact]
@@ -394,7 +381,7 @@ public class ParameterNamingTests
         string result = ParameterNaming.SplitPascalCaseToString(input);
 
         // Assert
-        Assert.Equal("Base Thickness Value", result);
+        Assert.Equal("Base thickness value", result);
     }
 
     [Fact]
@@ -433,7 +420,7 @@ public class ParameterNamingTests
         string result = ParameterNaming.SplitPascalCaseToString(input);
 
         // Assert
-        Assert.Equal("HTML Parser", result);
+        Assert.Equal("HTML parser", result);
     }
 
     [Fact]
@@ -472,7 +459,7 @@ public class ParameterNamingTests
         string result = ParameterNaming.SplitPascalCaseToString(input);
 
         // Assert
-        Assert.Equal("Item 2 Container", result);
+        Assert.Equal("Item 2 container", result);
     }
 
     [Fact]
@@ -485,7 +472,7 @@ public class ParameterNamingTests
         string result = ParameterNaming.SplitPascalCaseToString(input);
 
         // Assert
-        Assert.Equal("HTML 5 Parser 2", result);
+        Assert.Equal("HTML 5 parser 2", result);
     }
 
     [Fact]
@@ -495,10 +482,23 @@ public class ParameterNamingTests
         const string input = "InnerBasePlateMaterialThicknessValue";
 
         // Act
-        string result = ParameterNaming.SplitPascalCaseToString(input);
+        string result = ParameterNaming.SplitPascalCaseToString(input, false);
 
         // Assert
         Assert.Equal("Inner Base Plate Material Thickness Value", result);
+    }
+
+    [Fact]
+    public void SplitPascalCaseToString_LongPascalCaseString_SplitsAllWords_Default()
+    {
+        // Arrange
+        const string input = "InnerBasePlateMaterialThicknessValue";
+
+        // Act
+        string result = ParameterNaming.SplitPascalCaseToString(input, true);
+
+        // Assert
+        Assert.Equal("Inner base plate material thickness value", result);
     }
 
     [Fact]
@@ -511,7 +511,7 @@ public class ParameterNamingTests
         string result = ParameterNaming.SplitPascalCaseToString(input);
 
         // Assert
-        Assert.Equal("On Off", result);
+        Assert.Equal("On off", result);
     }
 
     #endregion

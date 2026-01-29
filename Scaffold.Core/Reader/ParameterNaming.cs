@@ -54,7 +54,7 @@ namespace Scaffold.Reader
             // Check if the word (or a match) exists in our bank
             if (_wordBank.TryGetValue(input, out string acronym))
             {
-                return ApplyCasing(input, acronym);
+                return acronym;
             }
 
             if (input.Length < 4)
@@ -63,22 +63,6 @@ namespace Scaffold.Reader
             }
 
             return IsMultiWord(input) ? GenerateMultiWord(input) : GenerateSkeleton(input);
-        }
-
-        private static string ApplyCasing(string original, string acronym)
-        {
-            if (original.All(c => !char.IsLetter(c) || char.IsUpper(c)))
-            {
-                return acronym.ToUpper();
-            }
-
-            if (char.IsLower(original[0]))
-            {
-                return acronym.ToLower();
-            }
-
-            // Default to TitleCase (e.g., Mat, Ctrl)
-            return char.ToUpper(acronym[0]) + acronym.Substring(1).ToLower();
         }
 
         private static bool IsMultiWord(string input) => input.Skip(1).Any(char.IsUpper);
