@@ -1,5 +1,4 @@
-﻿using Scaffold.Report;
-using VividOrange.Materials.StandardMaterials.En;
+﻿using VividOrange.Materials.StandardMaterials.En;
 
 namespace Scaffold.Calculations.Eurocode.Concrete
 {
@@ -83,13 +82,5 @@ namespace Scaffold.Calculations.Eurocode.Concrete
         {
             Calculate();
         }
-
-
-        public IList<IOutputItem> GetFormulae()
-        {
-            return new List<IOutputItem>();
-        }
-
-        public void Calculate() { }
     }
 }

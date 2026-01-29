@@ -10,11 +10,6 @@ public abstract class Calculation : ICalculation
     public virtual string Symbol { get; } = string.Empty;
     public IList<IOutputItem> Formulae { get; set; } = [];
 
-    public Calculation()
-    {
-        Calculate();
-    }
-
     public virtual void Calculate() { }
     public virtual IList<IOutputItem> GetFormulae() => Formulae;
 }
