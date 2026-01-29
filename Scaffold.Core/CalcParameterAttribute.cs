@@ -3,10 +3,10 @@
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class CalcParameterAttribute : Attribute, ICalcParameter
 {
-    public CalcParameterType Type { get; private set; }
-    public string Symbol { get; private set; } = "";
-    public string EntityLabel { get; private set; } = "";
-    public string[]? Headings { get; private set; }
+    public CalcParameterType Type { get; internal set; }
+    public string Symbol { get; internal set; } = "";
+    public string EntityLabel { get; internal set; } = "";
+    public string[]? Headings { get; internal set; }
 
     protected CalcParameterAttribute() { }
 

@@ -5,7 +5,6 @@ namespace Scaffold.Calculations.Eurocode.Steel
 {
     public class SteelMaterialProperties : Calculation
     {
-        [InputParameter("Grd", "Grade")]
         public EnSteelGrade Grade { get; set; } = EnSteelGrade.S355;
 
         [InputParameter("t", "Nominal thickness of the element")]

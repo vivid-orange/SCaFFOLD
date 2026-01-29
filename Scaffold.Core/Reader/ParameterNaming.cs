@@ -5,7 +5,7 @@ namespace Scaffold.Reader
 {
     public static class ParameterNaming
     {
-        public static string SplitPascalCaseToString(string input, bool lowercaseRest = false)
+        public static string SplitPascalCaseToString(string input, bool lowercaseRest = true)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -31,7 +31,14 @@ namespace Scaffold.Reader
         private static readonly Dictionary<string, string> _wordBank = new(StringComparer.OrdinalIgnoreCase)
         {
             { "Material", "Mat" },
-            { "Control", "Ctrl" }
+            { "Control", "Ctrl" },
+            { "Time", "t" },
+            { "Length", "L" },
+            { "Width", "W" },
+            { "Breadth", "B" },
+            { "Height", "H" },
+            { "RelativeHumidity", "RH" },
+            { "Thickness", "t" },
         };
 
         private static readonly char[] _hardConsonants = { 'k', 't', 'd', 'p', 'b', 'g', 'x', 'z' };

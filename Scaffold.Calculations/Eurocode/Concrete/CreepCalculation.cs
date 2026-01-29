@@ -6,10 +6,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete;
 
 public class CreepCalculation : Calculation
 {
-    [InputParameter("CMP", "Concrete Material Property")]
     public ConcreteMaterialProperties Concrete { get; set; } = new();
-
-    [InputParameter("RH", "Relative humidity")]
     public RelativeHumidity RelativeHumidity { get; set; } = new(70, RelativeHumidityUnit.Percent);
 
     [InputParameter(@"t_0\", @"Time load applied")]

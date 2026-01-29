@@ -4,10 +4,7 @@ namespace Scaffold.Calculations.Eurocode.Concrete
 {
     public class ConcreteMaterialProperties : Calculation
     {
-        [InputParameter("Grd", "Grade")]
         public EnConcreteGrade ConcreteGrade { get; set; } = EnConcreteGrade.C30_37;
-
-        [OutputParameter("C", "Concrete")]
         public EnConcreteMaterial Material => new(ConcreteGrade, NationalAnnex);
 
         [OutputParameter("f_{ck}", "Characteristic cylinder strength")]

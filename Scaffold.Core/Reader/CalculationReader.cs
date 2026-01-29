@@ -18,6 +18,23 @@ public static class CalculationReader
     private static readonly ConditionalWeakTable<ICalculation, InstanceCache> _instanceCache
         = new ConditionalWeakTable<ICalculation, InstanceCache>();
 
+    private static readonly HashSet<string> _scaffoldCoreProperties = GetCoreProperties();
+
+    private static HashSet<string> GetCoreProperties()
+    {
+        Type[] interfacesToExclude =
+        {
+            typeof(Calculation),
+            typeof(ICalcParameter),
+            typeof(ICalcValue)
+        };
+
+        return interfacesToExclude
+            .SelectMany(i => i.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            .Select(p => p.Name)
+            .ToHashSet();
+    }
+
     public static List<ICalcValue> GetInputs(ICalculation calculation)
     {
         if (calculation == null)
@@ -80,14 +97,19 @@ public static class CalculationReader
         {
             foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                CalcParameterAttribute attr = prop.GetCustomAttribute<CalcParameterAttribute>();
-                if (attr == null)
+                if (_scaffoldCoreProperties.Contains(prop.Name))
+                {
+                    continue; // Skip: This is an core property (CalculationTitle, Status, etc.)
+                }
+
+                CalcParameterAttribute? attr = prop.GetCustomAttribute<CalcParameterAttribute>()
+                                               ?? CreateAttributes(prop);
+                if (attr is null)
                 {
                     continue;
                 }
 
                 IPropertyAdapter adapter = CreateAdapter(type, prop, attr);
-
                 if (attr.Type == CalcParameterType.Input)
                 {
                     _inputAdapters.Add(adapter);
@@ -97,6 +119,28 @@ public static class CalculationReader
                     _outputAdapters.Add(adapter);
                 }
             }
+        }
+
+        private static CalcParameterAttribute CreateAttributes(PropertyInfo prop)
+        {
+            return new CalcParameterAttribute(GetParameterType(prop))
+            {
+                Symbol = ParameterNaming.CreateThreeLetterAcronym(prop.Name),
+                EntityLabel = ParameterNaming.SplitPascalCaseToString(prop.Name)
+            };
+        }
+
+        private static CalcParameterType GetParameterType(PropertyInfo property)
+        {
+            MethodInfo? setter = property.GetSetMethod(nonPublic: true);
+
+            // If there is no setter at all, or the setter is not public, it's an output
+            if (setter == null || !setter.IsPublic)
+            {
+                return CalcParameterType.Output;
+            }
+
+            return CalcParameterType.Input;
         }
 
         public List<ICalcValue> CreateInputs(object instance)

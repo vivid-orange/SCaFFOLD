@@ -11,43 +11,46 @@ namespace Scaffold.Calculations
         public override string CalculationTitle { get; } = "This is my test calc";
         public override string EntityLabel { get; } = "Test calc";
 
-
-        [CalcParameter(CalcParameterType.Input, "I", "Multiplier")]
+        // public property with getter and setter will be treated as input by reader
         public double Multiplier { get; set; }
 
+        // Decorate a property with attribute to set custom symbol and display name
         [CalcParameter(CalcParameterType.Input, "M", "Moment")]
         public Moment Moment { get; set; } = new Moment(20, MomentUnit.KilonewtonMeter);
 
+        // Optionally add headings for grouping in UI
         [CalcParameter(CalcParameterType.Input, "B", "Breadth", ["Geometry", "Section"])]
         public Length Breadth { get; set; } = new Length(200, LengthUnit.Millimeter);
 
-        [CalcParameter(CalcParameterType.Input, "C_x", "Centre X", ["Geometry", "Centre"])]
+        // Using specialized attribute for input parameter
+        [InputParameter("C_x", "Centre X", ["Geometry", "Centre"])]
         public Length Offset1 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcParameter(CalcParameterType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
+
+        [InputParameter("C_y", "Centre Y", ["Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcParameter(CalcParameterType.Input, "E", "Column height", ["Misc"])]
+        [InputParameter("E", "Column height", ["Misc"])]
         public EmbeddedCalc ReducedHeight { get; set; } = new EmbeddedCalc();
 
-        [CalcParameter(CalcParameterType.Input, "H", "Height", ["Geometry", "Section"])]
+        [InputParameter("H", "Height", ["Geometry", "Section"])]
         public Length Height { get; set; } = new Length(500, LengthUnit.Millimeter);
 
-        [CalcParameter(CalcParameterType.Input, "T", "Flange", ["Geometry", "Section"])]
+        [InputParameter("T", "Flange", ["Geometry", "Section"])]
         public Length FlangeThickness { get; set; } = new Length(25, LengthUnit.Millimeter);
 
-        [CalcParameter(CalcParameterType.Input, "t", "Web", ["Geometry", "Section"])]
+        [InputParameter("t", "Web", ["Geometry", "Section"])]
         public Length WebThickness { get; set; } = new Length(12, LengthUnit.Millimeter);
 
-        [CalcParameter(CalcParameterType.Input, "r", "Root radius", ["Geometry", "Section"])]
+        [InputParameter("r", "Root radius", ["Geometry", "Section"])]
         public Length RootRadius { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
-        [CalcParameter(CalcParameterType.Output, "M_o", "Moment out")]
+        // Public property with private setter will be treated as output by reader
         public Moment MomentOut { get; private set; } = new Moment(0, MomentUnit.KilonewtonMeter);
 
-
-        [CalcParameter(CalcParameterType.Output, "F_req", "Force required")]
+        // Decorate a property with attribute to set custom symbol and display name
+        [CalcParameter(CalcParameterType.Output, "F_{req}", "Force required")]
         public Force ForceRequired { get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
         [CalcParameter(CalcParameterType.Input, "C", "Complex Input type", ["Misc"])]
