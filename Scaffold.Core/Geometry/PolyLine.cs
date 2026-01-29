@@ -111,7 +111,7 @@ public class PolyLine : GeometryBase
 
     public override string ToString()
     {
-        string returnString = "";
+        string returnString = string.Empty;
         returnString = "Start " + _segments[0].Start.ToString();
         returnString += Environment.NewLine;
 

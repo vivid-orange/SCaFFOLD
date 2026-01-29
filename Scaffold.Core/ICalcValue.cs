@@ -1,10 +1,10 @@
 ﻿namespace Scaffold;
 
-public interface ICalcValue : ICalculationStatus
+public interface ICalcValue : ICalcParameter
 {
-    string Symbol { get; }
     bool TryParse(string strValue);
     string ValueAsString();
+    CalcStatus Status { get; }
     List<string> Headings { get; }
     bool IsComplexValue { get; }
     bool IsCollection { get; }

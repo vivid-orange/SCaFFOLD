@@ -1,6 +1,4 @@
-﻿using Scaffold.Geometry;
-
-namespace Scaffold.Core.Geometry
+﻿namespace Scaffold.Geometry
 {
     public class InteractiveGeometry : IInteractiveGeometry
     {
