@@ -129,7 +129,7 @@ public static class ObjectReader
         public PropertyAdapter(PropertyInfo prop, CalcParameterAttribute attr)
         {
             _symbol = attr.Symbol;
-            _displayName = attr.DisplayName ?? prop.Name;
+            _displayName = attr.EntityLabel ?? prop.Name;
             _headings = attr.Headings;
 
             // Compile Getter

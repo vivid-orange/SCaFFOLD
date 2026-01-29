@@ -1,11 +1,11 @@
 ﻿namespace Scaffold;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public class CalcParameterAttribute : Attribute
+public class CalcParameterAttribute : Attribute, ICalcParameter
 {
     public CalcParameterType Type { get; private set; }
     public string Symbol { get; private set; }
-    public string DisplayName { get; private set; }
+    public string EntityLabel { get; private set; }
     public string[] Headings { get; private set; }
 
     protected CalcParameterAttribute() { }
@@ -18,7 +18,7 @@ public class CalcParameterAttribute : Attribute
     public CalcParameterAttribute(CalcParameterType type, string symbol, string displayName = null, string[] headings = null) : this(type)
     {
         Symbol = symbol;
-        DisplayName = displayName;
+        EntityLabel = displayName;
         Headings = headings;
     }
 }
