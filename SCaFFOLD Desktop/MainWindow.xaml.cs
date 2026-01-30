@@ -12,7 +12,7 @@ public partial class MainWindow : Window
     {
         //ICalculation calc = new SteelMaterialProperties();
         //ICalculation calc = new TestCalc2();
-        ICalculation calc = new BoxSectionPropertiesCalculation();
+        ICalculation calc = new BoxSectionMemberChecks();
 
         calc.Calculate();
 

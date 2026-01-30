@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 using Scaffold;
+using Scaffold.Geometry;
+using Scaffold.Reader;
 using Scaffold.Report;
 using UnitsNet;
 using UnitsNet.Units;
-using Scaffold.Reader;
 
 namespace Scaffold.Calculations
 {
-    public class BoxSectionPropertiesCalculation : ICalculation
+    public class BoxSectionPropertiesCalculation : ICalculation, IInteractiveGeometry
     {
         public string Symbol => "B";
         public string CalculationTitle { get; set; } = "Box Section Properties";
@@ -71,9 +73,39 @@ namespace Scaffold.Calculations
 
         public CalcStatus Status => CalcStatus.None;
 
+        private readonly List<IInteractiveGeometryItem> _interactiveItems = new List<IInteractiveGeometryItem>();
+        public List<IInteractiveGeometryItem> InteractiveGeometryItems => _interactiveItems;
+
+        private readonly List<GeometryBase> _geometry = new List<GeometryBase>();
+        public List<GeometryBase> Geometry => _geometry;
+
+
         public BoxSectionPropertiesCalculation()
         {
+            // Handle for Height: Positioned at B/2, H. 
+            // Only Y is draggable (locked X).
+            var heightHandle = new InteractiveGeometryQuantityOnXY(
+                xGetter: () => Width.Millimeters / 2.0,
+                xSetter: null, // Locked X
+                yGetter: () => Height.Millimeters,
+                ySetter: (val) => Height = Length.FromMillimeters(val),
+                isCentredOnX: false,
+                isCentredOnY: false
+            );
 
+            // Handle for Breadth: Positioned at B, H/2. 
+            // Only X is draggable (locked Y).
+            var widthHandle = new InteractiveGeometryQuantityOnXY(
+                xGetter: () => Width.Millimeters,
+                xSetter: (val) => Width = Length.FromMillimeters(val),
+                yGetter: () => Height.Millimeters / 2.0,
+                ySetter: null, // Locked Y
+                isCentredOnX: false,
+                isCentredOnY: false
+            );
+
+            _interactiveItems.Add(heightHandle);
+            _interactiveItems.Add(widthHandle);
         }
         public void Calculate()
         {
@@ -109,6 +141,38 @@ namespace Scaffold.Calculations
             // Classification (K54)
             Epsilon = Math.Sqrt(235.0 / YieldStrength.Megapascals);
             SectionClass = "Class 1"; // Based on c/t ratios in spreadsheet
+
+            UpdateGeometry(h, b, tf, tw, off);
+        }
+
+        private void UpdateGeometry(double h, double b, double tf, double tw, double off)
+        {
+            _geometry.Clear();
+
+            // 1. Bottom Flange Rectangle
+            AddRectangle(0, 0, b, tf);
+
+            // 2. Top Flange Rectangle
+            AddRectangle(0, h - tf, b, tf);
+
+            // 3. Left Web Rectangle: Positioned at 'off' from the left extreme (0)
+            AddRectangle(off, tf, tw, h - (2 * tf));
+
+            // 4. Right Web Rectangle: Positioned at 'off' from the right extreme (b)
+            AddRectangle(b - off - tw, tf, tw, h - (2 * tf));
+        }
+
+        private void AddRectangle(double x, double y, double width, double height)
+        {
+            var p1 = new Vector2((float)x, (float)y);
+            var p2 = new Vector2((float)x, (float)(y + height));
+            var p3 = new Vector2((float)(x + width), (float)(y + height));
+            var p4 = new Vector2((float)(x + width), (float)y);
+
+            _geometry.Add(new Line(p1, p2));
+            _geometry.Add(new Line(p2, p3));
+            _geometry.Add(new Line(p3, p4));
+            _geometry.Add(new Line(p4, p1));
         }
         public IList<IOutputItem> GetFormulae()
         {
