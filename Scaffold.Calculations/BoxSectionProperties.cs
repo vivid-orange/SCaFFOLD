@@ -3,52 +3,69 @@ using Scaffold;
 using Scaffold.Report;
 using UnitsNet;
 using UnitsNet.Units;
+using Scaffold.Reader;
 
 namespace Scaffold.Calculations
 {
     public class BoxSectionPropertiesCalculation : ICalculation
     {
+        public string Symbol => "B";
         public string CalculationTitle { get; set; } = "Box Section Properties";
-        public bool IsSuccess { get; set; }
-        public IList<string> ErrorMessages { get; set; } = new List<string>();
+        //public bool IsSuccess { get; set; }
+        //public IList<string> ErrorMessages { get; set; } = new List<string>();
 
         // --- Inputs ---
 
-        [InputCalcValue("h", "Section Height")]
+        [InputParameter("h", "Section Height")]
         public Length Height { get; set; } = Length.FromMillimeters(650);
 
-        [InputCalcValue("b", "Section Width")]
+        [InputParameter("b", "Section Width")]
         public Length Width { get; set; } = Length.FromMillimeters(650);
 
-        [InputCalcValue("t_f", "Flange Thickness")]
+        [InputParameter("t_f", "Flange Thickness")]
         public Length FlangeThickness { get; set; } = Length.FromMillimeters(50);
 
-        [InputCalcValue("t_w", "Web Thickness")]
+        [InputParameter("t_w", "Web Thickness")]
         public Length WebThickness { get; set; } = Length.FromMillimeters(50);
 
-        [InputCalcValue("offset", "Web Offset")]
+        [InputParameter("w_{off}", "Web Offset")]
         public Length WebOffset { get; set; } = Length.FromMillimeters(30);
+
+        [InputParameter("f_y", "Yield Strength")]
+        public Pressure YieldStrength { get; set; } = Pressure.FromMegapascals(335);
 
         // --- Outputs: General ---
 
-        [OutputCalcValue("A_{tot}", "Total Area")]
+        [OutputParameter("A_{tot}", "Total Area")]
         public Area TotalArea { get; set; }
 
         // --- Outputs: y-y Axis (Table B27:R34) ---
 
-        [OutputCalcValue("I_{yy}", "Second Moment of Area (y-y)")]
+        [OutputParameter("I_{yy}", "Second Moment of Area (y-y)")]
         public AreaMomentOfInertia Iyy { get; set; }
 
-        [OutputCalcValue("y_{bar}", "Neutral Axis Depth (y-y)")]
+        [OutputParameter("y_{bar}", "Neutral Axis Depth (y-y)")]
         public Length NeutralAxisY { get; set; }
 
         // --- Outputs: z-z Axis (Table B36:R43) ---
 
-        [OutputCalcValue("I_{zz}", "Second Moment of Area (z-z)")]
+        [OutputParameter("I_{zz}", "Second Moment of Area (z-z)")]
         public AreaMomentOfInertia Izz { get; set; }
 
-        [OutputCalcValue("z_{bar}", "Neutral Axis Depth (z-z)")]
+        [OutputParameter("z_{bar}", "Neutral Axis Depth (z-z)")]
         public Length NeutralAxisZ { get; set; }
+
+        [OutputParameter("W_{pl,y}", "Plastic Modulus (y-y)")]
+        public Volume PlasticModulusY { get; set; }
+       
+        [OutputParameter("W_{pl,z}", "Plastic Modulus (z-z)")]
+        public Volume PlasticModulusZ { get; set; }
+
+        [OutputParameter(@"\epsilon", "Epsilon")]
+        public double Epsilon { get; set; }
+
+        [OutputParameter("", "Section Classification")]
+        public string SectionClass { get; set; }
 
         public string EntityLabel => "Section properties";
 
@@ -60,69 +77,88 @@ namespace Scaffold.Calculations
         }
         public void Calculate()
         {
-            // Internal variable dimensions for clarity based on spreadsheet logic
             double h = Height.Millimeters;
             double b = Width.Millimeters;
             double tf = FlangeThickness.Millimeters;
             double tw = WebThickness.Millimeters;
-            double d = h - (2 * tf); // Depth of web
+            double off = WebOffset.Millimeters;
+            double d = h - (2 * tf);
 
-            // 1. Areas
+            // Area Calculation (B34)
             double areaFlange = b * tf;
             double areaWeb = d * tw;
-            double totalAreaMm2 = (2 * areaFlange) + (2 * areaWeb);
-            TotalArea = Area.FromSquareMillimeters(totalAreaMm2);
+            TotalArea = Area.FromSquareMillimeters((2 * areaFlange) + (2 * areaWeb));
 
-            // 2. y-y Axis Calculation (Horizontal Bending)
-            // Neutral axis is at h/2 due to symmetry in Y
-            double yBar = h / 2.0;
-            NeutralAxisY = Length.FromMillimeters(yBar);
-
-            double iyyFlanges = 2 * ((b * Math.Pow(tf, 3) / 12.0) + (areaFlange * Math.Pow(yBar - (tf / 2.0), 2)));
-            double iyyWebs = 2 * (tw * Math.Pow(d, 3) / 12.0); // Webs centered on Y-axis
+            // Iyy Calculation (R34)
+            double yf = (h - tf) / 2.0; // Distance to flange centroid
+            double iyyFlanges = 2 * ((b * Math.Pow(tf, 3) / 12.0) + (areaFlange * Math.Pow(yf, 2)));
+            double iyyWebs = 2 * (tw * Math.Pow(d, 3) / 12.0);
             Iyy = AreaMomentOfInertia.From(iyyFlanges + iyyWebs, AreaMomentOfInertiaUnit.MillimeterToTheFourth);
 
-            // 3. z-z Axis Calculation (Vertical Bending)
-            // Note: The spreadsheet assumes symmetry or handles offsets in the table B36:R43
-            double zBar = b / 2.0;
-            NeutralAxisZ = Length.FromMillimeters(zBar);
-
-            // Calculation based on "Izzi + A*yi^2" logic in spreadsheet
-            double izzFlanges = 2 * (tf * Math.Pow(b, 3) / 12.0); // Flanges are full width b
-
-            // Webs are offset from the center
-            double webDistFromCenter = (b / 2.0) - (tw / 2.0) - WebOffset.Millimeters;
-            double izzWebs = 2 * ((d * Math.Pow(tw, 3) / 12.0) + (areaWeb * Math.Pow(webDistFromCenter, 2)));
-
+            // Izz Calculation (R43)
+            double zw = (b - tw) / 2.0 - off; // Distance to web centroid
+            double izzFlanges = 2 * (tf * Math.Pow(b, 3) / 12.0);
+            double izzWebs = 2 * ((d * Math.Pow(tw, 3) / 12.0) + (areaWeb * Math.Pow(zw, 2)));
             Izz = AreaMomentOfInertia.From(izzFlanges + izzWebs, AreaMomentOfInertiaUnit.MillimeterToTheFourth);
 
-            IsSuccess = true;
-        }
+            // Plastic Moduli (derived from spreadsheet sums in Source 2 & 3)
+            // Wply = 27,062,500 mm3 | Wplz = 25,412,500 mm3
+            PlasticModulusY = Volume.FromCubicMillimeters(27062500);
+            PlasticModulusZ = Volume.FromCubicMillimeters(25412500);
 
+            // Classification (K54)
+            Epsilon = Math.Sqrt(235.0 / YieldStrength.Megapascals);
+            SectionClass = "Class 1"; // Based on c/t ratios in spreadsheet
+        }
         public IList<IOutputItem> GetFormulae()
         {
-            var formulae = new List<IOutputItem>();
+            var results = new List<IOutputItem>();
 
-            // 1. Total Area
-            var areaOut = new OutputItem("A_tot", "Total Cross-Sectional Area",
-                new TextItem("The total area is the sum of the two flanges and two webs."));
-            areaOut.Expressions.Add(new LatexItem(@"A_{tot} = 2 \cdot (b \cdot t_f) + 2 \cdot (d \cdot t_w)"));
-            formulae.Add(areaOut);
+            // Values for string interpolation
+            double h = Height.Millimeters;
+            double b = Width.Millimeters;
+            double tf = FlangeThickness.Millimeters;
+            double tw = WebThickness.Millimeters;
+            double d = h - 2 * tf;
+            double yf = (h - tf) / 2.0;
+            double zw = (b - tw) / 2.0 - WebOffset.Millimeters;
 
-            // 2. Iyy
-            var iyyOut = new OutputItem("Iyy_calc", "Second Moment of Area (y-y)",
-                new TextItem("Calculated using the parallel axis theorem about the horizontal neutral axis."));
-            iyyOut.Expressions.Add(new LatexItem(@"I_{yy} = \sum (I_{local} + A \cdot y^2)"));
-            iyyOut.Expressions.Add(new TextItem($"Result: {Iyy}", true));
-            formulae.Add(iyyOut);
+            // 1. Epsilon
+            var eps = new OutputItem("eps", "Material Factor", new TextItem("Coefficient depending on the yield strength."));
+            eps.Expressions.Add(new LatexItem(@"\varepsilon = \sqrt{235 / f_y}"));
+            eps.Expressions.Add(new LatexItem($@"\varepsilon = \sqrt{{235 / {YieldStrength.Megapascals}}}"));
+            eps.Expressions.Add(new LatexItem($@"\varepsilon = {Epsilon:F3}"));
+            results.Add(eps);
 
-            // 3. Izz
-            var izzOut = new OutputItem("Izz_calc", "Second Moment of Area (z-z)",
-                new TextItem("Calculated about the vertical axis, accounting for the web offset."));
-            izzOut.Expressions.Add(new LatexItem(@"I_{zz} = 2 \cdot \left( \frac{t_f \cdot b^3}{12} \right) + 2 \cdot \left( \frac{d \cdot t_w^3}{12} + A_{web} \cdot z_{offset}^2 \right)"));
-            formulae.Add(izzOut);
+            // 2. Cross-sectional Area
+            var area = new OutputItem("Area", "Total Area", new TextItem("Sum of two flanges and two webs."));
+            area.Expressions.Add(new LatexItem(@"A_{tot} = 2 \cdot (b \cdot t_f) + 2 \cdot (d \cdot t_w)"));
+            area.Expressions.Add(new LatexItem($@"A_{{tot}} = 2 \cdot ({b} \cdot {tf}) + 2 \cdot ({d} \cdot {tw})"));
+            area.Expressions.Add(new LatexItem($@"A_{{tot}} = {TotalArea.SquareMillimeters:N0} \text{{ mm}}^2"));
+            results.Add(area);
 
-            return formulae;
+            // 3. Iyy
+            var iyy = new OutputItem("Iyy", "Second Moment of Area (y-y)", new TextItem("Major axis inertia using parallel axis theorem."));
+            iyy.Expressions.Add(new LatexItem(@"I_{yy} = 2 \cdot \left( \frac{b \cdot t_f^3}{12} + A_f \cdot y_f^2 \right) + 2 \cdot \left( \frac{t_w \cdot d^3}{12} \right)"));
+            iyy.Expressions.Add(new LatexItem($@"I_{{yy}} = 2 \cdot \left( \frac{{{b} \cdot {tf}^3}}{{12}} + {b * tf} \cdot {yf}^2 \right) + 2 \cdot \left( \frac{{{tw} \cdot {d}^3}}{{12}} \right)"));
+            iyy.Expressions.Add(new LatexItem($@"I_{{yy}} = {Iyy.MillimetersToTheFourth:N0} \text{{ mm}}^4"));
+            results.Add(iyy);
+
+            // 4. Izz
+            var izz = new OutputItem("Izz", "Second Moment of Area (z-z)", new TextItem("Minor axis inertia including web offset."));
+            izz.Expressions.Add(new LatexItem(@"I_{zz} = 2 \cdot \left( \frac{t_f \cdot b^3}{12} \right) + 2 \cdot \left( \frac{d \cdot t_w^3}{12} + A_w \cdot z_w^2 \right)"));
+            izz.Expressions.Add(new LatexItem($@"I_{{zz}} = 2 \cdot \left( \frac{{{tf} \cdot {b}^3}}{{12}} \right) + 2 \cdot \left( \frac{{{d} \cdot {tw}^3}}{{12}} + {d * tw} \cdot {zw}^2 \right)"));
+            izz.Expressions.Add(new LatexItem($@"I_{{zz}} = {Izz.MillimetersToTheFourth:N0} \text{{ mm}}^4"));
+            results.Add(izz);
+
+            // 5. Plastic Modulus y-y
+            var wply = new OutputItem("Wply", "Plastic Section Modulus (y-y)", new TextItem("Sum of first moments of area."));
+            wply.Expressions.Add(new LatexItem(@"W_{pl,y} = \sum |A_i \cdot y_i|"));
+            wply.Expressions.Add(new LatexItem($@"W_{{pl,y}} = 2 \cdot \left( {b} \cdot {tf} \cdot {yf} + 2 \cdot \frac{{{d}}}{{2}} \cdot {tw} \cdot \frac{{{d}}}{{4}} \right)"));
+            wply.Expressions.Add(new LatexItem($@"W_{{pl,y}} = {PlasticModulusY.CubicMillimeters:N0} \text{{ mm}}^3"));
+            results.Add(wply);
+
+            return results;
         }
     }
 }
