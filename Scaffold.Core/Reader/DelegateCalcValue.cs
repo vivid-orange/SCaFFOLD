@@ -75,8 +75,8 @@ public class DelegateCalcValue<T> : ICalcValue
             return new List<ICalcValue>();
         }
 
-        // Use the ObjectReader to scan the current value instance
-        return ObjectReader.GetInputs(val);
+        // Use the CalculationReader to scan the current value instance
+        return CalculationReader.GetInputs(val);
     }
 
     /// <summary>
@@ -90,7 +90,7 @@ public class DelegateCalcValue<T> : ICalcValue
             return new List<ICalcValue>();
         }
 
-        return ObjectReader.GetOutputs(val);
+        return CalculationReader.GetOutputs(val);
     }
 
     // --- Existing Implementation ---

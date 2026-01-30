@@ -117,11 +117,11 @@ namespace Scaffold.Desktop
             // 5. Build Headers
             try
             {
-                // Create dummy to read structure via ObjectReader (preferred)
+                // Create dummy to read structure via CalculationReader (preferred)
                 var dummy = Activator.CreateInstance(itemType);
                 if (dummy != null)
                 {
-                    var prototypes = ObjectReader.GetInputs(dummy);
+                    var prototypes = CalculationReader.GetInputs(dummy);
                     foreach (var p in prototypes)
                     {
                         TableHeaders.Add(p.Symbol);
@@ -146,7 +146,7 @@ namespace Scaffold.Desktop
 
                 var rowVMs = new ObservableCollection<CalcValueViewModel>();
                 // Recursively read inputs for the row item
-                var inputs = ObjectReader.GetInputs(item);
+                var inputs = CalculationReader.GetInputs(item);
 
                 foreach (var input in inputs)
                 {
