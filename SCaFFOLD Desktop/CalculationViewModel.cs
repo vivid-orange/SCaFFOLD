@@ -69,11 +69,14 @@ namespace Scaffold.Desktop
                 if (_navigationStack.Count > 0)
                 {
                     _currentCalculation = _navigationStack.Pop();
+                    _currentCalculation.Calculate();
                 }
             }
             else if (_navigationStack.Count > 0)
             {
                 _currentCalculation = _navigationStack.Pop();
+                _currentCalculation.Calculate();
+
             }
 
             UpdateBreadcrumbs();
