@@ -3,22 +3,31 @@
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class CalcParameterAttribute : Attribute, ICalcParameter
 {
-    public CalcParameterType Type { get; internal set; }
-    public string Symbol { get; internal set; } = "";
-    public string EntityLabel { get; internal set; } = "";
-    public string[]? Headings { get; internal set; }
+    public CalcParameterType Type { get; }
+    public string Symbol { get; }
+    public string EntityLabel { get; }
+    public string[]? Headings { get; }
 
-    protected CalcParameterAttribute() { }
+    protected CalcParameterAttribute()
+    {
+        Symbol = "";
+        EntityLabel = "";
+    }
 
-    public CalcParameterAttribute(CalcParameterType type) => Type = type;
+    public CalcParameterAttribute(CalcParameterType type)
+    {
+        Type = type;
+        Symbol = "";
+        EntityLabel = "";
+    }
 
     /// <summary>
     /// When display name is not set, the property name will be used with spaces added between words (PascalCase to Title Case)
     /// </summary>
     public CalcParameterAttribute(
         CalcParameterType type, string symbol, string displayName = "", string[]? headings = null)
-        : this(type)
     {
+        Type = type;
         Symbol = symbol;
         EntityLabel = displayName;
         Headings = headings;

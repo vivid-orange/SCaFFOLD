@@ -35,88 +35,76 @@
 
     public static DensityUnit GetDensityUnit(this MassUnit massUnit, LengthUnit lengthUnit)
     {
-        try
+        if (Enum.TryParse($"{massUnit}PerCubic{lengthUnit}", out DensityUnit result))
         {
-            return (DensityUnit)Enum.Parse(typeof(DensityUnit), $"{massUnit}PerCubic{lengthUnit}");
+            return result;
         }
-        catch (Exception)
-        {
-            throw new ArgumentException(
-                $"Unable to convert {massUnit} combined with {lengthUnit} to Density");
-        }
+
+        throw new ArgumentException(
+            $"Unable to convert {massUnit} combined with {lengthUnit} to Density");
     }
 
     public static PressureUnit GetForcePerAreaUnit(this ForceUnit forceUnit, LengthUnit lengthUnit)
     {
-        try
+        if (Enum.TryParse($"{forceUnit}PerSquare{lengthUnit}", out PressureUnit result))
         {
-            return (PressureUnit)Enum.Parse(typeof(PressureUnit), $"{forceUnit}PerSquare{lengthUnit}");
+            return result;
         }
-        catch (Exception)
-        {
-            throw new ArgumentException(
-                $"Unable to convert {forceUnit} combined with {lengthUnit} to Pressure");
-        }
+
+        throw new ArgumentException(
+            $"Unable to convert {forceUnit} combined with {lengthUnit} to Pressure");
     }
 
     public static ForcePerLengthUnit GetForcePerLengthUnit(this ForceUnit forceUnit, LengthUnit lengthUnit)
     {
-        try
+        if (Enum.TryParse($"{forceUnit}Per{lengthUnit}", out ForcePerLengthUnit result))
         {
-            return (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), $"{forceUnit}Per{lengthUnit}");
+            return result;
         }
-        catch (Exception)
-        {
-            throw new ArgumentException(
-                $"Unable to convert {forceUnit} combined with {lengthUnit} to Force per Length");
-        }
+
+        throw new ArgumentException(
+            $"Unable to convert {forceUnit} combined with {lengthUnit} to Force per Length");
     }
 
     public static LinearDensityUnit GetLinearDensityUnit(this MassUnit massUnit, LengthUnit lengthUnit)
     {
-        try
+        if (Enum.TryParse($"{massUnit}Per{lengthUnit}", out LinearDensityUnit result))
         {
-            return (LinearDensityUnit)Enum.Parse(typeof(LinearDensityUnit), $"{massUnit}Per{lengthUnit}");
+            return result;
         }
-        catch (Exception)
-        {
-            throw new ArgumentException(
-                $"Unable to convert {massUnit} combined with {lengthUnit} to Linear Density");
-        }
+
+        throw new ArgumentException(
+            $"Unable to convert {massUnit} combined with {lengthUnit} to Linear Density");
     }
 
     public static TorqueUnit GetMomentUnit(this ForceUnit forceUnit, LengthUnit lengthUnit)
     {
-        try
+        if (Enum.TryParse($"{forceUnit}{lengthUnit}", out TorqueUnit result))
         {
-            return (TorqueUnit)Enum.Parse(typeof(TorqueUnit), $"{forceUnit}{lengthUnit}");
+            return result;
         }
-        catch (Exception)
-        {
-            throw new ArgumentException(
-                $"Unable to convert {forceUnit} combined with {lengthUnit} to Moment");
-        }
+
+        throw new ArgumentException(
+            $"Unable to convert {forceUnit} combined with {lengthUnit} to Moment");
     }
 
     public static VolumeUnit GetVolumeUnit(this LengthUnit lengthUnit)
     {
+        if (Enum.TryParse($"Cubic{lengthUnit}", out VolumeUnit result))
+        {
+            return result;
+        }
+
+        var baseUnits = new BaseUnits(lengthUnit, sI.Mass, sI.Time, sI.Current, sI.Temperature,
+            sI.Amount, sI.LuminousIntensity);
         try
         {
-            return (VolumeUnit)Enum.Parse(typeof(VolumeUnit), $"Cubic{lengthUnit}");
+            return new Volume(1, new UnitsNet.UnitSystem(baseUnits)).Unit;
         }
         catch (Exception)
         {
-            var baseUnits = new BaseUnits(lengthUnit, sI.Mass, sI.Time, sI.Current, sI.Temperature,
-                sI.Amount, sI.LuminousIntensity);
-            try
-            {
-                return new Volume(1, new UnitsNet.UnitSystem(baseUnits)).Unit;
-            }
-            catch (Exception)
-            {
-                throw new ArgumentException(
-                $"Unable to convert {lengthUnit} to Moment");
-            }
+            throw new ArgumentException(
+                $"Unable to convert {lengthUnit} to Volume");
         }
     }
 }
