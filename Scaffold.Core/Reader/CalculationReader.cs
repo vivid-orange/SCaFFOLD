@@ -89,9 +89,9 @@ public static class CalculationReader
     public static CalcValueKind GetValueKind(ICalcValue value)
     {
         ArgumentNullException.ThrowIfNull(value);
-        
+
         Type valueType = value.GetType();
-        
+
         // Extract generic T from DelegateCalcValue<T>
         if (valueType.IsGenericType && valueType.GetGenericTypeDefinition().Name == "DelegateCalcValue`1")
         {
