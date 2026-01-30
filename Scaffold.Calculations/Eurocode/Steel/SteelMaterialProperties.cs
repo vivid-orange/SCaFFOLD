@@ -1,50 +1,44 @@
-﻿using Scaffold.Report;
-using VividOrange.Materials;
+﻿using VividOrange.Materials;
 using VividOrange.Materials.StandardMaterials.En;
 
 namespace Scaffold.Calculations.Eurocode.Steel
 {
-    public class SteelMaterialProperties : ICalculation
+    public class SteelMaterialProperties : Calculation
     {
-        public string CalculationTitle { get; set; }
-        public string EntityLabel { get; set; } = "Steel Material Properties";
-        public CalcStatus Status { get; set; } = CalcStatus.None;
-
-        [InputCalcValue("Grd", "Grade")]
         public EnSteelGrade Grade { get; set; } = EnSteelGrade.S355;
 
-        [InputCalcValue("t", "Nominal thickness of the element")]
+        [InputParameter("t", "Nominal thickness of the element")]
         public Length Thickness { get; set; } = new(40, LengthUnit.Millimeter);
 
-        [OutputCalcValue("S", "Steel Material")]
+        [OutputParameter("S", "Steel Material")]
         public EnSteelMaterial Material => new(Grade, NationalAnnex);
 
-        [OutputCalcValue("E", "Modulus of Elasticity")]
+        [OutputParameter("E", "Modulus of Elasticity")]
         public Pressure E => new(210000, _unit);
 
-        [OutputCalcValue(@"\nu", "Poisson's ratio")]
+        [OutputParameter(@"\nu", "Poisson's ratio")]
         public double nu => 0.3;
 
-        [OutputCalcValue("G", "Shear Modulus")]
+        [OutputParameter("G", "Shear Modulus")]
         public Pressure G => E / (2 * (1 + nu));
 
-        [OutputCalcValue(@"\alpha_T", "Coefficient of Linear Thermal Expansion")]
+        [OutputParameter(@"\alpha_T", "Coefficient of Linear Thermal Expansion")]
         public CoefficientOfThermalExpansion alpha =>
             new((12 * 10) ^ -6, CoefficientOfThermalExpansionUnit.PerKelvin);
 
-        [OutputCalcValue("f_y", "Yield Strength")]
+        [OutputParameter("f_y", "Yield Strength")]
         public Pressure fy => _analysisMaterial.YieldStrength;
 
-        [OutputCalcValue("f_u", "Ultimate Tensile Strength")]
+        [OutputParameter("f_u", "Ultimate Tensile Strength")]
         public Pressure fu => _analysisMaterial.UltimateStrength;
 
-        [OutputCalcValue("ε_y", "Yield Strain")]
+        [OutputParameter("ε_y", "Yield Strain")]
         public Ratio Epsilony => _analysisMaterial.YieldStrain;
 
-        [OutputCalcValue("ε_u", "Failure Tension Strain")]
+        [OutputParameter("ε_u", "Failure Tension Strain")]
         public Ratio Epsilonu => _analysisMaterial.FailureStrain;
 
-        [OutputCalcValue("ε", "Material Parameter")]
+        [OutputParameter("ε", "Material Parameter")]
         public double Epsilon => Math.Sqrt(235 / fy.As(_unit));
 
         private IBiLinearMaterial _analysisMaterial => EnSteelFactory.CreateBiLinear(Material, Thickness);
@@ -54,12 +48,5 @@ namespace Scaffold.Calculations.Eurocode.Steel
         {
             Calculate();
         }
-
-        public IList<IOutputItem> GetFormulae()
-        {
-            return new List<IOutputItem>();
-        }
-
-        public void Calculate() { }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Scaffold.Core;
 using Scaffold.Geometry;
 using Scaffold.Reader.Images;
 using Scaffold.Report;
@@ -7,61 +6,61 @@ using SkiaSharp;
 
 namespace Scaffold.Calculations
 {
-    public class TestCalc2 : ICalculation, IInteractiveGeometry
+    public class TestCalc2 : Calculation, IInteractiveGeometry
     {
+        public override string CalculationTitle { get; } = "This is my test calc";
+        public override string EntityLabel { get; } = "Test calc";
 
-        public string EntityLabel { get; } = "Test calc";
-        public string CalculationTitle { get; set; } = "This is my test calc";
-
-
-        [CalcValueType(CalcValueType.Input, "I", "Multiplier")]
+        // public property with getter and setter will be treated as input by reader
         public double Multiplier { get; set; }
 
-        [CalcValueType(CalcValueType.Input, "M", "Moment")]
-        public Torque Moment { get; set; } = new Torque(20, TorqueUnit.KilonewtonMeter);
+        // Decorate a property with attribute to set custom symbol
+        [InputParameter("M")]
+        public Moment Moment { get; set; } = new Moment(20, MomentUnit.KilonewtonMeter);
 
-        [CalcValueType(CalcValueType.Input, "B", "Breadth", ["Geometry", "Section"])]
+        // Optionally add headings for grouping in UI
+        [CalcParameter(CalcParameterType.Input, "B", "Breadth", ["Geometry", "Section"])]
         public Length Breadth { get; set; } = new Length(200, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "C_x", "Centre X", ["Geometry", "Centre"])]
+        // Using specialized attribute for input parameter
+        [InputParameter("C_x", "Centre X", ["Geometry", "Centre"])]
         public Length Offset1 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "C_y", "Centre Y", ["Geometry", "Centre"])]
+
+        [InputParameter("C_y", "Centre Y", ["Geometry", "Centre"])]
         public Length Offset2 { get; set; } = new Length(5, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "E", "Column height", ["Misc"])]
+        [InputParameter("E", "Column height", ["Misc"])]
         public EmbeddedCalc ReducedHeight { get; set; } = new EmbeddedCalc();
 
-        [CalcValueType(CalcValueType.Input, "H", "Height", ["Geometry", "Section"])]
+        [InputParameter("H", "Height", ["Geometry", "Section"])]
         public Length Height { get; set; } = new Length(500, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "T", "Flange", ["Geometry", "Section"])]
+        [InputParameter("T", "Flange", ["Geometry", "Section"])]
         public Length FlangeThickness { get; set; } = new Length(25, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "t", "Web", ["Geometry", "Section"])]
+        [InputParameter("t", "Web", ["Geometry", "Section"])]
         public Length WebThickness { get; set; } = new Length(12, LengthUnit.Millimeter);
 
-        [CalcValueType(CalcValueType.Input, "r", "Root radius", ["Geometry", "Section"])]
+        [InputParameter("r", "Root radius", ["Geometry", "Section"])]
         public Length RootRadius { get; set; } = new Length(5, LengthUnit.Millimeter);
 
 
-        [CalcValueType(CalcValueType.Output, "M_o", "Moment out")]
-        public Torque MomentOut { get; private set; } = new Torque(0, TorqueUnit.KilonewtonMeter);
+        // Public property with private setter will be treated as output by reader
+        public Moment MomentOut { get; private set; } = new Moment(0, MomentUnit.KilonewtonMeter);
 
-
-        [CalcValueType(CalcValueType.Output, "F_req", "Force required")]
+        // Decorate a property with attribute to set custom symbol and display name
+        [CalcParameter(CalcParameterType.Output, "F_{req}", "Force required")]
         public Force ForceRequired { get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
-        [CalcValueType(CalcValueType.Input, "C", "Complex Input type", ["Misc"])]
+        [CalcParameter(CalcParameterType.Input, "C", "Complex Input type", ["Misc"])]
         public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
 
-        [CalcValueType(CalcValueType.Input, "L", "List of things", ["Misc"])]
-        public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35,20, 0.35), new MyOtherDataHolder(40,20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
+        [CalcParameter(CalcParameterType.Input, "L", "List of things", ["Misc"])]
+        public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35, 20, 0.35), new MyOtherDataHolder(40, 20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
 
-        [CalcValueType(CalcValueType.Input, "LL2", "List of lists of more things", ["Misc"])]
-        public List<List<MyDataHolder>> MoreThings { get; set; } = [[ new MyDataHolder(100, 200), new MyDataHolder(300, 400) ] , [new MyDataHolder(500,600)]];
-
-        public CalcStatus Status => CalcStatus.None;
+        [CalcParameter(CalcParameterType.Input, "LL2", "List of lists of more things", ["Misc"])]
+        public List<List<MyDataHolder>> MoreThings { get; set; } = [[new MyDataHolder(100, 200), new MyDataHolder(300, 400)], [new MyDataHolder(500, 600)]];
 
         List<IInteractiveGeometryItem> geometry = new List<IInteractiveGeometryItem>();
         public List<IInteractiveGeometryItem> InteractiveGeometryItems => geometry;
@@ -109,24 +108,24 @@ namespace Scaffold.Calculations
 
 
 
-        public void Calculate()
+        public override void Calculate()
         {
             MomentOut = Moment * Multiplier;
 
             ForceRequired = (Moment / Breadth).ToUnit(ForceUnit.Kilonewton);
 
             var lines = new List<Line>();
-            var topLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value + Height.Value / 2);
-            var topRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value + Height.Value / 2);
-            var bottomRight = (Offset1.Value + Breadth.Value / 2, Offset2.Value - Height.Value / 2);
-            var bottomLeft = (Offset1.Value - Breadth.Value / 2, Offset2.Value - Height.Value / 2);
+            (double, double) topLeft = (Offset1.Value - (Breadth.Value / 2), Offset2.Value + (Height.Value / 2));
+            (double, double) topRight = (Offset1.Value + (Breadth.Value / 2), Offset2.Value + (Height.Value / 2));
+            (double, double) bottomRight = (Offset1.Value + (Breadth.Value / 2), Offset2.Value - (Height.Value / 2));
+            (double, double) bottomLeft = (Offset1.Value - (Breadth.Value / 2), Offset2.Value - (Height.Value / 2));
             lines.AddRange(CreateContinuousPath(new List<(double x, double y)> { topLeft, topRight, bottomRight, bottomLeft, topLeft }));
 
             _geometryBases.Clear();
             _geometryBases.AddRange(lines);
 
         }
-        public IList<IOutputItem> GetFormulae()
+        public override IList<IOutputItem> GetFormulae()
         {
             var returnList = new List<IOutputItem>();
 
@@ -161,13 +160,15 @@ namespace Scaffold.Calculations
 
             // We need at least 2 points to make a line
             if (points == null || points.Count < 2)
+            {
                 return lines;
+            }
 
             // Iterate up to the second-to-last point
             for (int i = 0; i < points.Count - 1; i++)
             {
-                var current = points[i];
-                var next = points[i + 1];
+                (double x, double y) current = points[i];
+                (double x, double y) next = points[i + 1];
 
                 // Convert doubles to Vector2 (which usually takes floats)
                 Vector2 start = new Vector2((float)current.x, (float)current.y);
@@ -182,9 +183,9 @@ namespace Scaffold.Calculations
 
     public class MyDataHolder
     {
-        [CalcValueType(CalcValueType.Input, "L_{col}", "Prop 1")]
+        [CalcParameter(CalcParameterType.Input, "L_{col}", "Prop 1")]
         public Length FirstLength { get; set; } = new Length(10, LengthUnit.Meter);
-        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
+        [CalcParameter(CalcParameterType.Input, "P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
 
         public MyDataHolder()
@@ -200,11 +201,11 @@ namespace Scaffold.Calculations
 
     public class MyOtherDataHolder
     {
-        [CalcValueType(CalcValueType.Input, "f_{ck}", "Char compressive strength")]
+        [CalcParameter(CalcParameterType.Input, "f_{ck}", "Char compressive strength")]
         public Pressure ComeStr { get; set; } = new Pressure(35, PressureUnit.NewtonPerSquareMillimeter);
-        [CalcValueType(CalcValueType.Input, "P_2", "Prop Two")]
+        [CalcParameter(CalcParameterType.Input, "P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
-        [CalcValueType(CalcValueType.Input, @"\epsilon_t", "")]
+        [CalcParameter(CalcParameterType.Input, @"\epsilon_t", "")]
         public Ratio MyRatio { get; set; } = new Ratio(0.35, RatioUnit.DecimalFraction);
 
         public MyOtherDataHolder()

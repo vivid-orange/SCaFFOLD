@@ -98,9 +98,10 @@ namespace Scaffold.Desktop
             // FIX: Check for the base CalcValueTypeAttribute and ensure Type is Input.
             // This covers both [CalcValueType(CalcValueType.Input)] AND [InputCalcValue].
             bool isComplex = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                     .Any(p => {
-                                         var attr = p.GetCustomAttribute<CalcValueTypeAttribute>();
-                                         return attr != null && attr.Type == CalcValueType.Input;
+                                     .Any(p =>
+                                     {
+                                         var attr = p.GetCustomAttribute<CalcParameterAttribute>();
+                                         return attr != null && attr.Type == CalcParameterType.Input;
                                      });
 
             if (!isComplex) return false;
@@ -131,8 +132,8 @@ namespace Scaffold.Desktop
             {
                 // Fallback: Manual Reflection using the correct Attribute check
                 var props = itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Select(p => p.GetCustomAttribute<CalcValueTypeAttribute>())
-                    .Where(attr => attr != null && attr.Type == CalcValueType.Input)
+                    .Select(p => p.GetCustomAttribute<CalcParameterAttribute>())
+                    .Where(attr => attr != null && attr.Type == CalcParameterType.Input)
                     .ToList();
 
                 foreach (var attr in props) TableHeaders.Add(attr.Symbol);
