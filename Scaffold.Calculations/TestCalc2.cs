@@ -19,7 +19,7 @@ namespace Scaffold.Calculations
         public Moment Moment { get; set; } = new Moment(20, MomentUnit.KilonewtonMeter);
 
         // Optionally add headings for grouping in UI
-        [CalcParameter(CalcParameterType.Input, "B", "Breadth", ["Geometry", "Section"])]
+        [InputParameter("B", "Breadth", ["Geometry", "Section"])]
         public Length Breadth { get; set; } = new Length(200, LengthUnit.Millimeter);
 
         // Using specialized attribute for input parameter
@@ -50,16 +50,16 @@ namespace Scaffold.Calculations
         public Moment MomentOut { get; private set; } = new Moment(0, MomentUnit.KilonewtonMeter);
 
         // Decorate a property with attribute to set custom symbol and display name
-        [CalcParameter(CalcParameterType.Output, "F_{req}", "Force required")]
+        [OutputParameter("F_{req}", "Force required")]
         public Force ForceRequired { get; private set; } = new Force(0, ForceUnit.Kilonewton);
 
-        [CalcParameter(CalcParameterType.Input, "C", "Complex Input type", ["Misc"])]
+        [InputParameter("C", "Complex Input type", ["Misc"])]
         public MyDataHolder ComplexValue { get; set; } = new MyDataHolder();
 
-        [CalcParameter(CalcParameterType.Input, "L", "List of things", ["Misc"])]
+        [InputParameter("L", "List of things", ["Misc"])]
         public List<MyOtherDataHolder> Things { get; set; } = new List<MyOtherDataHolder> { new MyOtherDataHolder(35, 20, 0.35), new MyOtherDataHolder(40, 20, 0.33), new MyOtherDataHolder(45, 20, 0.31) };
 
-        [CalcParameter(CalcParameterType.Input, "LL2", "List of lists of more things", ["Misc"])]
+        [InputParameter("LL2", "List of lists of more things", ["Misc"])]
         public List<List<MyDataHolder>> MoreThings { get; set; } = [[new MyDataHolder(100, 200), new MyDataHolder(300, 400)], [new MyDataHolder(500, 600)]];
 
         [CalcIgnore]
@@ -186,9 +186,9 @@ namespace Scaffold.Calculations
 
     public class MyDataHolder
     {
-        [CalcParameter(CalcParameterType.Input, "L_{col}", "Prop 1")]
+        [InputParameter("L_{col}", "Prop 1")]
         public Length FirstLength { get; set; } = new Length(10, LengthUnit.Meter);
-        [CalcParameter(CalcParameterType.Input, "P_2", "Prop Two")]
+        [InputParameter("P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
 
         public MyDataHolder()
@@ -204,11 +204,11 @@ namespace Scaffold.Calculations
 
     public class MyOtherDataHolder
     {
-        [CalcParameter(CalcParameterType.Input, "f_{ck}", "Char compressive strength")]
+        [InputParameter("f_{ck}", "Char compressive strength")]
         public Pressure ComeStr { get; set; } = new Pressure(35, PressureUnit.NewtonPerSquareMillimeter);
-        [CalcParameter(CalcParameterType.Input, "P_2", "Prop Two")]
+        [InputParameter("P_2", "Prop Two")]
         public Force ForceyForce { get; set; } = new Force(100, ForceUnit.Kilonewton);
-        [CalcParameter(CalcParameterType.Input, @"\epsilon_t", "")]
+        [InputParameter(@"\epsilon_t", "")]
         public Ratio MyRatio { get; set; } = new Ratio(0.35, RatioUnit.DecimalFraction);
 
         public MyOtherDataHolder()
