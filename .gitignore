@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 /Scaffold.Grasshopper/.vscode
+/nul
+/.claude/settings.local.json
