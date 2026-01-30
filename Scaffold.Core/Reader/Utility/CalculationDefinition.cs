@@ -5,7 +5,7 @@ namespace Scaffold.Reader.Utility;
 /// <summary>
 /// Holds the structural map for a Calculation Type (e.g., BeamCalc)
 /// </summary>
-internal class CalculationDefinition
+internal class CalculationDefinition : ITypeDefinition
 {
     private readonly List<IPropertyAdapter> _inputAdapters = new List<IPropertyAdapter>();
     private readonly List<IPropertyAdapter> _outputAdapters = new List<IPropertyAdapter>();
@@ -33,23 +33,43 @@ internal class CalculationDefinition
         {
             if (_scaffoldCoreProperties.Contains(prop.Name))
             {
-                continue; // Skip: This is an core property (CalculationTitle, Status, etc.)
+                continue; // Skip: This is a core property (CalculationTitle, Status, etc.)
             }
 
-            CalcParameterAttribute? attr = prop.GetCustomAttribute<CalcParameterAttribute>()
-                                           ?? CreateAttributes(prop);
-            if (attr is null)
+            if (prop.GetCustomAttribute<CalcIgnoreAttribute>() != null)
             {
                 continue;
             }
 
-            if (attr.EntityLabel is null or "")
+            CalcParameterAttribute? attr = prop.GetCustomAttribute<CalcParameterAttribute>();
+
+            CalcParameterType paramType;
+            string symbol;
+            string entityLabel;
+            string[]? headings;
+
+            if (attr != null)
             {
-                attr.EntityLabel = ParameterNaming.SplitPascalCaseToString(prop.Name);
+                paramType = attr.Type;
+                symbol = attr.Symbol;
+                entityLabel = attr.EntityLabel;
+                headings = attr.Headings;
+            }
+            else
+            {
+                paramType = GetParameterType(prop);
+                symbol = ParameterNaming.CreateThreeLetterAcronym(prop.Name);
+                entityLabel = ParameterNaming.SplitPascalCaseToString(prop.Name);
+                headings = null;
             }
 
-            IPropertyAdapter adapter = CreateAdapter(type, prop, attr);
-            if (attr.Type == CalcParameterType.Input)
+            if (string.IsNullOrEmpty(entityLabel))
+            {
+                entityLabel = ParameterNaming.SplitPascalCaseToString(prop.Name);
+            }
+
+            IPropertyAdapter adapter = PropertyAdapterFactory.Create(type, prop, symbol, entityLabel, headings);
+            if (paramType == CalcParameterType.Input)
             {
                 _inputAdapters.Add(adapter);
             }
@@ -58,15 +78,6 @@ internal class CalculationDefinition
                 _outputAdapters.Add(adapter);
             }
         }
-    }
-
-    private static CalcParameterAttribute CreateAttributes(PropertyInfo prop)
-    {
-        return new CalcParameterAttribute(GetParameterType(prop))
-        {
-            Symbol = ParameterNaming.CreateThreeLetterAcronym(prop.Name),
-            EntityLabel = ParameterNaming.SplitPascalCaseToString(prop.Name)
-        };
     }
 
     private static CalcParameterType GetParameterType(PropertyInfo property)
@@ -87,10 +98,4 @@ internal class CalculationDefinition
 
     public List<ICalcValue> CreateOutputs(object instance)
         => _outputAdapters.Select(a => a.Create(instance)).ToList();
-
-    private IPropertyAdapter CreateAdapter(Type modelType, PropertyInfo prop, CalcParameterAttribute attr)
-    {
-        Type adapterType = typeof(PropertyAdapter<,>).MakeGenericType(modelType, prop.PropertyType);
-        return (IPropertyAdapter)Activator.CreateInstance(adapterType, prop, attr);
-    }
 }

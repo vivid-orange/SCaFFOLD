@@ -11,14 +11,13 @@ internal class PropertyAdapter<TModel, TProp> : IPropertyAdapter
     private readonly string _displayName;
     private readonly string[] _headings;
 
-    public PropertyAdapter(PropertyInfo prop, CalcParameterAttribute attr)
+    public PropertyAdapter(PropertyInfo prop, string symbol, string displayName, string[]? headings)
     {
         ArgumentNullException.ThrowIfNull(prop);
-        ArgumentNullException.ThrowIfNull(attr);
 
-        _symbol = attr.Symbol;
-        _displayName = attr.EntityLabel ?? prop.Name;
-        _headings = attr.Headings ?? Array.Empty<string>();
+        _symbol = symbol;
+        _displayName = displayName ?? prop.Name;
+        _headings = headings ?? Array.Empty<string>();
 
         // Compile Getter
         ParameterExpression param = Expression.Parameter(typeof(TModel), "m");

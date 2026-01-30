@@ -62,11 +62,14 @@ namespace Scaffold.Calculations
         [CalcParameter(CalcParameterType.Input, "LL2", "List of lists of more things", ["Misc"])]
         public List<List<MyDataHolder>> MoreThings { get; set; } = [[new MyDataHolder(100, 200), new MyDataHolder(300, 400)], [new MyDataHolder(500, 600)]];
 
-        List<IInteractiveGeometryItem> geometry = new List<IInteractiveGeometryItem>();
-        public List<IInteractiveGeometryItem> InteractiveGeometryItems => geometry;
+        [CalcIgnore]
+        public List<IInteractiveGeometryItem> InteractiveGeometryItems => _geometry;
 
-        List<GeometryBase> _geometryBases = new List<GeometryBase>();
+        [CalcIgnore]
         public List<GeometryBase> Geometry => _geometryBases;
+
+        private List<IInteractiveGeometryItem> _geometry = [];
+        private List<GeometryBase> _geometryBases = [];
 
         public TestCalc2()
         {
@@ -78,7 +81,7 @@ namespace Scaffold.Calculations
                 false,
                 false
                 );
-            geometry.Add(xg);
+            _geometry.Add(xg);
 
             var xg2 = new InteractiveGeometryQuantityOnXY(
                 xGetter: () => 0,
@@ -90,7 +93,7 @@ namespace Scaffold.Calculations
                 xOffset: () => this.Offset1.Value,
                 yOffset: () => this.Offset2.Value
                 );
-            geometry.Add(xg2);
+            _geometry.Add(xg2);
 
             var xg3 = new InteractiveGeometryQuantityOnXY(
                 xGetter: () => this.Breadth.Value,
@@ -102,7 +105,7 @@ namespace Scaffold.Calculations
                 xOffset: () => this.Offset1.Value,
                 yOffset: () => this.Offset2.Value
                 );
-            geometry.Add(xg3);
+            _geometry.Add(xg3);
 
         }
 
