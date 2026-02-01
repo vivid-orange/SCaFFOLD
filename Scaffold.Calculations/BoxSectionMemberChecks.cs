@@ -121,8 +121,8 @@ namespace Scaffold.Calculations
             double tw = Section.WebThickness.Millimeters;
             double d = h - 2 * tf;
 
-            double aw_z = Math.Min(0.5, (2 * d * tw) / area);
-            double af = Math.Min(0.5, (2 * Section.Width.Millimeters * tf) / area);
+            double aw_z = Math.Min(0.5, (area -(2 * d * tw)) / area);
+            double af = Math.Min(0.5, (area - (2 * Section.Width.Millimeters * tf)) / area);
 
             // 4. Reduced Moment Capacities (MN,Rd) [cite: 2, 3]
             double mny = mply * ((1 - AxialRatio) / (1 - 0.5 * aw_z));
@@ -133,7 +133,7 @@ namespace Scaffold.Calculations
 
             // 5. Combined Interaction Sum (Spreadsheet Row 26) 
             // Checks NEd/Npl,Rd + MEd/MN,min,Rd
-            double axialTerm = DesignAxial.Kilonewtons / PlasticAxialResistance.Kilonewtons;
+            double axialTerm = DesignAxial.Kilonewtons / BucklingResistance.Kilonewtons;
             double bendingTerm = DesignMomentZ.KilonewtonMeters / ReducedMomentZ.KilonewtonMeters;
 
             CombinedSum = axialTerm + bendingTerm; // Result: ~0.789 for ULS 
@@ -211,7 +211,8 @@ namespace Scaffold.Calculations
             // Combined Sum Formula
             var sumItem = new OutputItem("CombinedSum", "Combined Resistance Check", new TextItem("Total utilization considering axial and bending interaction."));
             sumItem.Expressions.Add(new LatexItem(@"\sum = \frac{N_{Ed}}{N_{pl,Rd}} + \frac{M_{Ed}}{M_{N,min,Rd}}"));
-            sumItem.Expressions.Add(new LatexItem($@"\sum = {DesignAxial.Kilonewtons / PlasticAxialResistance.Kilonewtons:F3} + {DesignMomentZ.KilonewtonMeters / ReducedMomentZ.KilonewtonMeters:F3}"));
+            sumItem.Expressions.Add(new LatexItem($@"\sum = \frac{{{DesignAxial.Kilonewtons:F3}}}{{{BucklingResistance.Kilonewtons:F3}}} + \frac {{{DesignMomentZ.KilonewtonMeters}}}{{{ReducedMomentZ.KilonewtonMeters:F3}}}"));
+            sumItem.Expressions.Add(new LatexItem($@"\sum = {DesignAxial.Kilonewtons / BucklingResistance.Kilonewtons:F3} + {DesignMomentZ.KilonewtonMeters / ReducedMomentZ.KilonewtonMeters:F3}"));
             sumItem.Expressions.Add(new LatexItem($@"\sum = {CombinedSum:F3}"));
             results.Add(sumItem);
 

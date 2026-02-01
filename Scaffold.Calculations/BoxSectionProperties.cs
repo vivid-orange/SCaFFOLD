@@ -82,30 +82,50 @@ namespace Scaffold.Calculations
 
         public BoxSectionPropertiesCalculation()
         {
-            // Handle for Height: Positioned at B/2, H. 
-            // Only Y is draggable (locked X).
-            var heightHandle = new InteractiveGeometryQuantityOnXY(
+            // 1. Height Handle: Positioned at B/2, H
+            _interactiveItems.Add(new InteractiveGeometryQuantityOnXY(
                 xGetter: () => Width.Millimeters / 2.0,
-                xSetter: null, // Locked X
+                xSetter: null,
                 yGetter: () => Height.Millimeters,
-                ySetter: (val) => Height = Length.FromMillimeters(val),
-                isCentredOnX: false,
-                isCentredOnY: false
-            );
+                ySetter: (val) => Height = Length.FromMillimeters(val)
+            ));
 
-            // Handle for Breadth: Positioned at B, H/2. 
-            // Only X is draggable (locked Y).
-            var widthHandle = new InteractiveGeometryQuantityOnXY(
+            // 2. Breadth Handle: Positioned at B, H/2
+            _interactiveItems.Add(new InteractiveGeometryQuantityOnXY(
                 xGetter: () => Width.Millimeters,
                 xSetter: (val) => Width = Length.FromMillimeters(val),
                 yGetter: () => Height.Millimeters / 2.0,
-                ySetter: null, // Locked Y
-                isCentredOnX: false,
-                isCentredOnY: false
-            );
+                ySetter: null
+            ));
 
-            _interactiveItems.Add(heightHandle);
-            _interactiveItems.Add(widthHandle);
+            // 3. Bottom Flange Thickness Handle: Positioned at B/4, tf
+            _interactiveItems.Add(new InteractiveGeometryQuantityOnXY(
+                xGetter: () => Width.Millimeters / 4.0,
+                xSetter: null,
+                yGetter: () => FlangeThickness.Millimeters,
+                ySetter: (val) => FlangeThickness = Length.FromMillimeters(val)
+            ));
+
+            _interactiveItems.Add(new InteractiveGeometryQuantityOnXY(
+                xGetter: () => Width.Millimeters / 4.0,
+                xSetter: null,
+                yGetter: () => Height.Millimeters - FlangeThickness.Millimeters,
+                ySetter: (val) => FlangeThickness = Length.FromMillimeters(Height.Millimeters - val)
+            ));
+
+            // 4. Web Offset Handle: Placed at the outer edge of the left web (X = off)
+            _interactiveItems.Add(new InteractiveGeometryQuantityOnXY(
+                xGetter: () => WebOffset.Millimeters,
+                xSetter: (val) => WebOffset = Length.FromMillimeters(val),
+                yGetter: () => Height.Millimeters / 2.0,
+                ySetter: null));
+
+            // 5. Web Thickness Handle: Placed at the inner edge of the left web (X = off + tw)
+            _interactiveItems.Add(new InteractiveGeometryQuantityOnXY(
+                xGetter: () => WebOffset.Millimeters + WebThickness.Millimeters,
+                xSetter: (val) => WebThickness = Length.FromMillimeters(val - WebOffset.Millimeters),
+                yGetter: () => Height.Millimeters / 3.0, // Offset vertically from the center handle
+                ySetter: null));
         }
         public void Calculate()
         {
