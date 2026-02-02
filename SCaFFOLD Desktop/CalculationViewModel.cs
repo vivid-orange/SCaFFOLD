@@ -163,10 +163,8 @@ namespace Scaffold.Desktop
 
             // --- STOP RECURSION CHECKS ---
 
-            var kind = CalculationReader.GetValueKind(model);
-
             // 1. If it's a Calculation, stop (displayed as link)
-            if (kind == CalcValueKind.Calculation)
+            if (model.IsICalculation)
             {
                 return;
             }
@@ -180,19 +178,15 @@ namespace Scaffold.Desktop
 
             // --- CONTINUE RECURSION ---
 
-            if (kind == CalcValueKind.Complex)
+            if (model.IsComplexValue)
             {
-                object? value = vm.RawValue;
-                if (value != null)
+                List<ICalcValue> children = isInput ? model.GetChildInputs() : model.GetChildOutputs();
+                foreach (ICalcValue? child in children)
                 {
-                    List<ICalcValue> children = isInput ? CalculationReader.GetInputs(value) : CalculationReader.GetOutputs(value);
-                    foreach (ICalcValue? child in children)
-                    {
-                        AddRecursive(itemNode.Children, child, isInput);
-                    }
+                    AddRecursive(itemNode.Children, child, isInput);
                 }
             }
-            else if (kind == CalcValueKind.Collection)
+            else if (model.IsCollection)
             {
                 if (vm.RawValue is IList list)
                 {
