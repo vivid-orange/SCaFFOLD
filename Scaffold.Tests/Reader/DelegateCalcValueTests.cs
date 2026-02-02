@@ -1,9 +1,7 @@
-using System.ComponentModel;
 using System.Globalization;
 using FluentAssertions;
 using Scaffold.Reader;
 using UnitsNet;
-using UnitsNet.Units;
 
 namespace Scaffold.Tests.Reader;
 
@@ -41,7 +39,7 @@ public class DelegateCalcValueTests
     public void ToString_DelegatesToUnderlyingIFormattable()
     {
         var length = new Length(3.14159, LengthUnit.Meter);
-        var cv = Create(length);
+        DelegateCalcValue<Length> cv = Create(length);
 
         string result = cv.ToString("F2", CultureInfo.InvariantCulture);
 
@@ -52,7 +50,7 @@ public class DelegateCalcValueTests
     public void ToString_Collection_ReturnsCountSummary()
     {
         var list = new List<int> { 1, 2, 3 };
-        var cv = Create(list);
+        DelegateCalcValue<List<int>> cv = Create(list);
 
         string result = cv.ToString(null, CultureInfo.InvariantCulture);
 
@@ -63,7 +61,7 @@ public class DelegateCalcValueTests
     public void ToString_Override_UsesInvariantCulture()
     {
         var length = new Length(1.5, LengthUnit.Meter);
-        var cv = Create(length);
+        DelegateCalcValue<Length> cv = Create(length);
 
         string overrideResult = cv.ToString();
         string formattableResult = cv.ToString(null, CultureInfo.InvariantCulture);
@@ -92,7 +90,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IQuantity_FullUnitString_Succeeds()
     {
-        var cv = Create(new Length(0, LengthUnit.Meter));
+        DelegateCalcValue<Length> cv = Create(new Length(0, LengthUnit.Meter));
 
         bool result = cv.TryParse("5 m");
 
@@ -103,7 +101,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IQuantity_BareNumber_PreservesUnit()
     {
-        var cv = Create(new Length(1, LengthUnit.Millimeter));
+        DelegateCalcValue<Length> cv = Create(new Length(1, LengthUnit.Millimeter));
 
         bool result = cv.TryParse("10");
 
@@ -115,7 +113,7 @@ public class DelegateCalcValueTests
     public void TryParse_IQuantity_InvalidString_ReturnsFalse()
     {
         var original = new Length(5, LengthUnit.Meter);
-        var cv = Create(original);
+        DelegateCalcValue<Length> cv = Create(original);
 
         bool result = cv.TryParse("not a number");
 
@@ -130,7 +128,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_Int_Succeeds()
     {
-        var cv = Create(0);
+        DelegateCalcValue<int> cv = Create(0);
 
         bool result = cv.TryParse("42");
 
@@ -141,7 +139,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_Double_Succeeds()
     {
-        var cv = Create(0.0);
+        DelegateCalcValue<double> cv = Create(0.0);
 
         bool result = cv.TryParse("3.14");
 
@@ -152,7 +150,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_InvalidString_ReturnsFalse()
     {
-        var cv = Create(0);
+        DelegateCalcValue<int> cv = Create(0);
 
         bool result = cv.TryParse("abc");
 
@@ -167,7 +165,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_NullSetter_ReturnsFalse()
     {
-        var cv = CreateReadOnly(42);
+        DelegateCalcValue<int> cv = CreateReadOnly(42);
 
         bool result = cv.TryParse("99");
 
@@ -181,7 +179,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IQuantity_UnitsNetException_TriesBareNumber()
     {
-        var cv = Create(new Length(5, LengthUnit.Meter));
+        DelegateCalcValue<Length> cv = Create(new Length(5, LengthUnit.Meter));
 
         bool result = cv.TryParse("invalid unit");
 
@@ -196,7 +194,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_TypeConverterThrows_ReturnsFalse()
     {
-        var cv = Create(new Guid("12345678-1234-1234-1234-123456789012"));
+        DelegateCalcValue<Guid> cv = Create(new Guid("12345678-1234-1234-1234-123456789012"));
 
         // Try to parse with malformed GUID format
         bool result = cv.TryParse("not-a-guid");
@@ -208,7 +206,7 @@ public class DelegateCalcValueTests
     public void TryParse_NoConverterAvailable_ReturnsFalse()
     {
         // Create a value type with no TypeConverter
-        var cv = Create(new object());
+        DelegateCalcValue<object> cv = Create(new object());
 
         bool result = cv.TryParse("anything");
 
@@ -222,7 +220,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void ToString_StringType_DoesNotShowAsCollection()
     {
-        var cv = Create("hello world");
+        DelegateCalcValue<string> cv = Create("hello world");
 
         string result = cv.ToString();
 
@@ -233,7 +231,7 @@ public class DelegateCalcValueTests
     public void ToString_EmptyCollection_ReturnsZeroItems()
     {
         var list = new List<int>();
-        var cv = Create(list);
+        DelegateCalcValue<List<int>> cv = Create(list);
 
         string result = cv.ToString();
 
@@ -244,7 +242,7 @@ public class DelegateCalcValueTests
     public void ToString_NonFormattable_UsesDefaultToString()
     {
         var obj = new object();
-        var cv = Create(obj);
+        DelegateCalcValue<object> cv = Create(obj);
 
         string result = cv.ToString();
 
@@ -255,7 +253,7 @@ public class DelegateCalcValueTests
     public void ToString_WithFormat_PassesToIFormattable()
     {
         var length = new Length(1.23456, LengthUnit.Meter);
-        var cv = Create(length);
+        DelegateCalcValue<Length> cv = Create(length);
 
         string result = cv.ToString("F1", CultureInfo.InvariantCulture);
 
@@ -269,7 +267,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void Value_Setter_InvokesAction()
     {
-        var cv = Create(0);
+        DelegateCalcValue<int> cv = Create(0);
 
         cv.Value = 42;
 
@@ -297,7 +295,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void Value_SetterWithNullAction_DoesNotThrow()
     {
-        var cv = CreateReadOnly(42);
+        DelegateCalcValue<int> cv = CreateReadOnly(42);
 
         // Should not throw
         cv.Value = 99;
@@ -312,7 +310,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void Constructor_NullHeadings_CreatesEmptyList()
     {
-        var cv = Create(42, headings: null);
+        DelegateCalcValue<int> cv = Create(42, headings: null);
 
         cv.Headings.Should().BeEmpty();
     }
@@ -321,7 +319,7 @@ public class DelegateCalcValueTests
     public void Constructor_NonNullHeadings_CreatesListWithItems()
     {
         var headings = new[] { "Group1", "Group2" };
-        var cv = Create(42, headings: headings);
+        DelegateCalcValue<int> cv = Create(42, headings: headings);
 
         cv.Headings.Should().HaveCount(2);
         cv.Headings.Should().ContainInOrder("Group1", "Group2");
@@ -347,7 +345,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IParsableType_Succeeds()
     {
-        var cv = Create(Guid.Empty);
+        DelegateCalcValue<Guid> cv = Create(Guid.Empty);
 
         bool result = cv.TryParse("12345678-1234-1234-1234-123456789abc");
 
@@ -358,12 +356,184 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IParsableType_InvalidFormat_ReturnsFalse()
     {
-        var cv = Create(Guid.Empty);
+        DelegateCalcValue<Guid> cv = Create(Guid.Empty);
 
         bool result = cv.TryParse("not-a-guid-format");
 
         result.Should().BeFalse();
         cv.Value.Should().Be(Guid.Empty);
+    }
+
+    #endregion
+
+    #region Type Flags
+
+    [Theory]
+    [InlineData(42)]
+    [InlineData("hello")]
+    [InlineData(3.14)]
+    public void TypeFlags_Primitive_AllFalse(object primitive)
+    {
+        // Arrange
+        DelegateCalcValue<object> cv = Create(primitive);
+
+        // Assert
+        Assert.False(cv.IsICalculation);
+        Assert.False(cv.IsCollection);
+        Assert.False(cv.IsComplexValue);
+    }
+
+    [Fact]
+    public void TypeFlags_ListOfInt_IsCollectionTrue()
+    {
+        // Arrange
+        DelegateCalcValue<List<int>> cv = Create(new List<int> { 1, 2 });
+
+        // Assert
+        Assert.False(cv.IsICalculation);
+        Assert.True(cv.IsCollection);
+    }
+
+    [Fact]
+    public void TypeFlags_Calculation_IsICalculationTrue()
+    {
+        // Arrange
+        var calc = new StubCalculation();
+        DelegateCalcValue<StubCalculation> cv = Create<StubCalculation>(calc);
+
+        // Assert
+        Assert.True(cv.IsICalculation);
+    }
+
+    #endregion
+
+    #region CheckIfComplex
+
+    [Fact]
+    public void CheckIfComplex_TypeWithCalcParameterAttribute_IsComplexTrue()
+    {
+        // Arrange — ComplexStub has [InputParameter] on a property
+        DelegateCalcValue<ComplexStub> cv = Create(new ComplexStub());
+
+        // Assert
+        Assert.True(cv.IsComplexValue);
+    }
+
+    [Fact]
+    public void CheckIfComplex_PlainClassNoAttributes_IsComplexFalse()
+    {
+        // Arrange
+        DelegateCalcValue<PlainStub> cv = Create(new PlainStub());
+
+        // Assert
+        Assert.False(cv.IsComplexValue);
+    }
+
+    #endregion
+
+    #region GetChildInputs / GetChildOutputs
+
+    [Fact]
+    public void GetChildInputs_NullValue_ReturnsEmptyList()
+    {
+        // Arrange
+        string? val = null;
+        var cv = new DelegateCalcValue<string?>(
+            () => val, v => val = v, "x", "Test", Enumerable.Empty<string>());
+
+        // Act
+        List<ICalcValue> children = cv.GetChildInputs();
+
+        // Assert
+        Assert.Empty(children);
+    }
+
+    [Fact]
+    public void GetChildOutputs_NullValue_ReturnsEmptyList()
+    {
+        // Arrange
+        string? val = null;
+        var cv = new DelegateCalcValue<string?>(
+            () => val, v => val = v, "x", "Test", Enumerable.Empty<string>());
+
+        // Act
+        List<ICalcValue> children = cv.GetChildOutputs();
+
+        // Assert
+        Assert.Empty(children);
+    }
+
+    [Fact]
+    public void GetChildInputs_ComplexObject_ReturnsInputs()
+    {
+        // Arrange
+        var obj = new ComplexStub();
+        DelegateCalcValue<ComplexStub> cv = Create(obj);
+
+        // Act
+        List<ICalcValue> children = cv.GetChildInputs();
+
+        // Assert
+        Assert.NotEmpty(children);
+        Assert.Contains(children, c => c.Symbol == "W");
+    }
+
+    [Fact]
+    public void GetChildOutputs_ComplexObject_ReturnsOutputs()
+    {
+        // Arrange
+        var obj = new ComplexStub();
+        DelegateCalcValue<ComplexStub> cv = Create(obj);
+
+        // Act
+        List<ICalcValue> children = cv.GetChildOutputs();
+
+        // Assert
+        Assert.Single(children);
+        Assert.Equal("R", children[0].Symbol);
+    }
+
+    #endregion
+
+    #region TryParse — IQuantity with different unit
+
+    [Fact]
+    public void TryParse_IQuantity_DifferentUnit_ParsesSuccessfully()
+    {
+        // Arrange — start in meters, parse millimeters
+        DelegateCalcValue<Length> cv = Create(new Length(1, LengthUnit.Meter));
+
+        // Act
+        bool result = cv.TryParse("5 mm");
+
+        // Assert
+        Assert.True(result);
+        Assert.Equal(LengthUnit.Millimeter, ((Length)(object)cv.Value).Unit);
+        Assert.Equal(5, ((Length)(object)cv.Value).Value);
+    }
+
+    #endregion
+
+    #region Test Stubs
+
+    private class ComplexStub
+    {
+        [InputParameter("W", "Width")]
+        public double Width { get; set; } = 10.0;
+
+        [OutputParameter("R", "Result")]
+        public double Result { get; private set; } = 0.0;
+    }
+
+    private class PlainStub
+    {
+        public double Value1 { get; set; } = 1.0;
+        public string Name { get; set; } = "test";
+    }
+
+    private class StubCalculation : Calculation
+    {
+        public override string CalculationTitle => "Stub";
     }
 
     #endregion
