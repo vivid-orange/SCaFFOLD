@@ -10,4 +10,10 @@ public interface ICalcValue : ICalcParameter, IFormattable
     bool IsICalculation { get; }
     List<ICalcValue> GetChildInputs();
     List<ICalcValue> GetChildOutputs();
+    object ValueAsObject { get; }
+}
+
+public interface ICalcValue<T> : ICalcValue
+{
+    T Value { get; set; }
 }

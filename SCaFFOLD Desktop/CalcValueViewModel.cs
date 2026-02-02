@@ -80,8 +80,7 @@ namespace Scaffold.Desktop
             // 2. Determine the Item Type (T)
             Type itemType = null;
             var modelType = _model.GetType();
-            // Try to get T from DelegateCalcValue<List<T>>
-            if (modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(DelegateCalcValue<>))
+            if (modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(ICalcValue<>))
             {
                 var listType = modelType.GetGenericArguments()[0];
                 if (listType.IsGenericType && typeof(IEnumerable).IsAssignableFrom(listType))

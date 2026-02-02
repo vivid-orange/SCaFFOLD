@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Scaffold.Reader;
 
-public class DelegateCalcValue<T> : ICalcValue
+internal class DelegateCalcValue<T> : ICalcValue<T>
 {
     private readonly Func<T> _getter;
     private readonly Action<T> _setter;
@@ -175,6 +175,11 @@ public class DelegateCalcValue<T> : ICalcValue
     {
         get => _getter();
         set => _setter?.Invoke(value);
+    }
+
+    public object ValueAsObject
+    {
+        get => (object)_getter();
     }
 
     // --- IParsable<T> Helper ---
