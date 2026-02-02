@@ -47,10 +47,11 @@ namespace Scaffold.Desktop
         }
 
         // Structure Flags
-        public bool IsComplex => _model.IsComplexValue || _model.IsICalculation;
-        public bool IsCollection => _model.IsCollection;
-        public bool IsStandard => !IsComplex && !IsCollection;
-        public bool IsCalculation => _model.IsICalculation;
+        private CalcValueKind Kind => CalculationReader.GetValueKind(_model);
+        public bool IsComplex => Kind is CalcValueKind.Complex or CalcValueKind.Calculation;
+        public bool IsCollection => Kind == CalcValueKind.Collection;
+        public bool IsStandard => Kind == CalcValueKind.Standard;
+        public bool IsCalculation => Kind == CalcValueKind.Calculation;
         public bool IsSelectionList => false;
         public IEnumerable<string> SelectionOptions => Enumerable.Empty<string>();
         public int SelectedIndex { get => -1; set { } }

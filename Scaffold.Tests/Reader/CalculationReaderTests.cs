@@ -337,4 +337,44 @@ public class CalculationReaderTests
     }
 
     #endregion
+
+    #region GetValueKind
+
+    [Fact]
+    public void GetValueKind_Calculation_ReturnsCalculation()
+    {
+        CalculationReader.GetValueKind(typeof(SimpleCalc)).Should().Be(CalcValueKind.Calculation);
+    }
+
+    [Fact]
+    public void GetValueKind_List_ReturnsCollection()
+    {
+        CalculationReader.GetValueKind(typeof(List<int>)).Should().Be(CalcValueKind.Collection);
+    }
+
+    [Fact]
+    public void GetValueKind_String_ReturnsStandard()
+    {
+        CalculationReader.GetValueKind(typeof(string)).Should().Be(CalcValueKind.Standard);
+    }
+
+    [Fact]
+    public void GetValueKind_Primitive_ReturnsStandard()
+    {
+        CalculationReader.GetValueKind(typeof(double)).Should().Be(CalcValueKind.Standard);
+    }
+
+    [Fact]
+    public void GetValueKind_Length_ReturnsStandard()
+    {
+        CalculationReader.GetValueKind(typeof(Length)).Should().Be(CalcValueKind.Standard);
+    }
+
+    [Fact]
+    public void GetValueKind_ObjectWithCalcParameterAttributes_ReturnsComplex()
+    {
+        CalculationReader.GetValueKind(typeof(PlainObject)).Should().Be(CalcValueKind.Complex);
+    }
+
+    #endregion
 }
