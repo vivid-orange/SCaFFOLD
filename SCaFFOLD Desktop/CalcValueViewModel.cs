@@ -34,10 +34,10 @@ namespace Scaffold.Desktop
 
         public string Value
         {
-            get => _model.ValueAsString();
+            get => _model.ToString();
             set
             {
-                if (IsStandard && _model.ValueAsString() != value)
+                if (IsStandard && _model.ToString() != value)
                 {
                     _model.TryParse(value);
                     Refresh();

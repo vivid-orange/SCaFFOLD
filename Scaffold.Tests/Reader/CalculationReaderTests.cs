@@ -299,7 +299,7 @@ public class CalculationReaderTests
         var inputs = CalculationReader.GetInputs(calc);
 
         // Assert
-        inputs[0].ValueAsString().Should().Contain("10");
+        inputs[0].ToString().Should().Contain("10");
     }
 
     [Fact]
