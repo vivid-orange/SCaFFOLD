@@ -5,89 +5,117 @@ using System.Reflection;
 
 namespace Scaffold.Reader;
 
-/// <summary>
-/// Base implementation for wrapping property values with delegate accessors.
-/// Implements the appropriate marker interfaces based on the type T.
-/// </summary>
-public abstract class DelegateCalcValue : ICalcValue
+public class DelegateCalcValue<T> : ICalcValue
 {
-    protected readonly Func<object?> _getter;
-    protected readonly Action<object?>? _setter;
+    private readonly Func<T> _getter;
+    private readonly Action<T> _setter;
 
     public string Symbol { get; }
     public string EntityLabel { get; }
     public List<string> Headings { get; }
+
     public CalcStatus Status { get; set; } = CalcStatus.None;
 
-    protected DelegateCalcValue(
-        Func<object?> getter,
-        Action<object?>? setter,
+    // --- Type Flags ---
+    public bool IsICalculation { get; }
+    public bool IsCollection { get; }
+    public bool IsComplexValue { get; }
+
+    public DelegateCalcValue(
+        Func<T> getter,
+        Action<T> setter,
         string symbol,
         string displayName,
-        IEnumerable<string>? headings)
+        IEnumerable<string> headings)
     {
         _getter = getter;
         _setter = setter;
         Symbol = symbol;
-        EntityLabel = displayName ?? "Value";
+        EntityLabel = displayName ?? typeof(T).Name;
         Headings = headings != null ? new List<string>(headings) : new List<string>();
+
+        // 1. Check for ICalculation
+        IsICalculation = typeof(ICalculation).IsAssignableFrom(typeof(T));
+
+        // 2. Check for ICollection (excluding strings)
+        IsCollection = typeof(ICollection).IsAssignableFrom(typeof(T)) && typeof(T) != typeof(string);
+
+        // 3. Check for Complex Value
+        // True if the type T has any public properties tagged with [CalcParameterAttribute]
+        // We cache this check per type T to avoid reflecting every constructor call
+        IsComplexValue = CheckIfComplex(typeof(T));
     }
 
-    public abstract bool TryParse(string strValue);
-
-    public virtual string ToString(string? format, IFormatProvider? formatProvider)
+    private static bool CheckIfComplex(Type type)
     {
-        object? val = _getter();
-
-        if (val is ICollection collection && val is not string)
+        // Simple string/value types are not complex in this context
+        if (type == typeof(string) || type.IsValueType)
         {
-            return $"{val.GetType().Name} ({collection.Count} items)";
+            // Edge case: Structs with attributes are complex
+            if (type.IsPrimitive)
+            {
+                return false;
+            }
         }
+
+        return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                   .Any(p => Attribute.IsDefined(p, typeof(CalcParameterAttribute)));
+    }
+
+    // --- Object Reader Integration ---
+
+    /// <summary>
+    /// Retrieves child input values if this is a Complex Value or ICalculation.
+    /// </summary>
+    public List<ICalcValue> GetChildInputs()
+    {
+        object val = Value;
+        if (val == null)
+        {
+            return new List<ICalcValue>();
+        }
+
+        // Use the CalculationReader to scan the current value instance
+        return CalculationReader.GetInputs(val);
+    }
+
+    /// <summary>
+    /// Retrieves child output values if this is a Complex Value or ICalculation.
+    /// </summary>
+    public List<ICalcValue> GetChildOutputs()
+    {
+        object val = Value;
+        if (val == null)
+        {
+            return new List<ICalcValue>();
+        }
+
+        return CalculationReader.GetOutputs(val);
+    }
+
+    // --- IFormattable ---
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        T val = _getter();
+
+        if (IsCollection && val is ICollection collection)
+            return $"{typeof(T).Name} ({collection.Count} items)";
 
         if (val is IFormattable f)
-        {
             return f.ToString(format, formatProvider);
-        }
 
         return val?.ToString() ?? string.Empty;
     }
 
     public override string ToString() => ToString(null, CultureInfo.InvariantCulture);
-}
 
-/// <summary>
-/// Generic wrapper for standard/leaf values (primitives, strings, etc.)
-/// This is the generic fallback for types that don't fit other categories.
-/// </summary>
-public class DelegateCalcValue<T> : DelegateCalcValue, ICalcValue
-{
-    private readonly Func<T> _typedGetter;
-    private readonly Action<T>? _typedSetter;
+    // --- TryParse ---
 
-    public DelegateCalcValue(
-        Func<T> getter,
-        Action<T>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(() => getter(), setter != null ? (v => setter((T)v)) : null, symbol, displayName, headings)
+    public bool TryParse(string strValue)
     {
-        _typedGetter = getter;
-        _typedSetter = setter;
-    }
-
-    public T Value
-    {
-        get => _typedGetter();
-        set => _typedSetter?.Invoke(value);
-    }
-
-    public override bool TryParse(string strValue)
-    {
-        if (_typedSetter == null)
-        {
+        if (_setter == null)
             return false;
-        }
 
         // IQuantity path (UnitsNet)
         if (Value is IQuantity currentQuantity)
@@ -143,6 +171,12 @@ public class DelegateCalcValue<T> : DelegateCalcValue, ICalcValue
         return false;
     }
 
+    public T Value
+    {
+        get => _getter();
+        set => _setter?.Invoke(value);
+    }
+
     // --- IParsable<T> Helper ---
 
     private static class ParsableHelper<TParsable>
@@ -180,153 +214,5 @@ public class DelegateCalcValue<T> : DelegateCalcValue, ICalcValue
             result = default;
             return false;
         }
-    }
-}
-
-/// <summary>
-/// Wrapper for UnitsNet quantity values (Length, Force, Area, etc.)
-/// Implements IQuantityValue which inherits from IDoubleValue.
-/// </summary>
-public class QuantityCalcValue<T> : DelegateCalcValue<T>, IQuantityValue where T : IQuantity
-{
-    private T _lastValue;
-
-    public QuantityCalcValue(
-        Func<T> getter,
-        Action<T>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
-        _lastValue = getter();
-    }
-
-    /// <summary>
-    /// Gets the unit of the underlying quantity.
-    /// </summary>
-    public Enum Unit
-    {
-        get
-        {
-            T val = Value;
-            return val?.Unit as Enum ?? _lastValue.Unit as Enum;
-        }
-    }
-}
-
-/// <summary>
-/// Wrapper for complex objects with [CalcParameter]-decorated child properties.
-/// Marker interface only - child traversal handled by CalculationReader.
-/// </summary>
-public class ComplexCalcValue<T> : DelegateCalcValue<T>, IComplexValue
-{
-    public ComplexCalcValue(
-        Func<T> getter,
-        Action<T>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
-    }
-}
-
-/// <summary>
-/// Wrapper for collection values (List, Array, etc. excluding string).
-/// </summary>
-public class CollectionCalcValue<T> : DelegateCalcValue<T>, ICollectionValue where T : ICollection
-{
-    public CollectionCalcValue(
-        Func<T> getter,
-        Action<T>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
-    }
-
-    public int Count => Value?.Count ?? 0;
-}
-
-/// <summary>
-/// Wrapper for ICalculation values.
-/// Marker interface only - child traversal handled by CalculationReader.
-/// </summary>
-public class CalculationCalcValue<T> : DelegateCalcValue<T>, ICalculationValue where T : ICalculation
-{
-    public CalculationCalcValue(
-        Func<T> getter,
-        Action<T>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
-    }
-}
-
-/// <summary>
-/// Wrapper for int primitive values.
-/// </summary>
-public class IntCalcValue : DelegateCalcValue<int>, IIntValue
-{
-    public IntCalcValue(
-        Func<int> getter,
-        Action<int>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
-    }
-}
-
-/// <summary>
-/// Wrapper for double primitive values.
-/// </summary>
-public class DoubleCalcValue : DelegateCalcValue<double>, IDoubleValue
-{
-    public DoubleCalcValue(
-        Func<double> getter,
-        Action<double>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
-    }
-}
-
-/// <summary>
-/// Wrapper for string primitive values.
-/// </summary>
-public class StringCalcValue : DelegateCalcValue<string>, IStringValue
-{
-    public StringCalcValue(
-        Func<string> getter,
-        Action<string>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
-    }
-}
-
-/// <summary>
-/// Wrapper for bool primitive values.
-/// </summary>
-public class BoolCalcValue : DelegateCalcValue<bool>, IBoolValue
-{
-    public BoolCalcValue(
-        Func<bool> getter,
-        Action<bool>? setter,
-        string symbol,
-        string displayName,
-        IEnumerable<string>? headings)
-        : base(getter, setter, symbol, displayName, headings)
-    {
     }
 }
