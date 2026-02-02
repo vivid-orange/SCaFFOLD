@@ -1,9 +1,8 @@
 ﻿namespace Scaffold;
 
-public interface ICalcValue : ICalcParameter
+public interface ICalcValue : ICalcParameter, IFormattable
 {
     bool TryParse(string strValue);
-    string ValueAsString();
     CalcStatus Status { get; }
     List<string> Headings { get; }
     bool IsComplexValue { get; }
@@ -11,4 +10,10 @@ public interface ICalcValue : ICalcParameter
     bool IsICalculation { get; }
     List<ICalcValue> GetChildInputs();
     List<ICalcValue> GetChildOutputs();
+    object ValueAsObject { get; }
+}
+
+public interface ICalcValue<T> : ICalcValue
+{
+    T Value { get; set; }
 }

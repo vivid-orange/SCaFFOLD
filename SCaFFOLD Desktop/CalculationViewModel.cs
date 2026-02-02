@@ -215,19 +215,11 @@ namespace Scaffold.Desktop
 
             Type itemType = item.GetType();
 
-            MethodInfo method = typeof(CalculationViewModel).GetMethod(nameof(CreateWrapperGeneric), BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo method = typeof(Reader.Utility.Utilities).GetMethod(nameof(Reader.Utility.Utilities.CreateWrapperGeneric), BindingFlags.Public | BindingFlags.Static);
+            //MethodInfo method = typeof(CalculationViewModel).GetMethod(nameof(CreateWrapperGeneric), BindingFlags.NonPublic | BindingFlags.Instance);
             MethodInfo generic = method.MakeGenericMethod(itemType);
 
             return (ICalcValue)generic.Invoke(this, new object[] { collection, index });
-        }
-
-        private ICalcValue CreateWrapperGeneric<T>(IList collection, int index)
-        {
-            Func<T> getter = () => (T)collection[index];
-            Action<T> setter = (val) => collection[index] = val;
-            string name = $"[{index}]";
-
-            return new DelegateCalcValue<T>(getter, setter, string.Empty, name, null);
         }
 
         private void OnCalculationUpdate()
