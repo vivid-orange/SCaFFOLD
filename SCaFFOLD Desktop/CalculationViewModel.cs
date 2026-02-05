@@ -212,7 +212,7 @@ namespace Scaffold.Desktop
 
             Type itemType = item.GetType();
 
-            MethodInfo method = typeof(Reader.Utility.Utilities).GetMethod(nameof(Reader.Utility.Utilities.CreateWrapperGeneric), BindingFlags.Public | BindingFlags.Static);
+            MethodInfo method = typeof(Reader.Utility.CalcValueFactory).GetMethod(nameof(Reader.Utility.CalcValueFactory.CreateWrapperGeneric), BindingFlags.Public | BindingFlags.Static);
             MethodInfo generic = method.MakeGenericMethod(itemType);
 
             return (ICalcValue)generic.Invoke(null, new object[] { collection, index });
