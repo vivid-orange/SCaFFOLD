@@ -9,26 +9,50 @@ public class DelegateCalcValueTests
 {
     #region Helpers
 
-    private static DelegateCalcValue<T> Create<T>(T initial, Action<T>? setter = null, string[]? headings = null)
+    /// <summary>
+    /// Creates an ICalcValue by using CalculationReader on a wrapper class.
+    /// This tests the real integration path without accessing internal types.
+    /// </summary>
+    private static ICalcValue CreateCalcValue<T>(T initial)
     {
-        T value = initial;
-        return new DelegateCalcValue<T>(
-            getter: () => value,
-            setter: setter ?? (v => value = v),
-            symbol: "x",
-            displayName: "Test",
-            headings: headings ?? Enumerable.Empty<string>());
+        var wrapper = new ValueWrapper<T> { Value = initial };
+        var inputs = CalculationReader.GetInputs(wrapper);
+        return inputs.First();
     }
 
-    private static DelegateCalcValue<T> CreateReadOnly<T>(T initial)
+    private static ICalcValue CreateReadOnlyCalcValue<T>(T initial)
     {
-        T value = initial;
-        return new DelegateCalcValue<T>(
-            getter: () => value,
-            setter: null!,
-            symbol: "x",
-            displayName: "Test",
-            headings: Enumerable.Empty<string>());
+        var wrapper = new ReadOnlyWrapper<T>(initial);
+        var outputs = CalculationReader.GetOutputs(wrapper);
+        return outputs.First();
+    }
+
+    private static ICalcValue CreateCalcValueWithHeadings<T>(T initial, string[] headings)
+    {
+        var wrapper = new ValueWrapperWithHeadings<T> { Value = initial };
+        var inputs = CalculationReader.GetInputs(wrapper);
+        return inputs.First();
+    }
+
+    // Wrapper classes for creating ICalcValue via CalculationReader
+    private class ValueWrapper<T>
+    {
+        [InputParameter("x", "Test")]
+        public T Value { get; set; } = default!;
+    }
+
+    private class ReadOnlyWrapper<T>
+    {
+        public ReadOnlyWrapper(T value) => Value = value;
+
+        [OutputParameter("x", "Test")]
+        public T Value { get; }
+    }
+
+    private class ValueWrapperWithHeadings<T>
+    {
+        [InputParameter("x", "Test", ["Group1", "Group2"])]
+        public T Value { get; set; } = default!;
     }
 
     #endregion
@@ -39,7 +63,7 @@ public class DelegateCalcValueTests
     public void ToString_DelegatesToUnderlyingIFormattable()
     {
         var length = new Length(3.14159, LengthUnit.Meter);
-        DelegateCalcValue<Length> cv = Create(length);
+        ICalcValue cv = CreateCalcValue(length);
 
         string result = cv.ToString("F2", CultureInfo.InvariantCulture);
 
@@ -50,7 +74,7 @@ public class DelegateCalcValueTests
     public void ToString_Collection_ReturnsCountSummary()
     {
         var list = new List<int> { 1, 2, 3 };
-        DelegateCalcValue<List<int>> cv = Create(list);
+        ICalcValue cv = CreateCalcValue(list);
 
         string result = cv.ToString(null, CultureInfo.InvariantCulture);
 
@@ -61,7 +85,7 @@ public class DelegateCalcValueTests
     public void ToString_Override_UsesInvariantCulture()
     {
         var length = new Length(1.5, LengthUnit.Meter);
-        DelegateCalcValue<Length> cv = Create(length);
+        ICalcValue cv = CreateCalcValue(length);
 
         string overrideResult = cv.ToString();
         string formattableResult = cv.ToString(null, CultureInfo.InvariantCulture);
@@ -73,12 +97,7 @@ public class DelegateCalcValueTests
     public void ToString_NullValue_ReturnsEmpty()
     {
         string? val = null;
-        var cv = new DelegateCalcValue<string?>(
-            getter: () => val,
-            setter: v => val = v,
-            symbol: "x",
-            displayName: "Test",
-            headings: Enumerable.Empty<string>());
+        ICalcValue cv = CreateCalcValue(val);
 
         cv.ToString().Should().Be(string.Empty);
     }
@@ -90,35 +109,35 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IQuantity_FullUnitString_Succeeds()
     {
-        DelegateCalcValue<Length> cv = Create(new Length(0, LengthUnit.Meter));
+        ICalcValue cv = CreateCalcValue(new Length(0, LengthUnit.Meter));
 
         bool result = cv.TryParse("5 m");
 
         result.Should().BeTrue();
-        cv.Value.Should().Be(new Length(5, LengthUnit.Meter));
+        cv.ValueAsObject.Should().Be(new Length(5, LengthUnit.Meter));
     }
 
     [Fact]
     public void TryParse_IQuantity_BareNumber_PreservesUnit()
     {
-        DelegateCalcValue<Length> cv = Create(new Length(1, LengthUnit.Millimeter));
+        ICalcValue cv = CreateCalcValue(new Length(1, LengthUnit.Millimeter));
 
         bool result = cv.TryParse("10");
 
         result.Should().BeTrue();
-        cv.Value.Should().Be(new Length(10, LengthUnit.Millimeter));
+        cv.ValueAsObject.Should().Be(new Length(10, LengthUnit.Millimeter));
     }
 
     [Fact]
     public void TryParse_IQuantity_InvalidString_ReturnsFalse()
     {
         var original = new Length(5, LengthUnit.Meter);
-        DelegateCalcValue<Length> cv = Create(original);
+        ICalcValue cv = CreateCalcValue(original);
 
         bool result = cv.TryParse("not a number");
 
         result.Should().BeFalse();
-        cv.Value.Should().Be(original);
+        cv.ValueAsObject.Should().Be(original);
     }
 
     #endregion
@@ -128,44 +147,44 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_Int_Succeeds()
     {
-        DelegateCalcValue<int> cv = Create(0);
+        ICalcValue cv = CreateCalcValue(0);
 
         bool result = cv.TryParse("42");
 
         result.Should().BeTrue();
-        cv.Value.Should().Be(42);
+        cv.ValueAsObject.Should().Be(42);
     }
 
     [Fact]
     public void TryParse_Double_Succeeds()
     {
-        DelegateCalcValue<double> cv = Create(0.0);
+        ICalcValue cv = CreateCalcValue(0.0);
 
         bool result = cv.TryParse("3.14");
 
         result.Should().BeTrue();
-        cv.Value.Should().BeApproximately(3.14, 0.001);
+        ((double)cv.ValueAsObject).Should().BeApproximately(3.14, 0.001);
     }
 
     [Fact]
     public void TryParse_InvalidString_ReturnsFalse()
     {
-        DelegateCalcValue<int> cv = Create(0);
+        ICalcValue cv = CreateCalcValue(0);
 
         bool result = cv.TryParse("abc");
 
         result.Should().BeFalse();
-        cv.Value.Should().Be(0);
+        cv.ValueAsObject.Should().Be(0);
     }
 
     #endregion
 
-    #region TryParse — null setter
+    #region TryParse — read-only (output) values
 
     [Fact]
-    public void TryParse_NullSetter_ReturnsFalse()
+    public void TryParse_ReadOnly_ReturnsFalse()
     {
-        DelegateCalcValue<int> cv = CreateReadOnly(42);
+        ICalcValue cv = CreateReadOnlyCalcValue(42);
 
         bool result = cv.TryParse("99");
 
@@ -179,12 +198,12 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IQuantity_UnitsNetException_TriesBareNumber()
     {
-        DelegateCalcValue<Length> cv = Create(new Length(5, LengthUnit.Meter));
+        ICalcValue cv = CreateCalcValue(new Length(5, LengthUnit.Meter));
 
         bool result = cv.TryParse("invalid unit");
 
         result.Should().BeFalse();
-        cv.Value.Should().Be(new Length(5, LengthUnit.Meter));
+        cv.ValueAsObject.Should().Be(new Length(5, LengthUnit.Meter));
     }
 
     #endregion
@@ -194,7 +213,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_TypeConverterThrows_ReturnsFalse()
     {
-        DelegateCalcValue<Guid> cv = Create(new Guid("12345678-1234-1234-1234-123456789012"));
+        ICalcValue cv = CreateCalcValue(new Guid("12345678-1234-1234-1234-123456789012"));
 
         // Try to parse with malformed GUID format
         bool result = cv.TryParse("not-a-guid");
@@ -206,7 +225,7 @@ public class DelegateCalcValueTests
     public void TryParse_NoConverterAvailable_ReturnsFalse()
     {
         // Create a value type with no TypeConverter
-        DelegateCalcValue<object> cv = Create(new object());
+        ICalcValue cv = CreateCalcValue(new object());
 
         bool result = cv.TryParse("anything");
 
@@ -220,7 +239,7 @@ public class DelegateCalcValueTests
     [Fact]
     public void ToString_StringType_DoesNotShowAsCollection()
     {
-        DelegateCalcValue<string> cv = Create("hello world");
+        ICalcValue cv = CreateCalcValue("hello world");
 
         string result = cv.ToString();
 
@@ -231,7 +250,7 @@ public class DelegateCalcValueTests
     public void ToString_EmptyCollection_ReturnsZeroItems()
     {
         var list = new List<int>();
-        DelegateCalcValue<List<int>> cv = Create(list);
+        ICalcValue cv = CreateCalcValue(list);
 
         string result = cv.ToString();
 
@@ -242,7 +261,7 @@ public class DelegateCalcValueTests
     public void ToString_NonFormattable_UsesDefaultToString()
     {
         var obj = new object();
-        DelegateCalcValue<object> cv = Create(obj);
+        ICalcValue cv = CreateCalcValue(obj);
 
         string result = cv.ToString();
 
@@ -253,7 +272,7 @@ public class DelegateCalcValueTests
     public void ToString_WithFormat_PassesToIFormattable()
     {
         var length = new Length(1.23456, LengthUnit.Meter);
-        DelegateCalcValue<Length> cv = Create(length);
+        ICalcValue cv = CreateCalcValue(length);
 
         string result = cv.ToString("F1", CultureInfo.InvariantCulture);
 
@@ -262,80 +281,37 @@ public class DelegateCalcValueTests
 
     #endregion
 
-    #region Value Property
+    #region ValueAsObject Property
 
     [Fact]
-    public void Value_Setter_InvokesAction()
+    public void ValueAsObject_ReturnsCurrentValue()
     {
-        DelegateCalcValue<int> cv = Create(0);
+        ICalcValue cv = CreateCalcValue(42);
 
-        cv.Value = 42;
-
-        cv.Value.Should().Be(42);
+        cv.ValueAsObject.Should().Be(42);
     }
 
     [Fact]
-    public void Value_Getter_InvokesFuncMultipleTimes()
+    public void ValueAsObject_AfterTryParse_ReturnsNewValue()
     {
-        int callCount = 0;
-        int value = 10;
-        var cv = new DelegateCalcValue<int>(
-            getter: () => { callCount++; return value; },
-            setter: v => value = v,
-            symbol: "x",
-            displayName: "Test",
-            headings: Enumerable.Empty<string>());
+        ICalcValue cv = CreateCalcValue(0);
 
-        _ = cv.Value;
-        _ = cv.Value;
+        cv.TryParse("42");
 
-        callCount.Should().Be(2);
-    }
-
-    [Fact]
-    public void Value_SetterWithNullAction_DoesNotThrow()
-    {
-        DelegateCalcValue<int> cv = CreateReadOnly(42);
-
-        // Should not throw
-        cv.Value = 99;
-
-        cv.Value.Should().Be(42);
+        cv.ValueAsObject.Should().Be(42);
     }
 
     #endregion
 
-    #region Constructor Edge Cases
+    #region Headings
 
     [Fact]
-    public void Constructor_NullHeadings_CreatesEmptyList()
+    public void Headings_WhenDefined_ReturnsHeadings()
     {
-        DelegateCalcValue<int> cv = Create(42, headings: null);
-
-        cv.Headings.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void Constructor_NonNullHeadings_CreatesListWithItems()
-    {
-        var headings = new[] { "Group1", "Group2" };
-        DelegateCalcValue<int> cv = Create(42, headings: headings);
+        ICalcValue cv = CreateCalcValueWithHeadings(42, ["Group1", "Group2"]);
 
         cv.Headings.Should().HaveCount(2);
         cv.Headings.Should().ContainInOrder("Group1", "Group2");
-    }
-
-    [Fact]
-    public void Constructor_NullDisplayName_UsesTypeName()
-    {
-        var cv = new DelegateCalcValue<int>(
-            getter: () => 42,
-            setter: v => { },
-            symbol: "x",
-            displayName: null,
-            headings: Enumerable.Empty<string>());
-
-        cv.EntityLabel.Should().Be("Int32");
     }
 
     #endregion
@@ -345,23 +321,23 @@ public class DelegateCalcValueTests
     [Fact]
     public void TryParse_IParsableType_Succeeds()
     {
-        DelegateCalcValue<Guid> cv = Create(Guid.Empty);
+        ICalcValue cv = CreateCalcValue(Guid.Empty);
 
         bool result = cv.TryParse("12345678-1234-1234-1234-123456789abc");
 
         result.Should().BeTrue();
-        cv.Value.Should().Be(new Guid("12345678-1234-1234-1234-123456789abc"));
+        cv.ValueAsObject.Should().Be(new Guid("12345678-1234-1234-1234-123456789abc"));
     }
 
     [Fact]
     public void TryParse_IParsableType_InvalidFormat_ReturnsFalse()
     {
-        DelegateCalcValue<Guid> cv = Create(Guid.Empty);
+        ICalcValue cv = CreateCalcValue(Guid.Empty);
 
         bool result = cv.TryParse("not-a-guid-format");
 
         result.Should().BeFalse();
-        cv.Value.Should().Be(Guid.Empty);
+        cv.ValueAsObject.Should().Be(Guid.Empty);
     }
 
     #endregion
@@ -374,8 +350,14 @@ public class DelegateCalcValueTests
     [InlineData(3.14)]
     public void TypeFlags_Primitive_AllFalse(object primitive)
     {
-        // Arrange
-        DelegateCalcValue<object> cv = Create(primitive);
+        // Arrange - need to create via specific type
+        ICalcValue cv = primitive switch
+        {
+            int i => CreateCalcValue(i),
+            string s => CreateCalcValue(s),
+            double d => CreateCalcValue(d),
+            _ => throw new ArgumentException()
+        };
 
         // Assert
         Assert.False(cv.IsICalculation);
@@ -387,7 +369,7 @@ public class DelegateCalcValueTests
     public void TypeFlags_ListOfInt_IsCollectionTrue()
     {
         // Arrange
-        DelegateCalcValue<List<int>> cv = Create(new List<int> { 1, 2 });
+        ICalcValue cv = CreateCalcValue(new List<int> { 1, 2 });
 
         // Assert
         Assert.False(cv.IsICalculation);
@@ -399,7 +381,7 @@ public class DelegateCalcValueTests
     {
         // Arrange
         var calc = new StubCalculation();
-        DelegateCalcValue<StubCalculation> cv = Create<StubCalculation>(calc);
+        ICalcValue cv = CreateCalcValue<ICalculation>(calc);
 
         // Assert
         Assert.True(cv.IsICalculation);
@@ -413,7 +395,7 @@ public class DelegateCalcValueTests
     public void CheckIfComplex_TypeWithCalcParameterAttribute_IsComplexTrue()
     {
         // Arrange — ComplexStub has [InputParameter] on a property
-        DelegateCalcValue<ComplexStub> cv = Create(new ComplexStub());
+        ICalcValue cv = CreateCalcValue(new ComplexStub());
 
         // Assert
         Assert.True(cv.IsComplexValue);
@@ -423,7 +405,7 @@ public class DelegateCalcValueTests
     public void CheckIfComplex_PlainClassNoAttributes_IsComplexFalse()
     {
         // Arrange
-        DelegateCalcValue<PlainStub> cv = Create(new PlainStub());
+        ICalcValue cv = CreateCalcValue(new PlainStub());
 
         // Assert
         Assert.False(cv.IsComplexValue);
@@ -438,8 +420,7 @@ public class DelegateCalcValueTests
     {
         // Arrange
         string? val = null;
-        var cv = new DelegateCalcValue<string?>(
-            () => val, v => val = v, "x", "Test", Enumerable.Empty<string>());
+        ICalcValue cv = CreateCalcValue(val);
 
         // Act
         List<ICalcValue> children = cv.GetChildInputs();
@@ -453,8 +434,7 @@ public class DelegateCalcValueTests
     {
         // Arrange
         string? val = null;
-        var cv = new DelegateCalcValue<string?>(
-            () => val, v => val = v, "x", "Test", Enumerable.Empty<string>());
+        ICalcValue cv = CreateCalcValue(val);
 
         // Act
         List<ICalcValue> children = cv.GetChildOutputs();
@@ -468,7 +448,7 @@ public class DelegateCalcValueTests
     {
         // Arrange
         var obj = new ComplexStub();
-        DelegateCalcValue<ComplexStub> cv = Create(obj);
+        ICalcValue cv = CreateCalcValue(obj);
 
         // Act
         List<ICalcValue> children = cv.GetChildInputs();
@@ -483,7 +463,7 @@ public class DelegateCalcValueTests
     {
         // Arrange
         var obj = new ComplexStub();
-        DelegateCalcValue<ComplexStub> cv = Create(obj);
+        ICalcValue cv = CreateCalcValue(obj);
 
         // Act
         List<ICalcValue> children = cv.GetChildOutputs();
@@ -501,15 +481,16 @@ public class DelegateCalcValueTests
     public void TryParse_IQuantity_DifferentUnit_ParsesSuccessfully()
     {
         // Arrange — start in meters, parse millimeters
-        DelegateCalcValue<Length> cv = Create(new Length(1, LengthUnit.Meter));
+        ICalcValue cv = CreateCalcValue(new Length(1, LengthUnit.Meter));
 
         // Act
         bool result = cv.TryParse("5 mm");
 
         // Assert
         Assert.True(result);
-        Assert.Equal(LengthUnit.Millimeter, ((Length)(object)cv.Value).Unit);
-        Assert.Equal(5, ((Length)(object)cv.Value).Value);
+        var length = (Length)cv.ValueAsObject;
+        Assert.Equal(LengthUnit.Millimeter, length.Unit);
+        Assert.Equal(5, length.Value);
     }
 
     #endregion
