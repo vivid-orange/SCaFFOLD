@@ -121,7 +121,7 @@ namespace Scaffold.Calculations
             double tw = Section.WebThickness.Millimeters;
             double d = h - 2 * tf;
 
-            double aw_z = Math.Min(0.5, (area -(2 * d * tw)) / area);
+            double aw_z = Math.Min(0.5, (area - (2 * d * tw)) / area);
             double af = Math.Min(0.5, (area - (2 * Section.Width.Millimeters * tf)) / area);
 
             // 4. Reduced Moment Capacities (MN,Rd) [cite: 2, 3]

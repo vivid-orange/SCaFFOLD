@@ -59,7 +59,7 @@ namespace Scaffold.Calculations
 
         [OutputParameter("W_{pl,y}", "Plastic Modulus (y-y)")]
         public Volume PlasticModulusY { get; set; }
-       
+
         [OutputParameter("W_{pl,z}", "Plastic Modulus (z-z)")]
         public Volume PlasticModulusZ { get; set; }
 
