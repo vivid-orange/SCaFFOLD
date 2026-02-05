@@ -80,9 +80,12 @@ namespace Scaffold.Desktop
             // 2. Determine the Item Type (T)
             Type itemType = null;
             var modelType = _model.GetType();
-            if (modelType.IsGenericType && modelType.GetGenericTypeDefinition() == typeof(ICalcValue<>))
+            // Check if the model implements ICalcValue<T> by looking at its interfaces
+            var calcValueInterface = modelType.GetInterfaces()
+                .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICalcValue<>));
+            if (calcValueInterface != null)
             {
-                var listType = modelType.GetGenericArguments()[0];
+                var listType = calcValueInterface.GetGenericArguments()[0];
                 if (listType.IsGenericType && typeof(IEnumerable).IsAssignableFrom(listType))
                 {
                     itemType = listType.GetGenericArguments()[0];
