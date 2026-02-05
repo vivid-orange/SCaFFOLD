@@ -127,6 +127,7 @@ namespace Scaffold.Calculations
             _geometryBases.Clear();
             _geometryBases.AddRange(lines);
 
+
         }
         public override IList<IOutputItem> GetFormulae()
         {

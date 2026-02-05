@@ -21,17 +21,17 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="180" />
                         <ColumnDefinition Width="200" />
                         <ColumnDefinition Width="60" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
 
                     <Grid Grid.Column="2" VerticalAlignment="Center">
-                        <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" IsReadOnly="{Binding IsComplex}">
+                        <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}" IsReadOnly="{Binding IsComplex}" FontSize="11">
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -49,7 +49,7 @@
                         <ComboBox ItemsSource="{Binding SelectionOptions}" SelectedIndex="{Binding SelectedIndex}" Visibility="{Binding IsSelectionList, Converter={StaticResource BoolToVis}}"/>
                     </Grid>
 
-                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="Gray" FontSize="11"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="Gray" FontSize="10"/>
 
                     <Button Grid.Column="4" Content="Edit" Command="{Binding EditCommand}" Width="25" Visibility="{Binding IsCalculation, Converter={StaticResource BoolToVis}}"/>
                 </Grid>
@@ -60,7 +60,7 @@
             <Border BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="5" Margin="5,0,0,5">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <math:FormulaControl Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <math:FormulaControl Formula="{Binding Symbol}" Scale="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding DisplayName}" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
 
@@ -75,7 +75,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border Width="120" Background="#EEE" BorderBrush="#CCC" BorderThickness="0,0,1,1" Padding="5">
-                                            <math:FormulaControl Formula="{Binding}" Scale="16" HorizontalAlignment="Center"/>
+                                            <math:FormulaControl Formula="{Binding}" Scale="14" HorizontalAlignment="Center"/>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -148,13 +148,13 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="180" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="60" />
                     </Grid.ColumnDefinitions>
-                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="18" VerticalAlignment="Center"/>
+                    <math:FormulaControl Grid.Column="0" Formula="{Binding Symbol}" Scale="14" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="11"/>
-                    <TextBlock Grid.Column="2" Text="{Binding Value}" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Value}" VerticalAlignment="Center" FontSize="11"/>
                     <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Foreground="Gray" FontSize="11"/>
                 </Grid>
             </Border>
@@ -208,7 +208,7 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Margin="0,0,5,2" VerticalAlignment="Center">
-                                                    <math:FormulaControl Formula="{Binding Content}" Scale="20" Visibility="{Binding IsLatex, Converter={StaticResource BoolToVis}}"/>
+                                                    <math:FormulaControl Formula="{Binding Content}" Scale="12" Visibility="{Binding IsLatex, Converter={StaticResource BoolToVis}}"/>
                                                     <TextBlock Text="{Binding Content}" Foreground="#333" Visibility="{Binding IsText, Converter={StaticResource BoolToVis}}"/>
                                                     <Image Source="{Binding Image}" MaxHeight="300" Stretch="Uniform" Visibility="{Binding IsImage, Converter={StaticResource BoolToVis}}"/>
                                                 </Grid>
