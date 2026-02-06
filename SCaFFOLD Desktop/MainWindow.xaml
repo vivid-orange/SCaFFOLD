@@ -47,9 +47,34 @@
                             </TextBox.Style>
                         </TextBox>
                         <ComboBox ItemsSource="{Binding SelectionOptions}" SelectedIndex="{Binding SelectedIndex}" Visibility="{Binding IsSelectionList, Converter={StaticResource BoolToVis}}"/>
+                        <!-- Quantity input — numeric TextBox + unit ComboBox side by side -->
+                        <Grid Visibility="{Binding IsQuantity, Converter={StaticResource BoolToVis}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding NumericValue, UpdateSourceTrigger=LostFocus}"
+                                     FontSize="11" Margin="0,0,3,0"/>
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{Binding UnitOptions}"
+                                      SelectedIndex="{Binding SelectedIndex}"
+                                      MinWidth="55" FontSize="10"/>
+                        </Grid>
                     </Grid>
 
-                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="Gray" FontSize="10"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Unit}" VerticalAlignment="Center"
+                               Margin="5,0,0,0" Foreground="Gray" FontSize="10">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsQuantity}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
                     <Button Grid.Column="4" Content="Edit" Command="{Binding EditCommand}" Width="25" Visibility="{Binding IsCalculation, Converter={StaticResource BoolToVis}}"/>
                 </Grid>

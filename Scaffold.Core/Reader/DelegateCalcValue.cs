@@ -9,6 +9,7 @@ internal class DelegateCalcValue<T> : ICalcValue<T>
 {
     private readonly Func<T> _getter;
     private readonly Action<T> _setter;
+    private readonly UnitInfo[]? _unitInfos;
 
     public string Symbol { get; }
     public string EntityLabel { get; }
@@ -22,6 +23,8 @@ internal class DelegateCalcValue<T> : ICalcValue<T>
     public bool IsComplexValue { get; }
     public bool IsEnum { get; }
     public IReadOnlyList<string> EnumOptions { get; }
+    public bool IsQuantity { get; }
+    public IReadOnlyList<string> UnitOptions { get; }
 
     public DelegateCalcValue(
         Func<T> getter,
@@ -52,6 +55,59 @@ internal class DelegateCalcValue<T> : ICalcValue<T>
         EnumOptions = typeof(T).IsEnum
             ? Array.AsReadOnly(Enum.GetNames(typeof(T)))
             : Array.Empty<string>();
+
+        // 5. Check for IQuantity
+        IsQuantity = typeof(IQuantity).IsAssignableFrom(typeof(T));
+        if (IsQuantity && _getter() is IQuantity sampleQuantity)
+        {
+            var abbrevCache = UnitAbbreviationsCache.Default;
+            _unitInfos = sampleQuantity.QuantityInfo.UnitInfos;
+            var abbreviations = new string[_unitInfos.Length];
+            for (int i = 0; i < _unitInfos.Length; i++)
+                abbreviations[i] = abbrevCache.GetDefaultAbbreviation(_unitInfos[i].Value);
+            UnitOptions = Array.AsReadOnly(abbreviations);
+        }
+        else
+        {
+            UnitOptions = Array.Empty<string>();
+        }
+    }
+
+    public int SelectedUnitIndex
+    {
+        get
+        {
+            if (!IsQuantity || Value is not IQuantity q || _unitInfos == null) return -1;
+            Enum currentUnit = q.Unit;
+            for (int i = 0; i < _unitInfos.Length; i++)
+                if (Equals(_unitInfos[i].Value, currentUnit)) return i;
+            return -1;
+        }
+    }
+
+    public string NumericValueString
+    {
+        get
+        {
+            if (Value is IQuantity q)
+                return q.Value.ToString(CultureInfo.InvariantCulture);
+            return ToString();
+        }
+    }
+
+    public bool TrySetUnitByIndex(int unitIndex)
+    {
+        if (!IsQuantity || _unitInfos == null || unitIndex < 0 || unitIndex >= _unitInfos.Length)
+            return false;
+        if (Value is not IQuantity currentQuantity)
+            return false;
+        try
+        {
+            IQuantity converted = currentQuantity.ToUnit(_unitInfos[unitIndex].Value);
+            Value = (T)converted;
+            return true;
+        }
+        catch { return false; }
     }
 
     private static bool CheckIfComplex(Type type)
