@@ -49,11 +49,33 @@ namespace Scaffold.Desktop
         // Structure Flags
         public bool IsComplex => _model.IsComplexValue || _model.IsICalculation;
         public bool IsCollection => _model.IsCollection;
-        public bool IsStandard => !IsComplex && !IsCollection;
+        public bool IsStandard => !IsComplex && !IsCollection && !IsSelectionList;
         public bool IsCalculation => _model.IsICalculation;
-        public bool IsSelectionList => false;
-        public IEnumerable<string> SelectionOptions => Enumerable.Empty<string>();
-        public int SelectedIndex { get => -1; set { } }
+        public bool IsSelectionList => _model.IsEnum;
+        public IEnumerable<string> SelectionOptions => _model.EnumOptions;
+
+        public int SelectedIndex
+        {
+            get
+            {
+                if (!_model.IsEnum) return -1;
+                var options = _model.EnumOptions;
+                var current = _model.ToString();
+                for (int i = 0; i < options.Count; i++)
+                    if (options[i] == current) return i;
+                return -1;
+            }
+            set
+            {
+                var options = _model.EnumOptions;
+                if (_model.IsEnum && value >= 0 && value < options.Count)
+                {
+                    _model.TryParse(options[value]);
+                    Refresh();
+                    _onValueChanged?.Invoke();
+                }
+            }
+        }
 
         public object RawValue
         {

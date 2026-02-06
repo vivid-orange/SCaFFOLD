@@ -20,6 +20,8 @@ internal class DelegateCalcValue<T> : ICalcValue<T>
     public bool IsICalculation { get; }
     public bool IsCollection { get; }
     public bool IsComplexValue { get; }
+    public bool IsEnum { get; }
+    public IReadOnlyList<string> EnumOptions { get; }
 
     public DelegateCalcValue(
         Func<T> getter,
@@ -44,6 +46,12 @@ internal class DelegateCalcValue<T> : ICalcValue<T>
         // True if the type T has any public properties tagged with [CalcParameterAttribute]
         // We cache this check per type T to avoid reflecting every constructor call
         IsComplexValue = CheckIfComplex(typeof(T));
+
+        // 4. Check for Enum
+        IsEnum = typeof(T).IsEnum;
+        EnumOptions = typeof(T).IsEnum
+            ? Array.AsReadOnly(Enum.GetNames(typeof(T)))
+            : Array.Empty<string>();
     }
 
     private static bool CheckIfComplex(Type type)

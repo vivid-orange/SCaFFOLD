@@ -495,6 +495,70 @@ public class DelegateCalcValueTests
 
     #endregion
 
+    #region Enum Support
+
+    private enum TestColor { Red, Green, Blue }
+
+    [Fact]
+    public void IsEnum_EnumType_ReturnsTrue()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        Assert.True(cv.IsEnum);
+        Assert.False(cv.IsComplexValue);
+        Assert.False(cv.IsCollection);
+        Assert.False(cv.IsICalculation);
+    }
+
+    [Fact]
+    public void EnumOptions_EnumType_ReturnsNames()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        cv.EnumOptions.Should().BeEquivalentTo(new[] { "Red", "Green", "Blue" }, o => o.WithStrictOrdering());
+    }
+
+    [Fact]
+    public void ToString_EnumType_ReturnsName()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        cv.ToString().Should().Be("Red");
+    }
+
+    [Fact]
+    public void TryParse_EnumType_ValidName_Succeeds()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        bool result = cv.TryParse("Green");
+
+        result.Should().BeTrue();
+        cv.ValueAsObject.Should().Be(TestColor.Green);
+    }
+
+    [Fact]
+    public void TryParse_EnumType_InvalidName_ReturnsFalse()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        bool result = cv.TryParse("Purple");
+
+        result.Should().BeFalse();
+        cv.ValueAsObject.Should().Be(TestColor.Red);
+    }
+
+    [Fact]
+    public void IsEnum_NonEnumType_ReturnsFalse()
+    {
+        ICalcValue cv = CreateCalcValue(42);
+
+        Assert.False(cv.IsEnum);
+        cv.EnumOptions.Should().BeEmpty();
+    }
+
+    #endregion
+
     #region Test Stubs
 
     private class ComplexStub
