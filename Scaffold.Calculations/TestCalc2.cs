@@ -6,6 +6,8 @@ using SkiaSharp;
 
 namespace Scaffold.Calculations
 {
+    public enum SectionType { Rectangular, Circular, IShaped, TShaped }
+
     public class TestCalc2 : Calculation, IInteractiveGeometry
     {
         public override string CalculationTitle { get; } = "This is my test calc";
@@ -13,6 +15,9 @@ namespace Scaffold.Calculations
 
         // public property with getter and setter will be treated as input by reader
         public double Multiplier { get; set; }
+
+        [InputParameter("S_t", "Section Type", ["Geometry"])]
+        public SectionType Section { get; set; } = SectionType.Rectangular;
 
         // Decorate a property with attribute to set custom symbol
         [InputParameter("M")]

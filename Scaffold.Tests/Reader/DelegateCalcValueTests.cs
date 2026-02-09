@@ -495,6 +495,183 @@ public class DelegateCalcValueTests
 
     #endregion
 
+    #region Enum Support
+
+    private enum TestColor { Red, Green, Blue }
+
+    [Fact]
+    public void IsEnum_EnumType_ReturnsTrue()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        Assert.True(cv.IsEnum);
+        Assert.False(cv.IsComplexValue);
+        Assert.False(cv.IsCollection);
+        Assert.False(cv.IsICalculation);
+    }
+
+    [Fact]
+    public void EnumOptions_EnumType_ReturnsNames()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        cv.EnumOptions.Should().BeEquivalentTo(new[] { "Red", "Green", "Blue" }, o => o.WithStrictOrdering());
+    }
+
+    [Fact]
+    public void ToString_EnumType_ReturnsName()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        cv.ToString().Should().Be("Red");
+    }
+
+    [Fact]
+    public void TryParse_EnumType_ValidName_Succeeds()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        bool result = cv.TryParse("Green");
+
+        result.Should().BeTrue();
+        cv.ValueAsObject.Should().Be(TestColor.Green);
+    }
+
+    [Fact]
+    public void TryParse_EnumType_InvalidName_ReturnsFalse()
+    {
+        ICalcValue cv = CreateCalcValue(TestColor.Red);
+
+        bool result = cv.TryParse("Purple");
+
+        result.Should().BeFalse();
+        cv.ValueAsObject.Should().Be(TestColor.Red);
+    }
+
+    [Fact]
+    public void IsEnum_NonEnumType_ReturnsFalse()
+    {
+        ICalcValue cv = CreateCalcValue(42);
+
+        Assert.False(cv.IsEnum);
+        cv.EnumOptions.Should().BeEmpty();
+    }
+
+    #endregion
+
+    #region Quantity Support
+
+    [Fact]
+    public void IsQuantity_LengthType_ReturnsTrue()
+    {
+        ICalcValue cv = CreateCalcValue(new Length(500, LengthUnit.Millimeter));
+
+        Assert.True(cv.IsQuantity);
+    }
+
+    [Fact]
+    public void IsQuantity_NonQuantityType_ReturnsFalse()
+    {
+        ICalcValue cv = CreateCalcValue(42);
+
+        Assert.False(cv.IsQuantity);
+        cv.UnitOptions.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void UnitOptions_Length_ContainsExpectedUnits()
+    {
+        ICalcValue cv = CreateCalcValue(new Length(500, LengthUnit.Millimeter));
+
+        cv.UnitOptions.Should().Contain("mm");
+        cv.UnitOptions.Should().Contain("m");
+        cv.UnitOptions.Should().Contain("ft");
+    }
+
+    [Fact]
+    public void SelectedUnitIndex_MatchesCurrentUnit()
+    {
+        ICalcValue cv = CreateCalcValue(new Length(500, LengthUnit.Millimeter));
+
+        int index = cv.SelectedUnitIndex;
+        index.Should().BeGreaterThanOrEqualTo(0);
+        cv.UnitOptions[index].Should().Be("mm");
+    }
+
+    [Fact]
+    public void NumericValueString_ReturnsJustTheNumber()
+    {
+        ICalcValue cv = CreateCalcValue(new Length(500, LengthUnit.Millimeter));
+
+        cv.NumericValueString.Should().Be("500");
+    }
+
+    [Fact]
+    public void NumericValueString_NonQuantity_FallsBackToString()
+    {
+        ICalcValue cv = CreateCalcValue(42);
+
+        cv.NumericValueString.Should().Be("42");
+    }
+
+    [Fact]
+    public void TrySetUnitByIndex_ConvertsValue()
+    {
+        ICalcValue cv = CreateCalcValue(new Length(1000, LengthUnit.Millimeter));
+
+        // Find the index for "m"
+        int mIndex = -1;
+        for (int i = 0; i < cv.UnitOptions.Count; i++)
+            if (cv.UnitOptions[i] == "m") { mIndex = i; break; }
+        mIndex.Should().BeGreaterThanOrEqualTo(0);
+
+        bool result = cv.TrySetUnitByIndex(mIndex);
+
+        result.Should().BeTrue();
+        var length = (Length)cv.ValueAsObject;
+        length.Unit.Should().Be(LengthUnit.Meter);
+        length.Value.Should().BeApproximately(1, 0.0001);
+    }
+
+    [Fact]
+    public void TrySetUnitByIndex_InvalidIndex_ReturnsFalse()
+    {
+        ICalcValue cv = CreateCalcValue(new Length(500, LengthUnit.Millimeter));
+
+        cv.TrySetUnitByIndex(-1).Should().BeFalse();
+        cv.TrySetUnitByIndex(9999).Should().BeFalse();
+    }
+
+    [Fact]
+    public void TrySetUnitByIndex_NonQuantity_ReturnsFalse()
+    {
+        ICalcValue cv = CreateCalcValue(42);
+
+        cv.TrySetUnitByIndex(0).Should().BeFalse();
+    }
+
+    [Fact]
+    public void TryParse_BareNumber_AfterUnitChange_PreservesNewUnit()
+    {
+        ICalcValue cv = CreateCalcValue(new Length(1000, LengthUnit.Millimeter));
+
+        // Change to meters
+        int mIndex = -1;
+        for (int i = 0; i < cv.UnitOptions.Count; i++)
+            if (cv.UnitOptions[i] == "m") { mIndex = i; break; }
+        cv.TrySetUnitByIndex(mIndex);
+
+        // Now parse a bare number — should preserve "m" unit
+        bool result = cv.TryParse("5");
+
+        result.Should().BeTrue();
+        var length = (Length)cv.ValueAsObject;
+        length.Unit.Should().Be(LengthUnit.Meter);
+        length.Value.Should().BeApproximately(5, 0.0001);
+    }
+
+    #endregion
+
     #region Test Stubs
 
     private class ComplexStub

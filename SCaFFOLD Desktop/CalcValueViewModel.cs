@@ -49,11 +49,72 @@ namespace Scaffold.Desktop
         // Structure Flags
         public bool IsComplex => _model.IsComplexValue || _model.IsICalculation;
         public bool IsCollection => _model.IsCollection;
-        public bool IsStandard => !IsComplex && !IsCollection;
+        public bool IsStandard => !IsComplex && !IsCollection && !IsSelectionList && !IsQuantity;
         public bool IsCalculation => _model.IsICalculation;
-        public bool IsSelectionList => false;
-        public IEnumerable<string> SelectionOptions => Enumerable.Empty<string>();
-        public int SelectedIndex { get => -1; set { } }
+        public bool IsSelectionList => _model.IsEnum;
+        public IEnumerable<string> SelectionOptions => _model.EnumOptions;
+        public bool IsQuantity => _model.IsQuantity;
+        public IEnumerable<string> UnitOptions => _model.UnitOptions;
+
+        public string NumericValue
+        {
+            get => _model.NumericValueString;
+            set
+            {
+                if (IsQuantity && _model.NumericValueString != value)
+                {
+                    _model.TryParse(value);
+                    Refresh();
+                    _onValueChanged?.Invoke();
+                }
+            }
+        }
+
+        public string Unit
+        {
+            get
+            {
+                if (_model.IsQuantity && _model.SelectedUnitIndex >= 0)
+                    return _model.UnitOptions[_model.SelectedUnitIndex];
+                return string.Empty;
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get
+            {
+                if (_model.IsQuantity) return _model.SelectedUnitIndex;
+                if (_model.IsEnum)
+                {
+                    var options = _model.EnumOptions;
+                    var current = _model.ToString();
+                    for (int i = 0; i < options.Count; i++)
+                        if (options[i] == current) return i;
+                    return -1;
+                }
+                return -1;
+            }
+            set
+            {
+                if (_model.IsQuantity && value >= 0)
+                {
+                    _model.TrySetUnitByIndex(value);
+                    Refresh();
+                    _onValueChanged?.Invoke();
+                }
+                else if (_model.IsEnum)
+                {
+                    var options = _model.EnumOptions;
+                    if (value >= 0 && value < options.Count)
+                    {
+                        _model.TryParse(options[value]);
+                        Refresh();
+                        _onValueChanged?.Invoke();
+                    }
+                }
+            }
+        }
 
         public object RawValue
         {
@@ -174,6 +235,9 @@ namespace Scaffold.Desktop
         {
             OnPropertyChanged(nameof(Value));
             OnPropertyChanged(nameof(Symbol));
+            OnPropertyChanged(nameof(NumericValue));
+            OnPropertyChanged(nameof(SelectedIndex));
+            OnPropertyChanged(nameof(Unit));
         }
     }
 }

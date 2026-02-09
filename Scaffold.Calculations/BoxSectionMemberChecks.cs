@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Scaffold;
-using Scaffold.Report;
-using UnitsNet;
-using UnitsNet.Units;
+﻿using Scaffold.Report;
+using VividOrange.Standards.Eurocode;
 
 namespace Scaffold.Calculations
 {
@@ -16,6 +12,8 @@ namespace Scaffold.Calculations
 
         [InputParameter("B", "Section Properties")]
         public BoxSectionPropertiesCalculation Section { get; set; } = new BoxSectionPropertiesCalculation();
+
+        public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.UnitedKingdom;
 
         [InputParameter("V_{Ed}", "Design Shear Force")]
         public Force DesignShear { get; set; } = Force.FromKilonewtons(437.39);
@@ -106,8 +104,8 @@ namespace Scaffold.Calculations
             double area = Section.TotalArea.SquareMillimeters;
 
             // 1. Bending Capacities (Class 1)
-            double mply = (Section.PlasticModulusY.CubicMillimeters * fy) / 1e6;
-            double mplz = (Section.PlasticModulusZ.CubicMillimeters * fy) / 1e6;
+            double mply = Section.PlasticModulusY.CubicMillimeters * fy / 1e6;
+            double mplz = Section.PlasticModulusZ.CubicMillimeters * fy / 1e6;
             MomentResistanceY = Torque.FromKilonewtonMeters(mply);
             MomentResistanceZ = Torque.FromKilonewtonMeters(mplz);
 
@@ -119,14 +117,14 @@ namespace Scaffold.Calculations
             double h = Section.Height.Millimeters;
             double tf = Section.FlangeThickness.Millimeters;
             double tw = Section.WebThickness.Millimeters;
-            double d = h - 2 * tf;
+            double d = h - (2 * tf);
 
             double aw_z = Math.Min(0.5, (area - (2 * d * tw)) / area);
             double af = Math.Min(0.5, (area - (2 * Section.Width.Millimeters * tf)) / area);
 
             // 4. Reduced Moment Capacities (MN,Rd) [cite: 2, 3]
-            double mny = mply * ((1 - AxialRatio) / (1 - 0.5 * aw_z));
-            double mnz = mplz * ((1 - AxialRatio) / (1 - 0.5 * af));
+            double mny = mply * ((1 - AxialRatio) / (1 - (0.5 * aw_z)));
+            double mnz = mplz * ((1 - AxialRatio) / (1 - (0.5 * af)));
 
             ReducedMomentY = Torque.FromKilonewtonMeters(Math.Min(mply, mny));
             ReducedMomentZ = Torque.FromKilonewtonMeters(Math.Min(mplz, mnz));
@@ -140,8 +138,8 @@ namespace Scaffold.Calculations
         }
         private void CalculateShear()
         {
-            double avz = 2 * (Section.Height.Millimeters - 2 * Section.FlangeThickness.Millimeters) * Section.WebThickness.Millimeters;
-            double vplrd = (avz * (Section.YieldStrength.Megapascals / Math.Sqrt(3))) / 1.0;
+            double avz = 2 * (Section.Height.Millimeters - (2 * Section.FlangeThickness.Millimeters)) * Section.WebThickness.Millimeters;
+            double vplrd = avz * (Section.YieldStrength.Megapascals / Math.Sqrt(3)) / 1.0;
             ShearResistance = Force.FromNewtons(vplrd);
             ShearUtilization = DesignShear.Newtons / ShearResistance.Newtons;
         }
@@ -152,10 +150,10 @@ namespace Scaffold.Calculations
             double fy = Section.YieldStrength.Megapascals;
             PlasticAxialResistance = Force.FromNewtons(area * fy);
 
-            double ncr = (Math.Pow(Math.PI, 2) * 210000 * Section.Izz.MillimetersToTheFourth) / Math.Pow(EffectiveLength.Millimeters, 2);
-            Slenderness = Math.Sqrt((area * fy) / ncr);
+            double ncr = Math.Pow(Math.PI, 2) * 210000 * Section.Izz.MillimetersToTheFourth / Math.Pow(EffectiveLength.Millimeters, 2);
+            Slenderness = Math.Sqrt(area * fy / ncr);
 
-            double phi = 0.5 * (1 + 0.49 * (Slenderness - 0.2) + Math.Pow(Slenderness, 2));
+            double phi = 0.5 * (1 + (0.49 * (Slenderness - 0.2)) + Math.Pow(Slenderness, 2));
             ReductionFactor = Math.Min(1.0, 1.0 / (phi + Math.Sqrt(Math.Pow(phi, 2) - Math.Pow(Slenderness, 2))));
 
             BucklingResistance = Force.FromNewtons(ReductionFactor * area * fy);
